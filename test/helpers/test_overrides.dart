@@ -13,4 +13,5 @@ final testOverrides = <Override>[
   calendarRepositoryProvider.overrideWithValue(LocalCalendarRepository()),
   communityRepositoryProvider.overrideWithValue(LocalCommunityRepository()),
   challengeRepositoryProvider.overrideWithValue(LocalChallengeRepository()),
+  achievementRepositoryProvider.overrideWithValue(LocalAchievementRepository()),
 ];

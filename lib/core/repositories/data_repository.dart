@@ -112,3 +112,18 @@ abstract class ChallengeRepository {
   /// 완료 챌린지 저장
   Future<void> saveCompletedChallenges(List<Map<String, dynamic>> challenges);
 }
+
+/// 업적/배지 저장소
+abstract class AchievementRepository {
+  /// 달성된 업적 ID 목록 로드
+  Future<List<String>> loadUnlockedIds();
+
+  /// 달성된 업적 ID 목록 저장
+  Future<void> saveUnlockedIds(List<String> ids);
+
+  /// 업적 진행 카운트 맵 로드
+  Future<Map<String, int>> loadProgressCounts();
+
+  /// 업적 진행 카운트 맵 저장
+  Future<void> saveProgressCounts(Map<String, int> counts);
+}

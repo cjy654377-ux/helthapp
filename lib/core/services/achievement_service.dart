@@ -2,7 +2,8 @@
 // 운동, 식단, 수분, 커뮤니티 활동에 따른 업적 달성을 관리합니다.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:health_app/core/services/local_storage_service.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // Achievement 모델
@@ -181,12 +182,12 @@ class UserStats {
 
 /// 업적/배지 시스템 서비스
 ///
-/// 업적 목록은 하드코딩되어 있으며, 달성 상태는 LocalStorageService를 통해
+/// 업적 목록은 하드코딩되어 있으며, 달성 상태는 AchievementRepository를 통해
 /// 영속적으로 저장됩니다.
 class AchievementService {
-  AchievementService(this._storageService);
+  AchievementService(this._repo);
 
-  final LocalStorageService _storageService;
+  final AchievementRepository _repo;
 
   // 달성된 업적 ID 세트 (메모리 캐시)
   final Set<String> _unlockedIds = {};
@@ -394,26 +395,15 @@ class AchievementService {
   /// 저장된 업적 데이터 로드
   Future<void> loadAchievements() async {
     try {
-      final settings = await _storageService.loadUserSettings();
-
       // 달성된 업적 ID 로드
-      final unlockedList = settings['unlocked_achievements'];
-      if (unlockedList is List) {
-        _unlockedIds.clear();
-        _unlockedIds.addAll(unlockedList.whereType<String>());
-      }
+      final unlockedList = await _repo.loadUnlockedIds();
+      _unlockedIds.clear();
+      _unlockedIds.addAll(unlockedList);
 
       // 업적 진행 카운트 로드
-      final progressMap = settings['achievement_progress'];
-      if (progressMap is Map<String, dynamic>) {
-        _progressCounts.clear();
-        for (final entry in progressMap.entries) {
-          final value = entry.value;
-          if (value is int) {
-            _progressCounts[entry.key] = value;
-          }
-        }
-      }
+      final progressMap = await _repo.loadProgressCounts();
+      _progressCounts.clear();
+      _progressCounts.addAll(progressMap);
     } catch (_) {
       // 로드 실패 시 기본값(빈 상태) 유지
     }
@@ -422,14 +412,8 @@ class AchievementService {
   /// 업적 데이터 저장
   Future<void> _saveAchievements() async {
     try {
-      await _storageService.saveSettingValue(
-        'unlocked_achievements',
-        _unlockedIds.toList(),
-      );
-      await _storageService.saveSettingValue(
-        'achievement_progress',
-        Map<String, dynamic>.from(_progressCounts),
-      );
+      await _repo.saveUnlockedIds(_unlockedIds.toList());
+      await _repo.saveProgressCounts(Map<String, int>.from(_progressCounts));
     } catch (_) {
       // 저장 실패 시 조용히 처리
     }
@@ -675,8 +659,8 @@ class AchievementService {
 
 /// AchievementService Provider
 final achievementServiceProvider = Provider<AchievementService>((ref) {
-  final storageService = ref.watch(localStorageServiceProvider);
-  return AchievementService(storageService);
+  final repo = ref.watch(achievementRepositoryProvider);
+  return AchievementService(repo);
 });
 
 /// 달성 업적 목록 Provider

@@ -7,7 +7,6 @@ import 'package:health_app/l10n/app_localizations.dart';
 
 import 'package:health_app/core/theme/app_theme.dart';
 import 'package:health_app/core/router/app_router.dart';
-import 'package:health_app/core/services/local_storage_service.dart';
 import 'package:health_app/core/services/challenge_integration_service.dart';
 import 'package:health_app/core/services/notification_service.dart';
 import 'package:health_app/firebase_options.dart';
@@ -26,9 +25,6 @@ void main() async {
     persistenceEnabled: true,
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
-
-  // SharedPreferences 초기화 (Provider 로드 전에 완료)
-  await LocalStorageService().init();
 
   // OS 알림 서비스 초기화
   await NotificationService().init();

@@ -690,3 +690,65 @@ class FirestoreChallengeRepository implements ChallengeRepository {
     } catch (_) {}
   }
 }
+
+class FirestoreAchievementRepository implements AchievementRepository {
+  final String uid;
+  FirestoreAchievementRepository({required this.uid});
+
+  DocumentReference<Map<String, dynamic>> get _achievementDoc =>
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('settings')
+          .doc('achievements');
+
+  @override
+  Future<List<String>> loadUnlockedIds() async {
+    try {
+      final doc = await _achievementDoc.get();
+      if (!doc.exists) return [];
+      final data = doc.data()!;
+      final list = data['unlocked_ids'];
+      if (list is List) return list.whereType<String>().toList();
+      return [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveUnlockedIds(List<String> ids) async {
+    try {
+      await _achievementDoc.set(
+        {'unlocked_ids': ids},
+        SetOptions(merge: true),
+      );
+    } catch (_) {}
+  }
+
+  @override
+  Future<Map<String, int>> loadProgressCounts() async {
+    try {
+      final doc = await _achievementDoc.get();
+      if (!doc.exists) return {};
+      final data = doc.data()!;
+      final progress = data['progress_counts'];
+      if (progress is Map<String, dynamic>) {
+        return progress.map((k, v) => MapEntry(k, v is int ? v : 0));
+      }
+      return {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  @override
+  Future<void> saveProgressCounts(Map<String, int> counts) async {
+    try {
+      await _achievementDoc.set(
+        {'progress_counts': counts},
+        SetOptions(merge: true),
+      );
+    } catch (_) {}
+  }
+}

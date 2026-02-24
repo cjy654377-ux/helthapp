@@ -60,3 +60,12 @@ final challengeRepositoryProvider = Provider<ChallengeRepository>((ref) {
   }
   return LocalChallengeRepository();
 });
+
+/// 업적 Repository Provider
+final achievementRepositoryProvider = Provider<AchievementRepository>((ref) {
+  final authState = ref.watch(authProvider);
+  if (authState.isAuthenticated && authState.user != null) {
+    return FirestoreAchievementRepository(uid: authState.user!.uid);
+  }
+  return LocalAchievementRepository();
+});

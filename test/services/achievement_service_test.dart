@@ -1,31 +1,30 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
 import 'package:health_app/core/services/achievement_service.dart';
-import 'package:health_app/core/services/local_storage_service.dart';
 
 // ---------------------------------------------------------------------------
-// Fake LocalStorageService for testing (avoids SharedPreferences)
+// Fake AchievementRepository for testing (avoids SharedPreferences)
 // ---------------------------------------------------------------------------
 
-class FakeLocalStorageService extends LocalStorageService {
-  FakeLocalStorageService() : super.forTesting();
-
-  final Map<String, dynamic> _store = {};
+class FakeAchievementRepository implements AchievementRepository {
+  List<String> _unlockedIds = [];
+  Map<String, int> _progressCounts = {};
 
   @override
-  Future<Map<String, dynamic>> loadUserSettings() async {
-    return Map<String, dynamic>.from(_store);
+  Future<List<String>> loadUnlockedIds() async => List.from(_unlockedIds);
+
+  @override
+  Future<void> saveUnlockedIds(List<String> ids) async {
+    _unlockedIds = List.from(ids);
   }
 
   @override
-  Future<void> saveUserSettings(Map<String, dynamic> settings) async {
-    _store
-      ..clear()
-      ..addAll(settings);
-  }
+  Future<Map<String, int>> loadProgressCounts() async =>
+      Map.from(_progressCounts);
 
   @override
-  Future<void> saveSettingValue(String key, dynamic value) async {
-    _store[key] = value;
+  Future<void> saveProgressCounts(Map<String, int> counts) async {
+    _progressCounts = Map.from(counts);
   }
 }
 
@@ -294,7 +293,7 @@ void main() {
     late AchievementService service;
 
     setUp(() {
-      service = AchievementService(FakeLocalStorageService());
+      service = AchievementService(FakeAchievementRepository());
     });
 
     test('initial state has no unlocked achievements', () {
@@ -461,7 +460,7 @@ void main() {
       expect(service.isUnlocked('body_transformation'), isTrue);
 
       // Under threshold does not qualify
-      final fresh = AchievementService(FakeLocalStorageService());
+      final fresh = AchievementService(FakeAchievementRepository());
       const under = UserStats(bodyWeightChange: 4.9);
       await fresh.checkAchievements(under);
       expect(fresh.isUnlocked('body_transformation'), isFalse);

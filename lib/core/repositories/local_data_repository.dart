@@ -469,3 +469,56 @@ class LocalChallengeRepository implements ChallengeRepository {
     } catch (_) {}
   }
 }
+
+class LocalAchievementRepository implements AchievementRepository {
+  static const _unlockedKey = 'unlocked_achievements';
+  static const _progressKey = 'achievement_progress';
+
+  @override
+  Future<List<String>> loadUnlockedIds() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final settings = prefs.getString('user_settings');
+      if (settings == null) return [];
+      final map = jsonDecode(settings) as Map<String, dynamic>;
+      final list = map[_unlockedKey];
+      if (list is List) return list.whereType<String>().toList();
+      return [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveUnlockedIds(List<String> ids) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_unlockedKey, jsonEncode(ids));
+    } catch (_) {}
+  }
+
+  @override
+  Future<Map<String, int>> loadProgressCounts() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final settings = prefs.getString('user_settings');
+      if (settings == null) return {};
+      final map = jsonDecode(settings) as Map<String, dynamic>;
+      final progress = map[_progressKey];
+      if (progress is Map<String, dynamic>) {
+        return progress.map((k, v) => MapEntry(k, v is int ? v : 0));
+      }
+      return {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  @override
+  Future<void> saveProgressCounts(Map<String, int> counts) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_progressKey, jsonEncode(counts));
+    } catch (_) {}
+  }
+}
