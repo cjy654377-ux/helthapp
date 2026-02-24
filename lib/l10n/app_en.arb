@@ -466,5 +466,69 @@
   "@resetPasswordTitle": { "description": "Reset password dialog title" },
 
   "resetPasswordDesc": "Enter your email and we'll send you a password reset link.",
-  "@resetPasswordDesc": { "description": "Reset password dialog description" }
+  "@resetPasswordDesc": { "description": "Reset password dialog description" },
+
+  "notEntered": "Not entered",
+  "@notEntered": { "description": "Not entered status" },
+
+  "takePhotoCamera": "Take photo",
+  "@takePhotoCamera": { "description": "Take photo with camera button" },
+
+  "selectFromGalleryOption": "Choose from gallery",
+  "@selectFromGalleryOption": { "description": "Select from gallery option" },
+
+  "backupComingSoon": "Backup feature coming soon.",
+  "@backupComingSoon": { "description": "Backup feature coming soon message" },
+
+  "restoreComingSoon": "Restore feature coming soon.",
+  "@restoreComingSoon": { "description": "Restore feature coming soon message" },
+
+  "allDataDeleted": "All data has been deleted.",
+  "@allDataDeleted": { "description": "All data deleted confirmation message" },
+
+  "deleteAllDataConfirm": "All workout records, diet records, and settings will be permanently deleted.\nThis action cannot be undone. Continue?",
+  "@deleteAllDataConfirm": { "description": "Delete all data confirmation dialog" },
+
+  "appName": "Health & Fitness",
+  "@appName": { "description": "App name" },
+
+  "notificationTimeLabel": "Notification time: ",
+  "@notificationTimeLabel": { "description": "Notification time label" },
+
+  "previous": "Previous",
+  "@previous": { "description": "Previous button" },
+
+  "defaultUser": "User",
+  "@defaultUser": { "description": "Default user name" },
+
+  "dateFormatMonthDay": "{month}/{day} ({dayOfWeek})",
+  "@dateFormatMonthDay": {
+    "description": "Date format with month, day, and day of week",
+    "placeholders": {
+      "month": {"type": "int"},
+      "day": {"type": "int"},
+      "dayOfWeek": {"type": "String"}
+    }
+  },
+
+  "weekdayMon": "Mon",
+  "@weekdayMon": { "description": "Monday full name" },
+
+  "weekdayTue": "Tue",
+  "@weekdayTue": { "description": "Tuesday full name" },
+
+  "weekdayWed": "Wed",
+  "@weekdayWed": { "description": "Wednesday full name" },
+
+  "weekdayThu": "Thu",
+  "@weekdayThu": { "description": "Thursday full name" },
+
+  "weekdayFri": "Fri",
+  "@weekdayFri": { "description": "Friday full name" },
+
+  "weekdaySat": "Sat",
+  "@weekdaySat": { "description": "Saturday full name" },
+
+  "weekdaySun": "Sun",
+  "@weekdaySun": { "description": "Sunday full name" }
 }

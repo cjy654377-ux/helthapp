@@ -67,7 +67,7 @@ class HomeScreen extends ConsumerWidget {
 
   SliverAppBar _buildAppBar(BuildContext context, ColorScheme colorScheme, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final nickname = ref.watch(userNicknameProvider).valueOrNull ?? '사용자';
+    final nickname = ref.watch(userNicknameProvider).valueOrNull ?? l10n.defaultUser;
     return SliverAppBar(
       expandedHeight: 120,
       floating: true,
@@ -124,7 +124,7 @@ class _GreetingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
-    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
+    final weekdays = [l10n.weekdayMon, l10n.weekdayTue, l10n.weekdayWed, l10n.weekdayThu, l10n.weekdayFri, l10n.weekdaySat, l10n.weekdaySun];
     final dayLabel = weekdays[now.weekday - 1];
 
     return Card(
@@ -140,7 +140,7 @@ class _GreetingCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${now.month}월 ${now.day}일 ($dayLabel)',
+                    l10n.dateFormatMonthDay(now.month, now.day, dayLabel),
                     style: TextStyle(
                       color: colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
                       fontSize: 13,

@@ -415,7 +415,7 @@ class _ProfileSection extends ConsumerWidget {
                 ),
                 title: Text(l10n.height),
                 subtitle: Text(
-                  state.height.isEmpty ? '입력 안 됨' : '${state.height} ${l10n.cm}',
+                  state.height.isEmpty ? l10n.notEntered : '${state.height} ${l10n.cm}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => _showEditDialog(
@@ -444,7 +444,7 @@ class _ProfileSection extends ConsumerWidget {
                 ),
                 title: Text(l10n.weight),
                 subtitle: Text(
-                  state.weight.isEmpty ? '입력 안 됨' : '${state.weight} ${l10n.kg}',
+                  state.weight.isEmpty ? l10n.notEntered : '${state.weight} ${l10n.kg}',
                 ),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => _showEditDialog(
@@ -467,6 +467,7 @@ class _ProfileSection extends ConsumerWidget {
 
   Future<void> _pickImage(
       BuildContext context, SettingsNotifier notifier) async {
+    final l10n = AppLocalizations.of(context);
     final picker = ImagePicker();
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
@@ -480,12 +481,12 @@ class _ProfileSection extends ConsumerWidget {
             const SizedBox(height: 8),
             ListTile(
               leading: const Icon(Icons.camera_alt_outlined),
-              title: const Text('카메라로 촬영'),
+              title: Text(l10n.takePhotoCamera),
               onTap: () => Navigator.pop(ctx, ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
-              title: const Text('갤러리에서 선택'),
+              title: Text(l10n.selectFromGalleryOption),
               onTap: () => Navigator.pop(ctx, ImageSource.gallery),
             ),
             const SizedBox(height: 8),
@@ -964,8 +965,8 @@ class _AppSettingsSection extends ConsumerWidget {
                 title: Text(l10n.backupData),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('백업 기능은 준비 중입니다.'),
+                  SnackBar(
+                    content: Text(l10n.backupComingSoon),
                     behavior: SnackBarBehavior.floating,
                   ),
                 ),
@@ -986,8 +987,8 @@ class _AppSettingsSection extends ConsumerWidget {
                 title: Text(l10n.restoreData),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('복원 기능은 준비 중입니다.'),
+                  SnackBar(
+                    content: Text(l10n.restoreComingSoon),
                     behavior: SnackBarBehavior.floating,
                   ),
                 ),
@@ -1026,10 +1027,7 @@ class _AppSettingsSection extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.deleteAllData),
-        content: const Text(
-          '모든 운동 기록, 식단 기록, 설정이 영구적으로 삭제됩니다.\n'
-          '이 작업은 되돌릴 수 없습니다. 계속하시겠습니까?',
-        ),
+        content: Text(l10n.deleteAllDataConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -1040,8 +1038,8 @@ class _AppSettingsSection extends ConsumerWidget {
               Navigator.pop(ctx);
               notifier.clearAllData();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('모든 데이터가 삭제되었습니다.'),
+                SnackBar(
+                  content: Text(l10n.allDataDeleted),
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -1161,7 +1159,7 @@ class _MiscSection extends StatelessWidget {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => showLicensePage(
                   context: context,
-                  applicationName: '헬스 & 피트니스',
+                  applicationName: l10n.appName,
                   applicationVersion: '1.0.0',
                 ),
               ),
@@ -1259,11 +1257,12 @@ class _TimePickerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return Row(
       children: [
-        const Text('알림 시간: '),
+        Text(l10n.notificationTimeLabel),
         TextButton(
           onPressed: () async {
             final picked = await showTimePicker(
