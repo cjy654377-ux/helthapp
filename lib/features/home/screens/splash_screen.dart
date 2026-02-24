@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/core/router/app_router.dart';
+import 'package:health_app/core/services/sync_service.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
@@ -40,11 +41,19 @@ final splashInitProvider = FutureProvider<SplashResult>((ref) async {
   await Future<void>.delayed(const Duration(seconds: 2));
 
   final firebaseUser = FirebaseAuth.instance.currentUser;
+  final isAuthenticated = firebaseUser != null;
+
+  // 로그인 사용자: 로컬 → 클라우드 동기화
+  if (isAuthenticated) {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await SyncService(uid: uid).migrateLocalToCloud();
+  }
+
   final prefs = await SharedPreferences.getInstance();
   final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
 
   return SplashResult(
-    isAuthenticated: firebaseUser != null,
+    isAuthenticated: isAuthenticated,
     onboardingCompleted: onboardingCompleted,
   );
 });

@@ -2443,6 +2443,120 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'가입한 이메일을 입력하면 비밀번호 재설정 링크를 보내드립니다.'**
   String get resetPasswordDesc;
+
+  /// Not entered status
+  ///
+  /// In ko, this message translates to:
+  /// **'입력 안 됨'**
+  String get notEntered;
+
+  /// Take photo with camera button
+  ///
+  /// In ko, this message translates to:
+  /// **'카메라로 촬영'**
+  String get takePhotoCamera;
+
+  /// Select from gallery option
+  ///
+  /// In ko, this message translates to:
+  /// **'갤러리에서 선택'**
+  String get selectFromGalleryOption;
+
+  /// Backup feature coming soon message
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 기능은 준비 중입니다.'**
+  String get backupComingSoon;
+
+  /// Restore feature coming soon message
+  ///
+  /// In ko, this message translates to:
+  /// **'복원 기능은 준비 중입니다.'**
+  String get restoreComingSoon;
+
+  /// All data deleted confirmation message
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 데이터가 삭제되었습니다.'**
+  String get allDataDeleted;
+
+  /// Delete all data confirmation dialog
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 운동 기록, 식단 기록, 설정이 영구적으로 삭제됩니다.\n이 작업은 되돌릴 수 없습니다. 계속하시겠습니까?'**
+  String get deleteAllDataConfirm;
+
+  /// App name
+  ///
+  /// In ko, this message translates to:
+  /// **'헬스 & 피트니스'**
+  String get appName;
+
+  /// Notification time label
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 시간: '**
+  String get notificationTimeLabel;
+
+  /// Previous button
+  ///
+  /// In ko, this message translates to:
+  /// **'이전'**
+  String get previous;
+
+  /// Default user name
+  ///
+  /// In ko, this message translates to:
+  /// **'사용자'**
+  String get defaultUser;
+
+  /// Date format with month, day, and day of week
+  ///
+  /// In ko, this message translates to:
+  /// **'{month}월 {day}일 ({dayOfWeek})'**
+  String dateFormatMonthDay(int month, int day, String dayOfWeek);
+
+  /// Monday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'월'**
+  String get weekdayMon;
+
+  /// Tuesday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'화'**
+  String get weekdayTue;
+
+  /// Wednesday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'수'**
+  String get weekdayWed;
+
+  /// Thursday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'목'**
+  String get weekdayThu;
+
+  /// Friday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'금'**
+  String get weekdayFri;
+
+  /// Saturday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'토'**
+  String get weekdaySat;
+
+  /// Sunday full name
+  ///
+  /// In ko, this message translates to:
+  /// **'일'**
+  String get weekdaySun;
 }
 
 class _AppLocalizationsDelegate

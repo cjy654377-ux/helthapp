@@ -1693,9 +1693,10 @@ class _AddPhotoSheetState extends ConsumerState<_AddPhotoSheet> {
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
+            TextField(
+              controller: _fatController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
                 hintText: '예: 18.5',
                 suffixText: '%',
               ),

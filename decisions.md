@@ -275,11 +275,19 @@ challenges/{id}/ → participants/
 - 6개 provider 레거시 메서드명 정리 (_loadFromPrefs → _load)
 - flutter analyze: 0 issues, flutter test: 269 passed
 
+**하드코딩 문자열 i18n 처리 완료 (2026-02-25):**
+- settings_screen, home_screen, onboarding_screen 총 23개 ARB 키 추가
+- 날짜 포맷, 요일, 기본 사용자명, 백업/복원/삭제 메시지 등
+
+**AchievementService Repository 전환 완료 (2026-02-25):**
+- AchievementRepository 인터페이스 + Local/Firestore 구현체
+- AchievementService: LocalStorageService → AchievementRepository 주입
+- local_storage_service.dart 완전 삭제 (중복 레이어 제거)
+- main.dart에서 LocalStorageService().init() 제거
+- flutter analyze: 0 issues, flutter test: 269 passed
+
 **다음 작업:**
-- 하드코딩 한국어 문자열 i18n 처리 (settings_screen, home_screen, onboarding_screen 등 20+개)
-- AchievementService를 Repository 패턴으로 전환 (local_storage_service.dart 의존 제거)
-- local_storage_service.dart 완전 제거 (achievement 이전 후)
-- Firestore catch 블록 로깅 추가
+- 자가 리뷰 2차 (추가 개선사항 탐색)
 
 **기타 대기:**
 - iOS GoogleService-Info.plist 생성/추가

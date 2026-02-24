@@ -1232,4 +1232,64 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get resetPasswordDesc =>
       'Enter your email and we\'ll send you a password reset link.';
+
+  @override
+  String get notEntered => 'Not entered';
+
+  @override
+  String get takePhotoCamera => 'Take photo';
+
+  @override
+  String get selectFromGalleryOption => 'Choose from gallery';
+
+  @override
+  String get backupComingSoon => 'Backup feature coming soon.';
+
+  @override
+  String get restoreComingSoon => 'Restore feature coming soon.';
+
+  @override
+  String get allDataDeleted => 'All data has been deleted.';
+
+  @override
+  String get deleteAllDataConfirm =>
+      'All workout records, diet records, and settings will be permanently deleted.\nThis action cannot be undone. Continue?';
+
+  @override
+  String get appName => 'Health & Fitness';
+
+  @override
+  String get notificationTimeLabel => 'Notification time: ';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get defaultUser => 'User';
+
+  @override
+  String dateFormatMonthDay(int month, int day, String dayOfWeek) {
+    return '$month/$day ($dayOfWeek)';
+  }
+
+  @override
+  String get weekdayMon => 'Mon';
+
+  @override
+  String get weekdayTue => 'Tue';
+
+  @override
+  String get weekdayWed => 'Wed';
+
+  @override
+  String get weekdayThu => 'Thu';
+
+  @override
+  String get weekdayFri => 'Fri';
+
+  @override
+  String get weekdaySat => 'Sat';
+
+  @override
+  String get weekdaySun => 'Sun';
 }

@@ -101,15 +101,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
 
     if (confirmed == true && mounted) {
-      await ref
+      final success = await ref
           .read(authProvider.notifier)
           .sendPasswordReset(resetEmailController.text.trim());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(l10n.passwordResetSent),
-            backgroundColor: Colors.green,
+            content: Text(success ? l10n.passwordResetSent : l10n.authErrorUnknown),
+            backgroundColor: success ? Colors.green : Colors.red,
           ),
         );
       }

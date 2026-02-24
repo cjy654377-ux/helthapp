@@ -97,6 +97,34 @@ class SyncService {
       await fsCommunity.saveMyTeams(teams);
     }
 
+    // 6. 챌린지 마이그레이션
+    final localChallenge = LocalChallengeRepository();
+    final fsChallenge = FirestoreChallengeRepository(uid: uid);
+
+    final activeChallenges = await localChallenge.loadActiveChallenges();
+    if (activeChallenges.isNotEmpty) {
+      await fsChallenge.saveActiveChallenges(activeChallenges);
+    }
+
+    final completedChallenges = await localChallenge.loadCompletedChallenges();
+    if (completedChallenges.isNotEmpty) {
+      await fsChallenge.saveCompletedChallenges(completedChallenges);
+    }
+
+    // 7. 업적 마이그레이션
+    final localAchievement = LocalAchievementRepository();
+    final fsAchievement = FirestoreAchievementRepository(uid: uid);
+
+    final unlockedIds = await localAchievement.loadUnlockedIds();
+    if (unlockedIds.isNotEmpty) {
+      await fsAchievement.saveUnlockedIds(unlockedIds);
+    }
+
+    final progressCounts = await localAchievement.loadProgressCounts();
+    if (progressCounts.isNotEmpty) {
+      await fsAchievement.saveProgressCounts(progressCounts);
+    }
+
     // 동기화 완료 표시
     await prefs.setBool(syncKey, true);
   }

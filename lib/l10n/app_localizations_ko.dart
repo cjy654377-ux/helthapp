@@ -1222,4 +1222,64 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get resetPasswordDesc => '가입한 이메일을 입력하면 비밀번호 재설정 링크를 보내드립니다.';
+
+  @override
+  String get notEntered => '입력 안 됨';
+
+  @override
+  String get takePhotoCamera => '카메라로 촬영';
+
+  @override
+  String get selectFromGalleryOption => '갤러리에서 선택';
+
+  @override
+  String get backupComingSoon => '백업 기능은 준비 중입니다.';
+
+  @override
+  String get restoreComingSoon => '복원 기능은 준비 중입니다.';
+
+  @override
+  String get allDataDeleted => '모든 데이터가 삭제되었습니다.';
+
+  @override
+  String get deleteAllDataConfirm =>
+      '모든 운동 기록, 식단 기록, 설정이 영구적으로 삭제됩니다.\n이 작업은 되돌릴 수 없습니다. 계속하시겠습니까?';
+
+  @override
+  String get appName => '헬스 & 피트니스';
+
+  @override
+  String get notificationTimeLabel => '알림 시간: ';
+
+  @override
+  String get previous => '이전';
+
+  @override
+  String get defaultUser => '사용자';
+
+  @override
+  String dateFormatMonthDay(int month, int day, String dayOfWeek) {
+    return '$month월 $day일 ($dayOfWeek)';
+  }
+
+  @override
+  String get weekdayMon => '월';
+
+  @override
+  String get weekdayTue => '화';
+
+  @override
+  String get weekdayWed => '수';
+
+  @override
+  String get weekdayThu => '목';
+
+  @override
+  String get weekdayFri => '금';
+
+  @override
+  String get weekdaySat => '토';
+
+  @override
+  String get weekdaySun => '일';
 }
