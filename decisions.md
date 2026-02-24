@@ -1,0 +1,191 @@
+# Decision Log - HealthApp
+
+## D-001: Tech Stack Selection
+- **결정**: Flutter + Riverpod + go_router + Firebase
+- **대안**: React Native, Native (Swift/Kotlin)
+- **이유**: 카메라앱 프로젝트와 동일한 스택으로 개발 효율 극대화, 크로스플랫폼 46% 시장 점유율
+
+## D-002: Feature-First Directory Structure
+- **결정**: lib/features/ 하위에 기능별 폴더 구조
+- **대안**: Layer-first (presentation/domain/data)
+- **이유**: 기능이 많은 헬스앱 특성상 기능별 분리가 유지보수에 유리
+
+## D-003: Agent System
+- **결정**: Opus(설계) -> Sonnet(구현) -> Haiku(반복 작업) 3단계 에이전트
+- **대안**: 단일 에이전트
+- **이유**: 카메라앱에서 검증된 효율적 토큰 관리 + 작업 병렬화
+
+## D-004: Initial MVP Features
+- **결정**: 운동 가이드, 운동 기록, 팀 커뮤니티, 식단, 수분, 캘린더 6개 핵심 기능
+- **대안**: 운동 기록만 MVP
+- **이유**: 시장 조사 결과 올인원 앱이 리텐션 높음, 차별화 포인트 확보
+
+## D-005: Exercise Database Size
+- **결정**: 50개+ 운동 데이터 (부위별 5-7개), 한국어 운동 설명/팁 포함
+- **대안**: 외부 API 사용
+- **이유**: 오프라인 사용 가능, 초기 MVP에서는 로컬 데이터로 충분
+
+## D-006: AI Workout Recommendation
+- **결정**: 로컬 알고리즘 기반 (최근 운동 부위 제외, 스플릿 기반, 진행적 과부하)
+- **대안**: 외부 AI API (ChatGPT 등)
+- **이유**: 초기 단계에서는 규칙 기반으로 충분, 추후 AI API 연동 가능
+
+---
+
+## Progress Log
+
+### Checkpoint: Phase 1 Complete (2026-02-24)
+**완료된 작업:**
+- Flutter 프로젝트 생성 + 패키지 설치
+- 에이전트 MD 3개 (CLAUDE.md, haiku-worker.md, sonnet-implementer.md)
+- 토큰 한계 프로토콜 + 자가 리뷰 사이클 추가
+- 테마 (라이트/다크), 라우터 (go_router + 바텀네비), 모델 3개
+- 화면 8개: 홈, 운동가이드, 운동기록, 커뮤니티, 식단, 수분, 캘린더, 프로필
+- Provider 6개: 운동기록, 운동DB(50+운동), 식단(30+음식), 수분, 캘린더, 커뮤니티
+- 서비스 3개: 알림, 로컬저장, 업적(19개 업적)
+- flutter analyze: 0 issues
+- 총 코드: 14,515줄
+
+**Phase 2 완료 (2026-02-24):**
+- 챌린지 시스템 (Provider + UI, 7개 프리셋, 커스텀 생성)
+- 통계 시각화 화면 (운동/체성분/영양/스트릭, fl_chart 차트 8개)
+- 온보딩 플로우 (4페이지, 기본정보+목표 입력, SharedPreferences)
+- 설정 화면 (프로필/운동/알림/앱/기타 5섹션)
+- 라우터 업데이트 (온보딩 리다이렉트, 신규 4라우트)
+- flutter analyze: 0 issues
+- 총 코드: 29파일, 20,935줄
+
+**Phase 3 완료 (2026-02-24):**
+- Before/After 사진 비교 (갤러리/비교/타임라인 3탭)
+- 휴식 타이머 (원형 CustomPainter + 진동 + 프리셋)
+- 스플래시 화면 (그라디언트 + 애니메이션 + 초기화 플로우)
+- 테스트 코드 208개 (모델/Provider/서비스/위젯)
+- flutter analyze: 0 issues, flutter test: 208 passed
+- 총: lib 32파일 24,228줄 + test 6파일 3,019줄 = 27,247줄
+
+**Phase 4 완료 (2026-02-24):**
+- 7개 화면 ↔ Provider 직접 연결 완료 (로컬 더미 데이터 제거)
+  - HomeScreen → workoutProviders, hydrationProvider, dietProvider, calendarProvider
+  - WorkoutGuideScreen → exerciseDatabaseProvider
+  - WorkoutLogScreen → workoutSessionProvider, workoutHistoryProvider
+  - DietScreen → dietProvider, foodDatabaseProvider
+  - HydrationScreen → hydrationProvider, waterTimelineProvider
+  - CommunityScreen → communityProvider, myTeamsProvider, teamPostsProvider
+  - CalendarScreen → calendarProvider, selectedDatePlansProvider
+- flutter analyze: 0 issues, flutter test: 208 passed
+
+**Phase 5 완료 (2026-02-24):**
+- LocalStorageService 초기화 수정 (main.dart에서 앱 시작 전 init() 호출)
+- 중복 라우트 제거 (standalone 라우트 3개 제거)
+- 공통 Empty/Loading/Error 위젯 생성 (core/widgets/common_states.dart)
+- 4개 화면에 Empty 상태 적용 (Calendar, Community, WorkoutLog, Diet)
+- HomeScreen 하드코딩 사용자명 제거 → SharedPreferences 온보딩 닉네임 연동
+- flutter analyze: 0 issues, flutter test: 208 passed
+- 총: lib 33파일 24,544줄
+
+**Phase 6 완료 (2026-02-24):**
+- Stats 화면 실제 데이터 연결 (하드코딩 목 데이터 전체 제거)
+  - workoutHistoryProvider → 주간 운동일수, 월간 볼륨, 부위별 비율, Top5 운동
+  - dietProvider → 주간 칼로리, 매크로 비율
+  - hydrationProvider → 주간 수분 달성률
+  - achievementService → 업적 달성 현황
+  - currentStreakProvider → 운동 스트릭
+  - Empty 상태 처리 (데이터 없을 때)
+- 챌린지-운동 데이터 자동 연동 (challenge_integration_service.dart)
+  - 운동 완료 시 → workout/volume 챌린지 진행률 자동 업데이트
+  - 식단 기록 시 → diet 챌린지 진행률 자동 업데이트
+  - 수분 목표 달성 시 → water 챌린지 진행률 자동 업데이트
+- flutter analyze: 0 issues, flutter test: 208 passed
+- 총: lib 34파일 24,832줄
+
+**Phase 7 완료 (2026-02-24):**
+- flutter_local_notifications 실제 OS 알림 구현
+  - flutter_local_notifications + timezone 패키지 설치
+  - Android 권한 설정 (POST_NOTIFICATIONS, SCHEDULE_EXACT_ALARM 등)
+  - Android 부트 리시버 등록 (재부팅 후 알림 유지)
+  - NotificationService 전면 업그레이드 (Timer 기반 → OS 알림)
+  - 수분/운동/식단/휴식 4종 리마인더 OS 알림 지원
+  - 인앱 폴백 (포그라운드 Timer) 병행 지원
+  - main.dart에서 앱 시작 시 NotificationService.init() 호출
+- 위젯 테스트 27개 추가 (5개 핵심 화면)
+  - WorkoutGuideScreen: 6개 (부위 선택, 운동 목록)
+  - DietScreen: 5개 (칼로리, 매크로)
+  - HydrationScreen: 6개 (수분 추가, 타임라인)
+  - CalendarScreen: 5개 (캘린더 렌더링)
+  - CommunityScreen: 5개 (팀, 피드)
+- flutter analyze: 0 issues, flutter test: 235 passed
+- 총: lib 34파일 24,947줄 + test 7파일 3,343줄 = 28,290줄
+
+**Phase 8 완료 (2026-02-24):**
+- Flutter l10n 인프라 구축
+  - l10n.yaml 설정 (gen_l10n)
+  - app_ko.arb: 한국어 80개 키 (기본 언어)
+  - app_en.arb: 영어 80개 키
+  - AppLocalizations 클래스 자동 생성
+  - MaterialApp에 localizationsDelegates + supportedLocales 연결
+  - intl + flutter_localizations 패키지 추가
+- flutter analyze: 0 issues, flutter test: 235 passed
+- 총: lib 37파일 26,564줄 + test 7파일 3,343줄 = 29,907줄
+
+**Phase 9 완료 (2026-02-24):**
+- 6개 화면에 AppLocalizations 적용 (하드코딩 한국어 → l10n 키)
+  - HomeScreen: ~20개 문자열 (greeting, healthyDay, headingToGoal, todayWorkout 등)
+  - WorkoutGuideScreen: ~10개 문자열 + _localizedBodyPartName() 헬퍼
+  - DietScreen: ~12개 문자열 (dietManagement, todayCalories, protein, carbs, fat 등)
+  - HydrationScreen: ~12개 문자열 (hydration, quickAdd, customInput, weeklyHydration 등)
+  - CalendarScreen: ~9개 문자열 (workoutCalendar, addPlan, exerciseName 등)
+  - CommunityScreen: ~12개 문자열 (teamCommunity, myTeams, teamFeed, createTeam 등)
+- 위젯 테스트 l10n 호환성 수정 (localizationsDelegates 추가)
+- flutter analyze: 0 issues, flutter test: 235 passed
+- 총: lib 37파일 26,629줄 + test 7파일 3,348줄 = 29,977줄
+
+**Phase 10 완료 (2026-02-24):**
+- 나머지 8개 화면에 AppLocalizations 적용 (하드코딩 한국어 → l10n 키)
+  - StatsScreen: ~100개 문자열 (운동통계, 체성분, 영양, 스트릭, 요일/월 이름)
+  - SettingsScreen: ~80개 문자열 (5섹션 전체, 다이얼로그)
+  - OnboardingScreen: ~60개 문자열 (4페이지 전체)
+  - SplashScreen: 3개 문자열
+  - ChallengeScreen: ~50개 문자열 (3탭, 생성폼, 다이얼로그)
+  - BodyProgressScreen: ~70개 문자열 (3탭, 사진 추가, 비교)
+  - RestTimerScreen: ~15개 문자열
+  - ProfileScreen: ~40개 문자열
+- ARB 키 총 280+ 개 (app_ko.arb + app_en.arb)
+- 불필요한 non-null assertion(!) 경고 수정
+- flutter analyze: 0 issues, flutter test: 235 passed
+- 총: lib 37파일 29,404줄 + test 7파일 3,348줄 = 32,752줄
+
+**Phase 11 완료 (2026-02-24):**
+- 남은 하드코딩 한국어 문자열 정리 (3개 화면 + 1 유틸)
+  - WorkoutLogScreen: ~30개 문자열 (운동 추가/완료/검색/세트 관리)
+  - HydrationScreen: ~10개 문자열 (알림 설정, 요일 이름, 목표)
+  - CommunityScreen: _timeAgo 함수 l10n 적용 (방금 전/분 전/시간 전/일 전)
+  - 헬퍼 함수 추가 (_localizedBodyPart, _dayLabel에 context 전달)
+- ARB 키 총 310+ 개 (app_ko.arb + app_en.arb)
+- flutter analyze: 0 issues, flutter test: 235 passed
+- 총: lib 37파일 29,788줄 + test 7파일 3,348줄 = 33,136줄
+
+**Phase 12 완료 (2026-02-24):**
+- 위젯 테스트 34개 추가 (7개 화면 커버리지)
+  - additional_screen_test.dart (20개): Profile(5), Settings(5), Stats(5), Challenge(5)
+  - home_workout_test.dart (14개): Onboarding(5), WorkoutLog(5), Splash(4)
+- 테스트 커버리지: 7/37 → 9/37 파일 (12개 화면 테스트 완료)
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 37파일 29,788줄 + test 9파일 3,828줄 = 33,616줄
+
+**Phase 13 완료 (2026-02-24):**
+- 자가 리뷰 사이클: 코드 품질/UX 개선
+  - app_constants.dart 생성 (하드코딩된 목표값 중앙 상수화)
+    - dailyWaterGoalMl, defaultReminderHours, dailyCalorieGoal, defaultRestTimerSeconds 등
+  - 3개 파일에서 하드코딩 2000ml/[9,12,15,18,21] → AppDefaults 상수 참조로 변경
+    - hydration_providers.dart, stats_screen.dart, diet_model.dart
+  - 홈 화면 Quick Action 버튼 실제 네비게이션 연결 (기존 빈 onTap)
+    - "운동 시작" → /workout-log, "식단 기록" → /diet, "물 마시기" → /hydration
+  - 미사용 import 정리 (home_screen.dart: common_states.dart 제거)
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 38파일 29,817줄 + test 9파일 3,828줄 = 33,645줄
+
+**다음 작업 (우선순위):**
+- Firebase 연동 (Auth, Firestore, Storage)
+- 소셜 로그인 (Google/Apple/카카오)
+- 홈화면 위젯 (iOS/Android)
+- 앱 아이콘 + Fastlane 빌드

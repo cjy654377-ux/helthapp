@@ -1,0 +1,50 @@
+name: health_app
+description: "All-in-one health & fitness app - workout guide, logging, community, diet, hydration, calendar"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Navigation
+  go_router: ^14.8.1
+
+  # UI Components
+  fl_chart: ^0.70.2
+  table_calendar: ^3.2.0
+  percent_indicator: ^4.2.3
+  cached_network_image: ^3.4.1
+
+  # Utilities
+  intl: ^0.20.2
+  uuid: ^4.5.1
+  shared_preferences: ^2.3.4
+  image_picker: ^1.1.2
+  path_provider: ^2.1.5
+  flutter_local_notifications: ^21.0.0-dev.2
+  timezone: ^0.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^2.6.3
+  build_runner: ^2.4.14
+
+flutter:
+  generate: true
+  uses-material-design: true

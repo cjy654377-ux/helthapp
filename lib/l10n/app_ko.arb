@@ -1,0 +1,1092 @@
+{
+  "@@locale": "ko",
+
+  "appTitle": "헬스 & 피트니스",
+  "@appTitle": { "description": "App title" },
+
+  "greeting": "안녕하세요, {name}님!",
+  "@greeting": { "description": "Greeting with user name", "placeholders": { "name": { "type": "String" } } },
+
+  "healthyDay": "오늘도 건강한 하루!",
+  "@healthyDay": { "description": "Motivational subtitle on home screen" },
+
+  "headingToGoal": "목표를 향해 나아가는 중!",
+  "@headingToGoal": { "description": "Motivational greeting card message" },
+
+  "todayWorkout": "오늘의 운동",
+  "@todayWorkout": { "description": "Today's workout section label" },
+
+  "completedExercises": "완료한 운동",
+  "@completedExercises": { "description": "Completed exercises label" },
+
+  "totalVolume": "총 볼륨",
+  "@totalVolume": { "description": "Total volume label" },
+
+  "hydrationIntake": "수분 섭취",
+  "@hydrationIntake": { "description": "Hydration intake label on home card" },
+
+  "calorieIntake": "칼로리 섭취",
+  "@calorieIntake": { "description": "Calorie intake label on home card" },
+
+  "goal": "목표",
+  "@goal": { "description": "Goal label" },
+
+  "consumed": "섭취",
+  "@consumed": { "description": "Consumed / intake label" },
+
+  "remaining": "남은",
+  "@remaining": { "description": "Remaining label" },
+
+  "exceeded": "초과",
+  "@exceeded": { "description": "Exceeded label" },
+
+  "kcal": "kcal",
+  "@kcal": { "description": "Kilocalories unit" },
+
+  "upcomingWorkout": "다음 예정 운동",
+  "@upcomingWorkout": { "description": "Upcoming workout section label" },
+
+  "noWorkoutPlan": "운동 계획이 없습니다",
+  "@noWorkoutPlan": { "description": "Empty state when no workout plan exists" },
+
+  "quickStart": "빠른 실행",
+  "@quickStart": { "description": "Quick actions section title" },
+
+  "startWorkout": "운동 시작",
+  "@startWorkout": { "description": "Quick action: start workout" },
+
+  "logDiet": "식단 기록",
+  "@logDiet": { "description": "Quick action: log diet" },
+
+  "drinkWater": "물 마시기",
+  "@drinkWater": { "description": "Quick action: drink water" },
+
+  "workoutGuide": "운동 가이드",
+  "@workoutGuide": { "description": "Workout guide screen title" },
+
+  "chest": "가슴",
+  "@chest": { "description": "Body part: chest" },
+
+  "back": "등",
+  "@back": { "description": "Body part: back" },
+
+  "shoulders": "어깨",
+  "@shoulders": { "description": "Body part: shoulders" },
+
+  "arms": "팔",
+  "@arms": { "description": "Body part: arms" },
+
+  "legs": "하체",
+  "@legs": { "description": "Body part: legs" },
+
+  "core": "코어",
+  "@core": { "description": "Body part: core" },
+
+  "exerciseCount": "{count}개 운동",
+  "@exerciseCount": { "description": "Number of exercises", "placeholders": { "count": { "type": "int" } } },
+
+  "bodyPartExercises": "{bodyPart} 운동",
+  "@bodyPartExercises": { "description": "Exercises for a body part", "placeholders": { "bodyPart": { "type": "String" } } },
+
+  "beginner": "초급",
+  "@beginner": { "description": "Difficulty level: beginner" },
+
+  "intermediate": "중급",
+  "@intermediate": { "description": "Difficulty level: intermediate" },
+
+  "advanced": "고급",
+  "@advanced": { "description": "Difficulty level: advanced" },
+
+  "equipment": "사용 기구",
+  "@equipment": { "description": "Equipment label" },
+
+  "description": "설명",
+  "@description": { "description": "Description label" },
+
+  "tips": "팁",
+  "@tips": { "description": "Tips label" },
+
+  "workoutLog": "운동 기록",
+  "@workoutLog": { "description": "Workout log screen title" },
+
+  "addExercise": "운동 추가",
+  "@addExercise": { "description": "Add exercise button" },
+
+  "set": "세트",
+  "@set": { "description": "Set label for workout" },
+
+  "kg": "kg",
+  "@kg": { "description": "Kilogram unit" },
+
+  "reps": "회",
+  "@reps": { "description": "Reps unit" },
+
+  "complete": "완료",
+  "@complete": { "description": "Complete / done button" },
+
+  "restTime": "휴식 시간",
+  "@restTime": { "description": "Rest time label" },
+
+  "dietManagement": "식단 관리",
+  "@dietManagement": { "description": "Diet screen title" },
+
+  "todayCalories": "오늘의 칼로리",
+  "@todayCalories": { "description": "Today's calorie section title" },
+
+  "protein": "단백질",
+  "@protein": { "description": "Protein nutrient" },
+
+  "carbs": "탄수화물",
+  "@carbs": { "description": "Carbohydrate nutrient" },
+
+  "fat": "지방",
+  "@fat": { "description": "Fat nutrient" },
+
+  "breakfast": "아침",
+  "@breakfast": { "description": "Meal type: breakfast" },
+
+  "lunch": "점심",
+  "@lunch": { "description": "Meal type: lunch" },
+
+  "dinner": "저녁",
+  "@dinner": { "description": "Meal type: dinner" },
+
+  "snack": "간식",
+  "@snack": { "description": "Meal type: snack" },
+
+  "hydration": "수분 보충",
+  "@hydration": { "description": "Hydration screen title" },
+
+  "intakeAmount": "섭취량",
+  "@intakeAmount": { "description": "Intake amount label" },
+
+  "todayIntakeLog": "오늘 섭취 기록",
+  "@todayIntakeLog": { "description": "Today's intake log section title" },
+
+  "quickAdd": "빠른 추가",
+  "@quickAdd": { "description": "Quick add section label" },
+
+  "custom": "직접",
+  "@custom": { "description": "Custom input button label" },
+
+  "customInput": "직접 입력",
+  "@customInput": { "description": "Custom input dialog title" },
+
+  "intakeAmountMl": "섭취량 (ml)",
+  "@intakeAmountMl": { "description": "Intake amount in ml field label" },
+
+  "add": "추가",
+  "@add": { "description": "Add button" },
+
+  "noRecordYet": "아직 기록이 없습니다.",
+  "@noRecordYet": { "description": "Empty state for no records" },
+
+  "weeklyHydration": "주간 수분 섭취",
+  "@weeklyHydration": { "description": "Weekly hydration chart title" },
+
+  "achievementRate": "달성률",
+  "@achievementRate": { "description": "Achievement rate label" },
+
+  "workoutCalendar": "운동 캘린더",
+  "@workoutCalendar": { "description": "Calendar screen title" },
+
+  "addPlan": "계획 추가",
+  "@addPlan": { "description": "Add plan button" },
+
+  "addPlanForDate": "{month}월 {day}일 운동 계획 추가",
+  "@addPlanForDate": { "description": "Add workout plan for a specific date", "placeholders": { "month": { "type": "int" }, "day": { "type": "int" } } },
+
+  "exerciseName": "운동 이름",
+  "@exerciseName": { "description": "Exercise name field label" },
+
+  "exerciseNameHint": "예: 가슴 & 삼두 운동",
+  "@exerciseNameHint": { "description": "Exercise name hint text" },
+
+  "bodyParts": "신체 부위",
+  "@bodyParts": { "description": "Body parts label" },
+
+  "splitTemplate": "스플릿 템플릿",
+  "@splitTemplate": { "description": "Split template label" },
+
+  "addPlanAction": "추가하기",
+  "@addPlanAction": { "description": "Add plan action button" },
+
+  "addWorkoutPlanSubtitle": "이 날짜에 운동 계획을 추가해보세요",
+  "@addWorkoutPlanSubtitle": { "description": "Empty state subtitle for calendar" },
+
+  "teamCommunity": "팀 커뮤니티",
+  "@teamCommunity": { "description": "Community screen title" },
+
+  "myTeams": "내 팀",
+  "@myTeams": { "description": "My teams section label" },
+
+  "teamFeed": "팀 피드",
+  "@teamFeed": { "description": "Team feed section label" },
+
+  "createTeam": "팀 만들기",
+  "@createTeam": { "description": "Create team FAB label" },
+
+  "createNewTeam": "새 팀 만들기",
+  "@createNewTeam": { "description": "Create new team dialog title" },
+
+  "teamNameHint": "팀 이름을 입력하세요",
+  "@teamNameHint": { "description": "Team name input hint" },
+
+  "teamDescHint": "팀 설명 (선택)",
+  "@teamDescHint": { "description": "Team description input hint" },
+
+  "createTeamAction": "팀 생성",
+  "@createTeamAction": { "description": "Create team button" },
+
+  "joinTeam": "팀 가입",
+  "@joinTeam": { "description": "Join team button" },
+
+  "noPostsYet": "아직 게시물이 없습니다",
+  "@noPostsYet": { "description": "Empty state for no posts" },
+
+  "writeFirstPost": "첫 번째 게시물을 작성해보세요",
+  "@writeFirstPost": { "description": "Empty state subtitle for no posts" },
+
+  "noTeamsYet": "아직 팀이 없습니다",
+  "@noTeamsYet": { "description": "Empty state for no teams" },
+
+  "joinOrCreateTeam": "팀에 참여하거나 새 팀을 만들어보세요",
+  "@joinOrCreateTeam": { "description": "Empty state subtitle for no teams" },
+
+  "statsAndProgress": "통계 & 진척도",
+  "@statsAndProgress": { "description": "Stats screen title" },
+
+  "workoutStats": "운동 통계",
+  "@workoutStats": { "description": "Workout stats section" },
+
+  "bodyComposition": "체성분 변화",
+  "@bodyComposition": { "description": "Body composition section" },
+
+  "nutritionStats": "영양 통계",
+  "@nutritionStats": { "description": "Nutrition stats section" },
+
+  "streakAndAchievements": "스트릭 & 업적",
+  "@streakAndAchievements": { "description": "Streak and achievements section" },
+
+  "profile": "프로필",
+  "@profile": { "description": "Profile screen title" },
+
+  "settings": "설정",
+  "@settings": { "description": "Settings label" },
+
+  "myRecord": "내 기록",
+  "@myRecord": { "description": "My record section label" },
+
+  "totalWorkoutDays": "총 운동일",
+  "@totalWorkoutDays": { "description": "Total workout days label" },
+
+  "consecutiveStreak": "연속 스트릭",
+  "@consecutiveStreak": { "description": "Consecutive streak label" },
+
+  "weightChange": "체중 변화",
+  "@weightChange": { "description": "Weight change section title" },
+
+  "cancel": "취소",
+  "@cancel": { "description": "Cancel button" },
+
+  "save": "저장",
+  "@save": { "description": "Save button" },
+
+  "confirm": "확인",
+  "@confirm": { "description": "Confirm button" },
+
+  "delete": "삭제",
+  "@delete": { "description": "Delete button" },
+
+  "close": "닫기",
+  "@close": { "description": "Close button" },
+
+  "retry": "다시 시도",
+  "@retry": { "description": "Retry button" },
+
+  "noData": "데이터가 없습니다",
+  "@noData": { "description": "No data available message" },
+
+  "notificationSettings": "알림 설정",
+  "@notificationSettings": { "description": "Notification settings dialog title" },
+
+  "setHydrationReminder": "수분 섭취 알림을 설정하세요.",
+  "@setHydrationReminder": { "description": "Hydration reminder instruction" },
+
+  "everyOneHour": "1시간마다",
+  "@everyOneHour": { "description": "Reminder interval: every 1 hour" },
+
+  "everyTwoHours": "2시간마다",
+  "@everyTwoHours": { "description": "Reminder interval: every 2 hours" },
+
+  "everyThreeHours": "3시간마다",
+  "@everyThreeHours": { "description": "Reminder interval: every 3 hours" },
+
+  "reminderSet": "{interval} 알림이 설정되었습니다.",
+  "@reminderSet": { "description": "Reminder set confirmation", "placeholders": { "interval": { "type": "String" } } },
+
+  "challenge": "챌린지",
+  "@challenge": { "description": "Challenge screen title" },
+
+  "user": "사용자",
+  "@user": { "description": "Default user name" },
+
+  "today": "오늘",
+  "@today": { "description": "Today label" },
+
+  "personalInfoEdit": "개인 정보 수정",
+  "@personalInfoEdit": { "description": "Edit personal info setting" },
+
+  "targetWeightSetting": "목표 체중 설정",
+  "@targetWeightSetting": { "description": "Target weight setting" },
+
+  "shareWithFriends": "친구에게 공유",
+  "@shareWithFriends": { "description": "Share with friends setting" },
+
+  "privacyPolicy": "개인 정보 보호 정책",
+  "@privacyPolicy": { "description": "Privacy policy setting" },
+
+  "helpAndSupport": "도움말 및 지원",
+  "@helpAndSupport": { "description": "Help and support setting" },
+
+  "logout": "로그아웃",
+  "@logout": { "description": "Logout setting" },
+
+  "startedWorkoutOn": "{date}부터 운동 시작",
+  "@startedWorkoutOn": { "description": "Profile started date", "placeholders": { "date": { "type": "String" } } },
+
+  "tapToAdd": "탭하여 추가",
+  "@tapToAdd": { "description": "Tap to add photo label" },
+
+  "addPhoto": "사진 추가",
+  "@addPhoto": { "description": "Add photo button label" },
+
+  "noWorkoutData": "운동 기록이 없습니다",
+  "@noWorkoutData": { "description": "Empty state for workout stats" },
+
+  "startWorkoutForStats": "운동을 시작하면 여기에 통계가 표시됩니다",
+  "@startWorkoutForStats": { "description": "Empty state subtitle for workout stats" },
+
+  "weeklyWorkoutDays": "주간 운동 일수",
+  "@weeklyWorkoutDays": { "description": "Weekly workout days chart title" },
+
+  "days": "일",
+  "@days": { "description": "Days unit" },
+
+  "monthlyTotalVolume": "월간 총 볼륨",
+  "@monthlyTotalVolume": { "description": "Monthly total volume chart title" },
+
+  "muscleGroupRatio": "부위별 운동 비율",
+  "@muscleGroupRatio": { "description": "Muscle group ratio chart title" },
+
+  "topExercises": "가장 많이 한 운동 Top 5",
+  "@topExercises": { "description": "Top 5 most performed exercises" },
+
+  "times": "회",
+  "@times": { "description": "Times/count unit" },
+
+  "noWeightData": "체중 기록이 없습니다",
+  "@noWeightData": { "description": "Empty state for weight data" },
+
+  "recordWeightForStats": "체중을 기록하면 변화 추이를 확인할 수 있습니다",
+  "@recordWeightForStats": { "description": "Empty state subtitle for weight data" },
+
+  "addWeightRecord": "체중 기록 추가",
+  "@addWeightRecord": { "description": "Add weight record button" },
+
+  "weightKg": "체중 (kg)",
+  "@weightKg": { "description": "Weight in kg field label" },
+
+  "bodyFatPercent": "체지방률 (%)",
+  "@bodyFatPercent": { "description": "Body fat percentage field label" },
+
+  "muscleMassKg": "골격근량 (kg)",
+  "@muscleMassKg": { "description": "Skeletal muscle mass field label" },
+
+  "bodyCompSummary": "체성분 요약",
+  "@bodyCompSummary": { "description": "Body composition summary title" },
+
+  "currentWeight": "현재 체중",
+  "@currentWeight": { "description": "Current weight label" },
+
+  "goalAchievement": "목표 달성률",
+  "@goalAchievement": { "description": "Goal achievement rate label" },
+
+  "noNutritionData": "영양 기록이 없습니다",
+  "@noNutritionData": { "description": "Empty state for nutrition data" },
+
+  "recordDietForStats": "식단을 기록하면 영양 통계를 확인할 수 있습니다",
+  "@recordDietForStats": { "description": "Empty state subtitle for nutrition stats" },
+
+  "weeklyCalorieIntake": "주간 칼로리 섭취",
+  "@weeklyCalorieIntake": { "description": "Weekly calorie intake chart title" },
+
+  "todayMacroRatio": "오늘 매크로 비율",
+  "@todayMacroRatio": { "description": "Today macro ratio chart title" },
+
+  "hydrationAchievementRate": "수분 섭취 달성률",
+  "@hydrationAchievementRate": { "description": "Hydration achievement rate chart title" },
+
+  "currentConsecutiveDays": "현재 연속 운동일",
+  "@currentConsecutiveDays": { "description": "Current consecutive workout days" },
+
+  "longestStreak": "최장 스트릭 기록",
+  "@longestStreak": { "description": "Longest streak record" },
+
+  "overallAchievementRate": "전체 업적 달성률",
+  "@overallAchievementRate": { "description": "Overall achievement rate" },
+
+  "avgWorkoutTime": "평균 운동 시간",
+  "@avgWorkoutTime": { "description": "Average workout time" },
+
+  "minutes": "분",
+  "@minutes": { "description": "Minutes unit" },
+
+  "mon": "월",
+  "@mon": { "description": "Monday abbreviation" },
+
+  "tue": "화",
+  "@tue": { "description": "Tuesday abbreviation" },
+
+  "wed": "수",
+  "@wed": { "description": "Wednesday abbreviation" },
+
+  "thu": "목",
+  "@thu": { "description": "Thursday abbreviation" },
+
+  "fri": "금",
+  "@fri": { "description": "Friday abbreviation" },
+
+  "sat": "토",
+  "@sat": { "description": "Saturday abbreviation" },
+
+  "sun": "일",
+  "@sun": { "description": "Sunday abbreviation" },
+
+  "jan": "1월",
+  "@jan": { "description": "January" },
+
+  "feb": "2월",
+  "@feb": { "description": "February" },
+
+  "mar": "3월",
+  "@mar": { "description": "March" },
+
+  "apr": "4월",
+  "@apr": { "description": "April" },
+
+  "may": "5월",
+  "@may": { "description": "May" },
+
+  "jun": "6월",
+  "@jun": { "description": "June" },
+
+  "jul": "7월",
+  "@jul": { "description": "July" },
+
+  "aug": "8월",
+  "@aug": { "description": "August" },
+
+  "sep": "9월",
+  "@sep": { "description": "September" },
+
+  "oct": "10월",
+  "@oct": { "description": "October" },
+
+  "nov": "11월",
+  "@nov": { "description": "November" },
+
+  "dec": "12월",
+  "@dec": { "description": "December" },
+
+  "profilePhoto": "프로필 사진",
+  "@profilePhoto": { "description": "Profile photo label" },
+
+  "tapToChange": "탭하여 변경",
+  "@tapToChange": { "description": "Tap to change label" },
+
+  "nickname": "닉네임",
+  "@nickname": { "description": "Nickname label" },
+
+  "noNickname": "닉네임 없음",
+  "@noNickname": { "description": "No nickname placeholder" },
+
+  "gender": "성별",
+  "@gender": { "description": "Gender label" },
+
+  "male": "남성",
+  "@male": { "description": "Male" },
+
+  "female": "여성",
+  "@female": { "description": "Female" },
+
+  "other": "기타",
+  "@other": { "description": "Other gender" },
+
+  "height": "키",
+  "@height": { "description": "Height label" },
+
+  "weight": "몸무게",
+  "@weight": { "description": "Body weight label" },
+
+  "cm": "cm",
+  "@cm": { "description": "Centimeters unit" },
+
+  "workoutSettings": "운동 설정",
+  "@workoutSettings": { "description": "Workout settings section" },
+
+  "defaultRestTime": "기본 휴식 시간",
+  "@defaultRestTime": { "description": "Default rest time setting" },
+
+  "weightUnit": "무게 단위",
+  "@weightUnit": { "description": "Weight unit setting" },
+
+  "defaultSplit": "기본 운동 스플릿",
+  "@defaultSplit": { "description": "Default workout split setting" },
+
+  "workoutReminder": "운동 알림",
+  "@workoutReminder": { "description": "Workout reminder setting" },
+
+  "hydrationReminder": "수분 알림",
+  "@hydrationReminder": { "description": "Hydration reminder setting" },
+
+  "mealReminder": "식단 알림",
+  "@mealReminder": { "description": "Meal reminder setting" },
+
+  "breakfastLunchDinnerReminder": "아침/점심/저녁 식단 알림",
+  "@breakfastLunchDinnerReminder": { "description": "Breakfast/lunch/dinner reminder" },
+
+  "appSettings": "앱 설정",
+  "@appSettings": { "description": "App settings section" },
+
+  "darkMode": "다크 모드",
+  "@darkMode": { "description": "Dark mode setting" },
+
+  "systemMode": "시스템",
+  "@systemMode": { "description": "System mode option" },
+
+  "lightMode": "라이트",
+  "@lightMode": { "description": "Light mode option" },
+
+  "darkModeOption": "다크",
+  "@darkModeOption": { "description": "Dark mode option" },
+
+  "language": "언어",
+  "@language": { "description": "Language setting" },
+
+  "korean": "한국어",
+  "@korean": { "description": "Korean language" },
+
+  "english": "영어",
+  "@english": { "description": "English language" },
+
+  "dataManagement": "데이터 관리",
+  "@dataManagement": { "description": "Data management section" },
+
+  "backupData": "데이터 백업",
+  "@backupData": { "description": "Backup data button" },
+
+  "restoreData": "데이터 복원",
+  "@restoreData": { "description": "Restore data button" },
+
+  "deleteAllData": "모든 데이터 삭제",
+  "@deleteAllData": { "description": "Delete all data button" },
+
+  "misc": "기타",
+  "@misc": { "description": "Misc settings section" },
+
+  "appVersion": "앱 버전",
+  "@appVersion": { "description": "App version label" },
+
+  "termsOfService": "이용약관",
+  "@termsOfService": { "description": "Terms of service setting" },
+
+  "openSourceLicenses": "오픈소스 라이선스",
+  "@openSourceLicenses": { "description": "Open source licenses setting" },
+
+  "seconds": "초",
+  "@seconds": { "description": "Seconds unit" },
+
+  "secondsUnit": "{count}초",
+  "@secondsUnit": { "description": "Seconds with count", "placeholders": { "count": { "type": "int" } } },
+
+  "minutesUnit": "{count}분",
+  "@minutesUnit": { "description": "Minutes with count", "placeholders": { "count": { "type": "int" } } },
+
+  "skip": "건너뛰기",
+  "@skip": { "description": "Skip button" },
+
+  "yourHealthPartner": "당신만의 건강 파트너",
+  "@yourHealthPartner": { "description": "Onboarding title" },
+
+  "allInOneApp": "운동, 식단, 커뮤니티를 하나의 앱에서",
+  "@allInOneApp": { "description": "Onboarding subtitle" },
+
+  "getStarted": "시작하기",
+  "@getStarted": { "description": "Get started button" },
+
+  "basicInfoInput": "기본 정보 입력",
+  "@basicInfoInput": { "description": "Basic info input page title" },
+
+  "tellUsAboutYou": "건강 목표에 맞춤 서비스를 제공하기 위해 기본 정보를 알려주세요.",
+  "@tellUsAboutYou": { "description": "Basic info page subtitle" },
+
+  "nicknameHint": "닉네임을 입력하세요",
+  "@nicknameHint": { "description": "Nickname input hint" },
+
+  "selectGender": "성별 선택",
+  "@selectGender": { "description": "Select gender label" },
+
+  "heightCm": "키 (cm)",
+  "@heightCm": { "description": "Height in cm label" },
+
+  "weightKgField": "몸무게 (kg)",
+  "@weightKgField": { "description": "Weight in kg field label" },
+
+  "next": "다음",
+  "@next": { "description": "Next button" },
+
+  "goalSetting": "목표 설정",
+  "@goalSetting": { "description": "Goal setting page title" },
+
+  "setGoalsForYou": "맞춤 추천을 위해 목표를 설정해주세요.",
+  "@setGoalsForYou": { "description": "Goal setting subtitle" },
+
+  "fitnessLevel": "운동 수준",
+  "@fitnessLevel": { "description": "Fitness level label" },
+
+  "beginnerLevel": "초보자",
+  "@beginnerLevel": { "description": "Beginner fitness level" },
+
+  "intermediateLevel": "중급자",
+  "@intermediateLevel": { "description": "Intermediate fitness level" },
+
+  "advancedLevel": "고급자",
+  "@advancedLevel": { "description": "Advanced fitness level" },
+
+  "mainGoal": "주요 목표",
+  "@mainGoal": { "description": "Main goal label" },
+
+  "strengthGain": "근력 증가",
+  "@strengthGain": { "description": "Strength gain goal" },
+
+  "weightLoss": "체중 감량",
+  "@weightLoss": { "description": "Weight loss goal" },
+
+  "enduranceImprove": "체력 향상",
+  "@enduranceImprove": { "description": "Endurance improvement goal" },
+
+  "flexibilityImprove": "유연성 향상",
+  "@flexibilityImprove": { "description": "Flexibility improvement goal" },
+
+  "healthMaintain": "건강 유지",
+  "@healthMaintain": { "description": "Health maintenance goal" },
+
+  "weeklyWorkoutGoal": "주간 운동 횟수 목표",
+  "@weeklyWorkoutGoal": { "description": "Weekly workout count goal" },
+
+  "timesPerWeek": "회/주",
+  "@timesPerWeek": { "description": "Times per week unit" },
+
+  "dailyCalorieGoal": "일일 칼로리 목표",
+  "@dailyCalorieGoal": { "description": "Daily calorie goal" },
+
+  "dailyWaterGoal": "일일 수분 목표",
+  "@dailyWaterGoal": { "description": "Daily water goal" },
+
+  "ml": "ml",
+  "@ml": { "description": "Milliliters unit" },
+
+  "allReady": "준비 완료!",
+  "@allReady": { "description": "Onboarding completion title" },
+
+  "allSetMessage": "모든 설정이 완료되었습니다.\n지금 바로 건강한 라이프스타일을 시작하세요!",
+  "@allSetMessage": { "description": "Onboarding completion message" },
+
+  "startNow": "시작하기",
+  "@startNow": { "description": "Start now button" },
+
+  "healthyLifestyleStart": "건강한 라이프스타일의 시작",
+  "@healthyLifestyleStart": { "description": "Splash screen subtitle" },
+
+  "loading": "로딩 중...",
+  "@loading": { "description": "Loading indicator text" },
+
+  "participating": "참여중",
+  "@participating": { "description": "Active challenges tab" },
+
+  "completed": "완료",
+  "@completed": { "description": "Completed tab" },
+
+  "discover": "찾기",
+  "@discover": { "description": "Discover tab" },
+
+  "createChallenge": "챌린지 만들기",
+  "@createChallenge": { "description": "Create challenge button" },
+
+  "noChallengesYet": "참여 중인 챌린지가 없어요",
+  "@noChallengesYet": { "description": "Empty state for no active challenges" },
+
+  "findChallengeToJoin": "새로운 챌린지를 찾아 참여해보세요!",
+  "@findChallengeToJoin": { "description": "Empty state subtitle for challenges" },
+
+  "noCompletedChallenges": "완료한 챌린지가 없습니다",
+  "@noCompletedChallenges": { "description": "Empty state for no completed challenges" },
+
+  "completeChallengesForBadges": "챌린지를 완료하고 뱃지를 모아보세요!",
+  "@completeChallengesForBadges": { "description": "Empty state subtitle for completed challenges" },
+
+  "personalChallenge": "개인 챌린지",
+  "@personalChallenge": { "description": "Personal challenge type" },
+
+  "teamChallenge": "팀 챌린지",
+  "@teamChallenge": { "description": "Team challenge type" },
+
+  "addProgress": "진행상황 추가",
+  "@addProgress": { "description": "Add progress button" },
+
+  "leaveChallenge": "챌린지 탈퇴",
+  "@leaveChallenge": { "description": "Leave challenge button" },
+
+  "dueToday": "오늘 마감",
+  "@dueToday": { "description": "Due today label" },
+
+  "daysLeft": "{count}일 남음",
+  "@daysLeft": { "description": "Days left label", "placeholders": { "count": { "type": "int" } } },
+
+  "participants": "{count}명 참가",
+  "@participants": { "description": "Participants count", "placeholders": { "count": { "type": "int" } } },
+
+  "challengeName": "챌린지 이름",
+  "@challengeName": { "description": "Challenge name field" },
+
+  "challengeNameHint": "예: 30일 스쿼트 챌린지",
+  "@challengeNameHint": { "description": "Challenge name hint" },
+
+  "challengeDescription": "챌린지 설명",
+  "@challengeDescription": { "description": "Challenge description field" },
+
+  "challengeDescHint": "챌린지에 대한 설명을 입력하세요",
+  "@challengeDescHint": { "description": "Challenge description hint" },
+
+  "challengeType": "챌린지 유형",
+  "@challengeType": { "description": "Challenge type field" },
+
+  "targetValue": "목표값",
+  "@targetValue": { "description": "Target value field" },
+
+  "duration": "기간",
+  "@duration": { "description": "Duration field" },
+
+  "oneWeek": "1주",
+  "@oneWeek": { "description": "1 week duration" },
+
+  "twoWeeks": "2주",
+  "@twoWeeks": { "description": "2 weeks duration" },
+
+  "oneMonth": "1개월",
+  "@oneMonth": { "description": "1 month duration" },
+
+  "scope": "범위",
+  "@scope": { "description": "Challenge scope" },
+
+  "startChallenge": "챌린지 시작하기",
+  "@startChallenge": { "description": "Start challenge button" },
+
+  "joinChallenge": "참여하기",
+  "@joinChallenge": { "description": "Join challenge button" },
+
+  "bodyProgress": "바디 프로그레스",
+  "@bodyProgress": { "description": "Body progress screen title" },
+
+  "photoGallery": "사진 갤러리",
+  "@photoGallery": { "description": "Photo gallery tab" },
+
+  "beforeAfter": "Before/After",
+  "@beforeAfter": { "description": "Before/after comparison tab" },
+
+  "timeline": "타임라인",
+  "@timeline": { "description": "Timeline tab" },
+
+  "front": "앞모습",
+  "@front": { "description": "Front pose" },
+
+  "side": "옆모습",
+  "@side": { "description": "Side pose" },
+
+  "backPose": "뒷모습",
+  "@backPose": { "description": "Back pose" },
+
+  "deletePhoto": "사진 삭제",
+  "@deletePhoto": { "description": "Delete photo button" },
+
+  "deletePhotoConfirm": "이 사진을 삭제하시겠습니까?",
+  "@deletePhotoConfirm": { "description": "Delete photo confirmation" },
+
+  "overlayCompare": "오버레이 비교",
+  "@overlayCompare": { "description": "Overlay comparison button" },
+
+  "changeSummary": "변화 요약",
+  "@changeSummary": { "description": "Change summary title" },
+
+  "addProgressPhoto": "진행 사진 추가",
+  "@addProgressPhoto": { "description": "Add progress photo button" },
+
+  "selectPose": "포즈 선택",
+  "@selectPose": { "description": "Select pose label" },
+
+  "weightOptional": "체중 (선택)",
+  "@weightOptional": { "description": "Optional weight field" },
+
+  "bodyFatOptional": "체지방률 (선택)",
+  "@bodyFatOptional": { "description": "Optional body fat field" },
+
+  "memoOptional": "메모 (선택)",
+  "@memoOptional": { "description": "Optional memo field" },
+
+  "pleaseAddPhoto": "사진을 추가해주세요",
+  "@pleaseAddPhoto": { "description": "Please add photo message" },
+
+  "selectFromGallery": "갤러리에서 선택",
+  "@selectFromGallery": { "description": "Select from gallery button" },
+
+  "takePhoto": "사진 촬영",
+  "@takePhoto": { "description": "Take photo button" },
+
+  "noPhotosYet": "사진이 없습니다",
+  "@noPhotosYet": { "description": "Empty state for no photos" },
+
+  "addFirstPhoto": "첫 번째 진행 사진을 추가해보세요",
+  "@addFirstPhoto": { "description": "Empty state subtitle for no photos" },
+
+  "needTwoPhotos": "비교하려면 2장 이상의 사진이 필요합니다",
+  "@needTwoPhotos": { "description": "Need at least 2 photos for comparison" },
+
+  "restTimer": "휴식 타이머",
+  "@restTimer": { "description": "Rest timer screen title" },
+
+  "timerDone": "완료!",
+  "@timerDone": { "description": "Timer done label" },
+
+  "inProgress": "진행 중",
+  "@inProgress": { "description": "In progress label" },
+
+  "paused": "일시정지",
+  "@paused": { "description": "Paused label" },
+
+  "minus15sec": "-15초",
+  "@minus15sec": { "description": "Subtract 15 seconds" },
+
+  "plus15sec": "+15초",
+  "@plus15sec": { "description": "Add 15 seconds" },
+
+  "reset": "리셋",
+  "@reset": { "description": "Reset button" },
+
+  "start": "시작",
+  "@start": { "description": "Start button" },
+
+  "skipTimer": "건너뛰기",
+  "@skipTimer": { "description": "Skip timer button" },
+
+  "nextSet": "다음 세트:",
+  "@nextSet": { "description": "Next set label" },
+
+  "previousSet": "이전 세트:",
+  "@previousSet": { "description": "Previous set label" },
+
+  "presetTimes": "프리셋",
+  "@presetTimes": { "description": "Preset times label" },
+
+  "totalVolumeKg": "총 볼륨",
+  "@totalVolumeKg": { "description": "Total volume in profile" },
+
+  "beforeAfterPhoto": "Before / After",
+  "@beforeAfterPhoto": { "description": "Before/after photo section in profile" },
+
+  "workoutStatsMenu": "운동 통계",
+  "@workoutStatsMenu": { "description": "Workout stats menu item in profile" },
+
+  "noWeightRecords": "체중 기록이 없습니다",
+  "@noWeightRecords": { "description": "No weight records message" },
+
+  "editNickname": "닉네임 수정",
+  "@editNickname": { "description": "Edit nickname dialog title" },
+
+  "enterNickname": "닉네임을 입력하세요",
+  "@enterNickname": { "description": "Nickname input hint in dialog" },
+
+  "soloChallenge": "나 혼자 도전하는 챌린지",
+  "@soloChallenge": { "description": "Solo challenge subtitle" },
+
+  "teamChallengeSubtitle": "팀원과 함께 도전하는 챌린지",
+  "@teamChallengeSubtitle": { "description": "Team challenge subtitle" },
+
+  "allChallengesJoined": "모든 챌린지에 참여 중입니다!",
+  "@allChallengesJoined": { "description": "All challenges joined" },
+
+  "createCustomChallenge": "위 버튼으로 커스텀 챌린지를 만들어 보세요.",
+  "@createCustomChallenge": { "description": "Create custom challenge hint" },
+
+  "leaveConfirmMessage": "'{title}'에서 탈퇴하시겠습니까?",
+  "@leaveConfirmMessage": { "description": "Leave challenge confirmation", "placeholders": { "title": { "type": "String" } } },
+
+  "addValueLabel": "추가할 값",
+  "@addValueLabel": { "description": "Add value input label" },
+
+  "achieved": "달성",
+  "@achieved": { "description": "Achievement status" },
+
+  "periodEnded": "기간 종료",
+  "@periodEnded": { "description": "Period ended status" },
+
+  "percentAchievedEnd": "% 달성 · {date} 종료",
+  "@percentAchievedEnd": { "description": "Percent achieved and end date", "placeholders": { "date": { "type": "String" } } },
+
+  "daysCount": "{count}일",
+  "@daysCount": { "description": "Days with count", "placeholders": { "count": { "type": "int" } } },
+
+  "goalWithValue": "목표: {value} {unit}",
+  "@goalWithValue": { "description": "Goal with value and unit", "placeholders": { "value": { "type": "String" }, "unit": { "type": "String" } } },
+
+  "challengeJoinedMessage": "'{title}' 챌린지에 참가했습니다!",
+  "@challengeJoinedMessage": { "description": "Challenge joined snackbar", "placeholders": { "title": { "type": "String" } } },
+
+  "enterNameValidation": "이름을 입력하세요",
+  "@enterNameValidation": { "description": "Name validation error" },
+
+  "enterTargetValidation": "목표값을 입력하세요",
+  "@enterTargetValidation": { "description": "Target validation error" },
+
+  "enterValidNumber": "유효한 숫자를 입력하세요",
+  "@enterValidNumber": { "description": "Valid number validation error" },
+
+  "startDateLabel": "시작일",
+  "@startDateLabel": { "description": "Start date label" },
+
+  "endDateLabel": "종료일",
+  "@endDateLabel": { "description": "End date label" },
+
+  "endDateMustBeAfterStart": "종료일은 시작일 이후여야 합니다.",
+  "@endDateMustBeAfterStart": { "description": "End date validation error" },
+
+  "challengeCreatedMessage": "'{title}' 챌린지가 생성되었습니다!",
+  "@challengeCreatedMessage": { "description": "Challenge created snackbar", "placeholders": { "title": { "type": "String" } } },
+
+  "selectDate": "날짜 선택",
+  "@selectDate": { "description": "Select date label" },
+
+  "slideToCompare": "슬라이더를 움직여 비교",
+  "@slideToCompare": { "description": "Slide to compare hint" },
+
+  "selectAbove": "위에서 선택하세요",
+  "@selectAbove": { "description": "Select above hint" },
+
+  "bodyFatChange": "체지방 변화",
+  "@bodyFatChange": { "description": "Body fat change label" },
+
+  "poseLabel": "포즈",
+  "@poseLabel": { "description": "Pose label" },
+
+  "bodyWeightLabel": "체중",
+  "@bodyWeightLabel": { "description": "Body weight label" },
+
+  "bodyFatLabel": "체지방",
+  "@bodyFatLabel": { "description": "Body fat label" },
+
+  "memoLabel": "메모",
+  "@memoLabel": { "description": "Memo label" },
+
+  "saving": "저장 중...",
+  "@saving": { "description": "Saving indicator" },
+
+  "conditionHint": "오늘의 컨디션, 식단 등을 기록해보세요",
+  "@conditionHint": { "description": "Condition memo hint" },
+
+  "steps": "걸음",
+  "@steps": { "description": "Steps unit" },
+
+  "todayWorkoutTitle": "오늘의 운동",
+  "@todayWorkoutTitle": { "description": "Today's workout title in workout log" },
+
+  "addExercisePrompt": "운동을 추가해 보세요!",
+  "@addExercisePrompt": { "description": "Empty state title for workout log" },
+
+  "addExerciseSubtitle": "아래 버튼을 눌러 오늘의 운동을 기록하세요.",
+  "@addExerciseSubtitle": { "description": "Empty state subtitle for workout log" },
+
+  "workoutComplete": "운동 완료",
+  "@workoutComplete": { "description": "Workout complete dialog title" },
+
+  "completeWorkoutConfirm": "오늘의 운동을 완료하시겠습니까?",
+  "@completeWorkoutConfirm": { "description": "Workout complete confirmation" },
+
+  "searchExercise": "운동 검색",
+  "@searchExercise": { "description": "Exercise search hint" },
+
+  "all": "전체",
+  "@all": { "description": "All filter label" },
+
+  "compound": "복합",
+  "@compound": { "description": "Compound exercise type" },
+
+  "noSearchResults": "검색 결과가 없습니다.",
+  "@noSearchResults": { "description": "No search results message" },
+
+  "totalVolumeLabel": "총 볼륨: ",
+  "@totalVolumeLabel": { "description": "Total volume label with colon" },
+
+  "restTimerLabel": "휴식 타이머: ",
+  "@restTimerLabel": { "description": "Rest timer label with colon" },
+
+  "volumeLabel": "볼륨",
+  "@volumeLabel": { "description": "Volume label" },
+
+  "deleteExercise": "운동 삭제",
+  "@deleteExercise": { "description": "Delete exercise button" },
+
+  "setHeader": "세트",
+  "@setHeader": { "description": "Set column header" },
+
+  "weightKgHeader": "무게 (kg)",
+  "@weightKgHeader": { "description": "Weight column header" },
+
+  "repsHeader": "횟수",
+  "@repsHeader": { "description": "Reps column header" },
+
+  "completedHeader": "완료",
+  "@completedHeader": { "description": "Completed column header" },
+
+  "addSet": "세트 추가",
+  "@addSet": { "description": "Add set button" },
+
+  "rest": "휴식",
+  "@rest": { "description": "Rest label" },
+
+  "workoutDone": "운동 완료!",
+  "@workoutDone": { "description": "Workout done celebration title" },
+
+  "greatJobToday": "오늘도 수고하셨습니다!",
+  "@greatJobToday": { "description": "Great job message" },
+
+  "justNow": "방금 전",
+  "@justNow": { "description": "Time ago: just now" },
+
+  "minutesAgo": "{count}분 전",
+  "@minutesAgo": { "description": "Minutes ago", "placeholders": { "count": { "type": "int" } } },
+
+  "hoursAgo": "{count}시간 전",
+  "@hoursAgo": { "description": "Hours ago", "placeholders": { "count": { "type": "int" } } },
+
+  "daysAgo": "{count}일 전",
+  "@daysAgo": { "description": "Days ago", "placeholders": { "count": { "type": "int" } } },
+
+  "cannotLoadData": "데이터를 불러올 수 없습니다.",
+  "@cannotLoadData": { "description": "Cannot load data error" },
+
+  "goalWithMl": "목표 {amount}ml",
+  "@goalWithMl": { "description": "Goal with ml amount", "placeholders": { "amount": { "type": "int" } } },
+
+  "volumeInfo": "볼륨: {value} kg",
+  "@volumeInfo": { "description": "Volume info text", "placeholders": { "value": { "type": "String" } } }
+}
