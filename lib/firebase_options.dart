@@ -49,11 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // TODO: flutterfire configure 실행 후 실제 값으로 교체
-  // 현재는 kofilter-f28d8 프로젝트 기반 플레이스홀더
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB4Nz81Ej5Ai0L6R02QfcDnF1wv4JtRfyk',
-    appId: '1:442733554069:android:PLACEHOLDER_HEALTH_APP',
+    appId: '1:442733554069:android:de765f30440a7be16b2e9c',
     messagingSenderId: '442733554069',
     projectId: 'kofilter-f28d8',
     storageBucket: 'kofilter-f28d8.firebasestorage.app',
@@ -61,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCwH38YyxFHNGKsN6Whdg4QuOXD9Zic5Us',
-    appId: '1:442733554069:ios:PLACEHOLDER_HEALTH_APP',
+    appId: '1:442733554069:ios:7e1c1525e55d1f896b2e9c',
     messagingSenderId: '442733554069',
     projectId: 'kofilter-f28d8',
     storageBucket: 'kofilter-f28d8.firebasestorage.app',

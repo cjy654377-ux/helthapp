@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:442733554069:android:PLACEHOLDER_HEALTH_APP",
+        "mobilesdk_app_id": "1:442733554069:android:de765f30440a7be16b2e9c",
         "android_client_info": {
           "package_name": "com.rhythmicaleskimo.health_app"
         }
