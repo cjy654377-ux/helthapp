@@ -262,9 +262,24 @@ challenges/{id}/ → participants/
 
 **Firebase 연동 전체 완료 (Phase 0~4)**
 
+**Provider-Repository 배선 완료 (2026-02-25):**
+- 6개 feature provider 모두 Repository 주입으로 전환 완료
+  - workout, diet, hydration, calendar, community, challenge
+- 인증 상태에 따라 Local/Firestore 자동 전환
+- test/helpers/test_overrides.dart: 테스트에서 Local repo 강제 사용
+- flutter analyze: 0 issues, flutter test: 269 passed
+
+**자가 리뷰 사이클 1차 완료 (2026-02-25):**
+- currentUserProvider 이름 충돌 해결 (community → communityCurrentUserProvider)
+- body_progress_screen 커스텀 regex JSON 파서 → dart:convert 교체
+- 6개 provider 레거시 메서드명 정리 (_loadFromPrefs → _load)
+- flutter analyze: 0 issues, flutter test: 269 passed
+
 **다음 작업:**
-- 자가 리뷰 사이클 (코드 품질/개선 조사)
-- 기존 Provider들에 Repository 주입 연결 (현재 Provider들은 아직 직접 SharedPreferences 사용)
+- 하드코딩 한국어 문자열 i18n 처리 (settings_screen, home_screen, onboarding_screen 등 20+개)
+- AchievementService를 Repository 패턴으로 전환 (local_storage_service.dart 의존 제거)
+- local_storage_service.dart 완전 제거 (achievement 이전 후)
+- Firestore catch 블록 로깅 추가
 
 **기타 대기:**
 - iOS GoogleService-Info.plist 생성/추가

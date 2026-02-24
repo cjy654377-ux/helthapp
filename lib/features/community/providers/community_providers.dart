@@ -195,7 +195,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
   Future<void> _initialize() async {
     state = state.copyWith(isLoading: true);
     try {
-      await _loadFromPrefs();
+      await _load();
       // 샘플 데이터가 없으면 시드 데이터 로드
       if (state.myTeams.isEmpty) {
         await _loadSeedData();
@@ -224,12 +224,12 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       currentUserId: _sampleUser.id,
       isLoading: false,
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     try {
       // 사용자 정보 로드
       final user = await _repo.loadCurrentUser();
@@ -264,7 +264,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     }
   }
 
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       // 사용자 정보 저장
       if (state.currentUser != null) {
@@ -321,7 +321,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       teamPosts: {...state.teamPosts, team.id: []},
       workoutShares: {...state.workoutShares, team.id: []},
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 팀 참가
@@ -365,7 +365,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         if (!state.teamPosts.containsKey(teamId)) teamId: [],
       },
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 팀 탈퇴
@@ -391,7 +391,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       myTeams: updatedMyTeams,
       allPublicTeams: updatedPublicTeams,
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 게시글 관리 ───────────────────────────────────────────────────────────
@@ -422,7 +422,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     state = state.copyWith(
       teamPosts: {...state.teamPosts, teamId: existingPosts},
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 게시글 좋아요 토글
@@ -445,7 +445,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     state = state.copyWith(
       teamPosts: {...state.teamPosts, teamId: updatedPosts},
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 댓글 작성
@@ -473,7 +473,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     state = state.copyWith(
       teamPosts: {...state.teamPosts, teamId: updatedPosts},
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 게시글 삭제
@@ -489,7 +489,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     state = state.copyWith(
       teamPosts: {...state.teamPosts, teamId: updatedPosts},
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 운동 공유 ─────────────────────────────────────────────────────────────
@@ -531,7 +531,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         teamId: existingShares,
       },
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 운동 공유 좋아요 토글
@@ -558,7 +558,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         teamId: updatedShares,
       },
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 사용자 프로필 ─────────────────────────────────────────────────────────
@@ -576,7 +576,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       avatarUrl: avatarUrl,
     );
     state = state.copyWith(currentUser: updated);
-    await _saveToPrefs();
+    await _save();
   }
 }
 

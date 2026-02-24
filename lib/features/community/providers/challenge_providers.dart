@@ -341,7 +341,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
   Future<void> _initialize() async {
     state = state.copyWith(isLoading: true);
     try {
-      await _loadFromPrefs();
+      await _load();
       _buildAvailableChallenges();
     } catch (_) {
       state = state.copyWith(isLoading: false);
@@ -386,7 +386,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     try {
       final activeData = await _repo.loadActiveChallenges();
       List<Challenge> active = activeData
@@ -413,7 +413,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
     }
   }
 
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       await _repo.saveActiveChallenges(
         state.activeChallenges.map((c) => c.toJson()).toList(),
@@ -459,7 +459,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
       activeChallenges: [...state.activeChallenges, challenge],
     );
     _buildAvailableChallenges();
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 프리셋 챌린지 참가
@@ -498,7 +498,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
       activeChallenges: [...state.activeChallenges, challenge],
     );
     _buildAvailableChallenges();
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 챌린지 참가/탈퇴 ─────────────────────────────────────────────────────
@@ -511,7 +511,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
           .toList(),
     );
     _buildAvailableChallenges();
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 진행상황 업데이트 ─────────────────────────────────────────────────────
@@ -535,7 +535,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 
     state = state.copyWith(activeChallenges: updatedActive);
     await _checkCompletion(challengeId);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 챌린지 진행상황 절대값 설정
@@ -555,7 +555,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 
     state = state.copyWith(activeChallenges: updatedActive);
     await _checkCompletion(challengeId);
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 완료 체크 ─────────────────────────────────────────────────────────────
@@ -608,7 +608,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
       completedChallenges: newCompleted,
     );
     _buildAvailableChallenges();
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 샘플 데이터 주입 (데모용) ─────────────────────────────────────────────
@@ -678,7 +678,7 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
       completedChallenges: sampleCompleted,
     );
     _buildAvailableChallenges();
-    await _saveToPrefs();
+    await _save();
   }
 }
 
