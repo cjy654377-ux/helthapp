@@ -12,4 +12,5 @@ final testOverrides = <Override>[
   hydrationRepositoryProvider.overrideWithValue(LocalHydrationRepository()),
   calendarRepositoryProvider.overrideWithValue(LocalCalendarRepository()),
   communityRepositoryProvider.overrideWithValue(LocalCommunityRepository()),
+  challengeRepositoryProvider.overrideWithValue(LocalChallengeRepository()),
 ];

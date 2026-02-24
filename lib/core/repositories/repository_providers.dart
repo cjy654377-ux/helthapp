@@ -51,3 +51,12 @@ final communityRepositoryProvider = Provider<CommunityRepository>((ref) {
   }
   return LocalCommunityRepository();
 });
+
+/// 챌린지 Repository Provider
+final challengeRepositoryProvider = Provider<ChallengeRepository>((ref) {
+  final authState = ref.watch(authProvider);
+  if (authState.isAuthenticated && authState.user != null) {
+    return FirestoreChallengeRepository(uid: authState.user!.uid);
+  }
+  return LocalChallengeRepository();
+});

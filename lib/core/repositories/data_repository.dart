@@ -97,3 +97,18 @@ abstract class CommunityRepository {
   /// 특정 팀의 운동 공유 저장
   Future<void> saveTeamShares(String teamId, List<WorkoutShare> shares);
 }
+
+/// 챌린지 저장소
+abstract class ChallengeRepository {
+  /// 활성 챌린지 로드
+  Future<List<Map<String, dynamic>>> loadActiveChallenges();
+
+  /// 활성 챌린지 저장
+  Future<void> saveActiveChallenges(List<Map<String, dynamic>> challenges);
+
+  /// 완료 챌린지 로드
+  Future<List<Map<String, dynamic>>> loadCompletedChallenges();
+
+  /// 완료 챌린지 저장
+  Future<void> saveCompletedChallenges(List<Map<String, dynamic>> challenges);
+}

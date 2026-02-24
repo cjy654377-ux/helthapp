@@ -551,7 +551,7 @@ class WorkoutSessionNotifier extends StateNotifier<WorkoutSessionState> {
 
 class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
   WorkoutHistoryNotifier(this._repo) : super([]) {
-    _loadFromPrefs();
+    _load();
   }
 
   final WorkoutRepository _repo;
@@ -563,7 +563,7 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
   /// Repository에서 기록 로드
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     try {
       // 운동 기록 로드
       final history = await _repo.loadHistory();
@@ -578,7 +578,7 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
   }
 
   /// Repository에 기록 저장
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       await _repo.saveAllRecords(state);
       await _repo.savePersonalRecords(_personalRecords);
@@ -599,13 +599,13 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
     _updatePersonalRecords(record);
 
     state = [record, ...state]..sort((a, b) => b.date.compareTo(a.date));
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 기록 삭제
   Future<void> deleteRecord(String recordId) async {
     state = state.where((r) => r.id != recordId).toList();
-    await _saveToPrefs();
+    await _save();
   }
 
   /// PR 업데이트 내부 로직

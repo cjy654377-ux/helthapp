@@ -1,4 +1,5 @@
 // 바디 프로그레스 사진 비교 화면 – Before/After 사진 기록 및 비교
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -103,8 +104,8 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
     final entries = <BodyProgressEntry>[];
     for (final s in raw) {
       try {
-        final parts = _splitJson(s);
-        entries.add(BodyProgressEntry.fromJson(parts));
+        final map = jsonDecode(s) as Map<String, dynamic>;
+        entries.add(BodyProgressEntry.fromJson(map));
       } catch (_) {
         // skip corrupt entries
       }
@@ -115,7 +116,7 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
 
   Future<void> _save() async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = state.map((e) => _toJsonString(e.toJson())).toList();
+    final raw = state.map((e) => jsonEncode(e.toJson())).toList();
     await prefs.setStringList(_prefsKey, raw);
   }
 
@@ -147,53 +148,6 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
     return map;
   }
 
-  // Minimal JSON helpers without dart:convert import issues
-  String _toJsonString(Map<String, dynamic> m) {
-    final sb = StringBuffer('{');
-    bool first = true;
-    m.forEach((k, v) {
-      if (!first) sb.write(',');
-      first = false;
-      sb.write('"$k":');
-      if (v == null) {
-        sb.write('null');
-      } else if (v is num) {
-        sb.write(v);
-      } else if (v is bool) {
-        sb.write(v);
-      } else {
-        final escaped = v.toString().replaceAll('"', '\\"');
-        sb.write('"$escaped"');
-      }
-    });
-    sb.write('}');
-    return sb.toString();
-  }
-
-  Map<String, dynamic> _splitJson(String s) {
-    // Use dart:core only — parse the simple flat JSON we write ourselves
-    final inner = s.substring(1, s.length - 1);
-    final result = <String, dynamic>{};
-    final pattern = RegExp(r'"(\w+)":("([^"\\]|\\.)*"|-?\d+\.?\d*|null|true|false)');
-    for (final m in pattern.allMatches(inner)) {
-      final key = m.group(1)!;
-      final rawVal = m.group(2)!;
-      if (rawVal == 'null') {
-        result[key] = null;
-      } else if (rawVal == 'true') {
-        result[key] = true;
-      } else if (rawVal == 'false') {
-        result[key] = false;
-      } else if (rawVal.startsWith('"')) {
-        result[key] = rawVal
-            .substring(1, rawVal.length - 1)
-            .replaceAll('\\"', '"');
-      } else {
-        result[key] = num.parse(rawVal);
-      }
-    }
-    return result;
-  }
 }
 
 // ---------------------------------------------------------------------------

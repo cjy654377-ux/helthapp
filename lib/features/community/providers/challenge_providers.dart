@@ -1,10 +1,9 @@
 // 챌린지/게이미피케이션 시스템 상태 관리
 // ChallengeNotifier: 챌린지 생성/참가/탈퇴, 진행상황 업데이트, 완료 체크
 
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 import 'package:uuid/uuid.dart';
 
 // ---------------------------------------------------------------------------
@@ -330,12 +329,11 @@ class ChallengeState {
 // ---------------------------------------------------------------------------
 
 class ChallengeNotifier extends StateNotifier<ChallengeState> {
-  ChallengeNotifier() : super(const ChallengeState()) {
+  ChallengeNotifier(this._repo) : super(const ChallengeState()) {
     _initialize();
   }
 
-  static const String _activeChallengesKey = 'active_challenges';
-  static const String _completedChallengesKey = 'completed_challenges';
+  final ChallengeRepository _repo;
   static const String _currentUserId = 'user_local';
 
   // ── 초기화 ────────────────────────────────────────────────────────────────
@@ -390,36 +388,20 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 
   Future<void> _loadFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
+      final activeData = await _repo.loadActiveChallenges();
+      List<Challenge> active = activeData
+          .map((c) => Challenge.fromJson(c))
+          .toList();
 
-      // 활성 챌린지 로드
-      final activeJson = prefs.getString(_activeChallengesKey);
-      List<Challenge> active = [];
-      if (activeJson != null) {
-        final List<dynamic> decoded =
-            jsonDecode(activeJson) as List<dynamic>;
-        active = decoded
-            .map((c) => Challenge.fromJson(c as Map<String, dynamic>))
-            .toList();
-      }
-
-      // 완료 챌린지 로드
-      final completedJson = prefs.getString(_completedChallengesKey);
-      List<Challenge> completed = [];
-      if (completedJson != null) {
-        final List<dynamic> decoded =
-            jsonDecode(completedJson) as List<dynamic>;
-        completed = decoded
-            .map((c) => Challenge.fromJson(c as Map<String, dynamic>))
-            .toList();
-      }
+      final completedData = await _repo.loadCompletedChallenges();
+      List<Challenge> completed = completedData
+          .map((c) => Challenge.fromJson(c))
+          .toList();
 
       // 만료된 활성 챌린지를 완료로 이동
       final now = DateTime.now();
-      final stillActive =
-          active.where((c) => !now.isAfter(c.endDate)).toList();
-      final expired =
-          active.where((c) => now.isAfter(c.endDate)).toList();
+      final stillActive = active.where((c) => !now.isAfter(c.endDate)).toList();
+      final expired = active.where((c) => now.isAfter(c.endDate)).toList();
       final newCompleted = [...completed, ...expired];
 
       state = state.copyWith(
@@ -433,16 +415,11 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-        _activeChallengesKey,
-        jsonEncode(
-            state.activeChallenges.map((c) => c.toJson()).toList()),
+      await _repo.saveActiveChallenges(
+        state.activeChallenges.map((c) => c.toJson()).toList(),
       );
-      await prefs.setString(
-        _completedChallengesKey,
-        jsonEncode(
-            state.completedChallenges.map((c) => c.toJson()).toList()),
+      await _repo.saveCompletedChallenges(
+        state.completedChallenges.map((c) => c.toJson()).toList(),
       );
     } catch (_) {}
   }
@@ -712,7 +689,10 @@ class ChallengeNotifier extends StateNotifier<ChallengeState> {
 /// 챌린지 전체 상태 Provider
 final challengeProvider =
     StateNotifierProvider<ChallengeNotifier, ChallengeState>(
-  (ref) => ChallengeNotifier(),
+  (ref) {
+    final repo = ref.watch(challengeRepositoryProvider);
+    return ChallengeNotifier(repo);
+  },
 );
 
 /// 활성(참여 중) 챌린지 목록 Provider

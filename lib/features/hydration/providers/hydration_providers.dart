@@ -83,7 +83,7 @@ class DailyHydrationState {
 class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   HydrationNotifier(this._repo)
       : super(DailyHydrationState(date: DateTime.now())) {
-    _loadFromPrefs();
+    _load();
   }
 
   final HydrationRepository _repo;
@@ -93,7 +93,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   String _dateKey(DateTime date) =>
       'hydration_${date.year}_${date.month}_${date.day}';
 
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     try {
       // 설정 로드 (목표/알림)
       int goalMl = AppDefaults.dailyWaterGoalMl;
@@ -123,7 +123,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
     } catch (_) {}
   }
 
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       // 오늘 기록 저장
       await _repo.saveHydrationData(_dateKey(state.date), state.toJson());
@@ -157,7 +157,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
     state = state.copyWith(
       entries: [...state.entries, entry],
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 기록 삭제
@@ -165,13 +165,13 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
     state = state.copyWith(
       entries: state.entries.where((e) => e.id != entryId).toList(),
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 오늘 전체 기록 초기화
   Future<void> resetToday() async {
     state = state.copyWith(entries: []);
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 목표 및 설정 ──────────────────────────────────────────────────────────
@@ -179,7 +179,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   /// 일일 목표 설정
   Future<void> setDailyGoal(int goalMl) async {
     state = state.copyWith(goalMl: goalMl);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 알림 시간 설정
@@ -191,7 +191,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
         .toList()
       ..sort();
     state = state.copyWith(reminderHours: validHours);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 알림 시간 추가

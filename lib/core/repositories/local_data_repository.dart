@@ -422,3 +422,50 @@ class LocalCommunityRepository implements CommunityRepository {
     }
   }
 }
+
+class LocalChallengeRepository implements ChallengeRepository {
+  static const _activeChallengesKey = 'active_challenges';
+  static const _completedChallengesKey = 'completed_challenges';
+
+  @override
+  Future<List<Map<String, dynamic>>> loadActiveChallenges() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final json = prefs.getString(_activeChallengesKey);
+      if (json == null) return [];
+      final List<dynamic> decoded = jsonDecode(json) as List<dynamic>;
+      return decoded.cast<Map<String, dynamic>>();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveActiveChallenges(List<Map<String, dynamic>> challenges) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_activeChallengesKey, jsonEncode(challenges));
+    } catch (_) {}
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> loadCompletedChallenges() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final json = prefs.getString(_completedChallengesKey);
+      if (json == null) return [];
+      final List<dynamic> decoded = jsonDecode(json) as List<dynamic>;
+      return decoded.cast<Map<String, dynamic>>();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveCompletedChallenges(List<Map<String, dynamic>> challenges) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_completedChallengesKey, jsonEncode(challenges));
+    } catch (_) {}
+  }
+}

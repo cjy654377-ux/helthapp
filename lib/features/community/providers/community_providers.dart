@@ -615,8 +615,8 @@ final teamWorkoutSharesProvider =
   return communityState.getWorkoutSharesForTeam(teamId);
 });
 
-/// 현재 사용자 Provider
-final currentUserProvider = Provider<UserProfile?>((ref) {
+/// 커뮤니티 현재 사용자 Provider
+final communityCurrentUserProvider = Provider<UserProfile?>((ref) {
   return ref.watch(communityProvider).currentUser;
 });
 

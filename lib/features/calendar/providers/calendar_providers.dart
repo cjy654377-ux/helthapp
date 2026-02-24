@@ -227,14 +227,14 @@ class CalendarNotifier
           selectedDate: DateTime.now(),
           focusedMonth: DateTime.now(),
         )) {
-    _loadFromPrefs();
+    _load();
   }
 
   final CalendarRepository _repo;
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     try {
       final rawPlans = await _repo.loadAllPlans();
       final plans = rawPlans.map((key, value) {
@@ -247,7 +247,7 @@ class CalendarNotifier
     } catch (_) {}
   }
 
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       final rawPlans = state.plans.map((key, value) {
         return MapEntry(
@@ -287,7 +287,7 @@ class CalendarNotifier
       ..[key] = existingPlans;
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 운동 계획 삭제
@@ -301,7 +301,7 @@ class CalendarNotifier
       ..[key] = existingPlans;
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 계획 완료/미완료 토글
@@ -316,7 +316,7 @@ class CalendarNotifier
       ..[key] = existingPlans;
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 스플릿 템플릿 적용 ────────────────────────────────────────────────────
@@ -348,7 +348,7 @@ class CalendarNotifier
     }
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 상하체 스플릿 4주 적용
@@ -378,7 +378,7 @@ class CalendarNotifier
     }
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 풀바디 스플릿 4주 적용
@@ -408,7 +408,7 @@ class CalendarNotifier
     }
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 반복 일정 추가 (매주 특정 요일)
@@ -437,7 +437,7 @@ class CalendarNotifier
       ..[recurringKey] = existing;
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 특정 날짜 이후의 모든 계획 삭제 (리셋)
@@ -466,7 +466,7 @@ class CalendarNotifier
     }
 
     state = state.copyWith(plans: updatedPlans);
-    await _saveToPrefs();
+    await _save();
   }
 }
 

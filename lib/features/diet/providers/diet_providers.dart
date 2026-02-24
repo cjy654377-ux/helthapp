@@ -570,7 +570,7 @@ class DailyDietState {
 class DietNotifier extends StateNotifier<DailyDietState> {
   DietNotifier(this._repo)
       : super(DailyDietState(date: DateTime.now())) {
-    _loadFromPrefs();
+    _load();
   }
 
   final DietRepository _repo;
@@ -581,7 +581,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
       'diet_${date.year}_${date.month}_${date.day}';
 
   /// Repository에서 오늘 식단 로드
-  Future<void> _loadFromPrefs() async {
+  Future<void> _load() async {
     state = state.copyWith(isLoading: true);
     try {
       // 영양 목표 로드
@@ -603,7 +603,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   }
 
   /// Repository에 저장
-  Future<void> _saveToPrefs() async {
+  Future<void> _save() async {
     try {
       await _repo.saveMeals(_dateKey(state.date), state.meals);
       await _repo.saveNutritionGoal(state.goal);
@@ -635,7 +635,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
       foods: const [],
     );
     state = state.copyWith(meals: [...state.meals, meal]);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 식사에 음식 추가
@@ -649,7 +649,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
     }).toList();
 
     state = state.copyWith(meals: meals);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 식사에서 음식 삭제
@@ -663,7 +663,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
     }).toList();
 
     state = state.copyWith(meals: meals);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 음식 섭취량 수정
@@ -681,7 +681,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
     }).toList();
 
     state = state.copyWith(meals: meals);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 식사 전체 삭제
@@ -689,7 +689,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
     state = state.copyWith(
       meals: state.meals.where((m) => m.id != mealId).toList(),
     );
-    await _saveToPrefs();
+    await _save();
   }
 
   // ── 목표 관리 ─────────────────────────────────────────────────────────────
@@ -697,7 +697,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   /// 영양 목표 업데이트
   Future<void> updateGoal(NutritionGoal newGoal) async {
     state = state.copyWith(goal: newGoal);
-    await _saveToPrefs();
+    await _save();
   }
 
   /// 체중 기반 목표 자동 설정 (린벌크 기준)

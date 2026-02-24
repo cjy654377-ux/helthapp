@@ -6,6 +6,7 @@ import 'package:health_app/core/models/community_model.dart';
 import 'package:health_app/core/models/diet_model.dart';
 import 'package:health_app/core/repositories/data_repository.dart';
 import 'package:health_app/features/workout_log/providers/workout_providers.dart';
+import 'package:uuid/uuid.dart';
 
 // ---------------------------------------------------------------------------
 // FirestoreWorkoutRepository
@@ -612,5 +613,80 @@ class FirestoreCommunityRepository implements CommunityRepository {
     } catch (_) {
       // 저장 실패 무시
     }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FirestoreChallengeRepository
+// ---------------------------------------------------------------------------
+
+class FirestoreChallengeRepository implements ChallengeRepository {
+  final String uid;
+  FirestoreChallengeRepository({required this.uid});
+
+  CollectionReference<Map<String, dynamic>> get _challengesRef =>
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('challenges');
+
+  @override
+  Future<List<Map<String, dynamic>>> loadActiveChallenges() async {
+    try {
+      final snapshot = await _challengesRef
+          .where('is_active', isEqualTo: true)
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveActiveChallenges(List<Map<String, dynamic>> challenges) async {
+    try {
+      final existing = await _challengesRef
+          .where('is_active', isEqualTo: true)
+          .get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in existing.docs) {
+        batch.delete(doc.reference);
+      }
+      for (final c in challenges) {
+        final id = c['id'] as String? ?? const Uuid().v4();
+        batch.set(_challengesRef.doc(id), c);
+      }
+      await batch.commit();
+    } catch (_) {}
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> loadCompletedChallenges() async {
+    try {
+      final snapshot = await _challengesRef
+          .where('is_active', isEqualTo: false)
+          .get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveCompletedChallenges(List<Map<String, dynamic>> challenges) async {
+    try {
+      final existing = await _challengesRef
+          .where('is_active', isEqualTo: false)
+          .get();
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in existing.docs) {
+        batch.delete(doc.reference);
+      }
+      for (final c in challenges) {
+        final id = c['id'] as String? ?? const Uuid().v4();
+        batch.set(_challengesRef.doc(id), c);
+      }
+      await batch.commit();
+    } catch (_) {}
   }
 }
