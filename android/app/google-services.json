@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442733554069",
+    "project_id": "kofilter-f28d8",
+    "storage_bucket": "kofilter-f28d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442733554069:android:PLACEHOLDER_HEALTH_APP",
+        "android_client_info": {
+          "package_name": "com.rhythmicaleskimo.health_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Nz81Ej5Ai0L6R02QfcDnF1wv4JtRfyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

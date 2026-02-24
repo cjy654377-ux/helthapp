@@ -1,6 +1,8 @@
 // 앱 진입점 - 헬스 & 피트니스 앱
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 import 'package:health_app/core/theme/app_theme.dart';
@@ -8,10 +10,22 @@ import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/core/services/local_storage_service.dart';
 import 'package:health_app/core/services/challenge_integration_service.dart';
 import 'package:health_app/core/services/notification_service.dart';
+import 'package:health_app/firebase_options.dart';
 
 void main() async {
   // Flutter 엔진 초기화 보장
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase 초기화
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Firestore 오프라인 퍼시스턴스 활성화
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
 
   // SharedPreferences 초기화 (Provider 로드 전에 완료)
   await LocalStorageService().init();

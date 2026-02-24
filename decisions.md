@@ -184,8 +184,51 @@
 - flutter analyze: 0 issues, flutter test: 269 passed
 - 총: lib 38파일 29,817줄 + test 9파일 3,828줄 = 33,645줄
 
-**다음 작업 (우선순위):**
-- Firebase 연동 (Auth, Firestore, Storage)
-- 소셜 로그인 (Google/Apple/카카오)
+## D-007: Firebase 연동 아키텍처 설계
+- **결정**: 5단계 점진적 Firebase 연동 (Phase 0~4)
+- **대안**: 전면 Firestore 전환 (Big-bang)
+- **이유**: 기존 269 테스트 보존, 오프라인 우선 전략, 점진적 안정성 확보
+
+### Firebase 연동 계획 (설계 완료, 구현 대기):
+- **Phase 0**: Firebase 패키지 + 플랫폼 설정 (pubspec, gradle, Info.plist)
+- **Phase 1**: Repository 추상화 (Provider↔저장소 사이 인터페이스 삽입)
+  - 생성: data_repository.dart, local_data_repository.dart, repository_providers.dart
+  - 수정: 5개 feature provider (workout, diet, hydration, calendar, community)
+- **Phase 2**: Firebase Auth + 로그인 UI (이메일/Google/Apple)
+  - 생성: auth_service.dart, app_user.dart, auth_providers.dart, login_screen.dart
+  - 수정: main.dart, app_router.dart, splash_screen.dart
+- **Phase 3**: Firestore 클라우드 동기화 (오프라인 우선 + write-through cache)
+  - Firestore 스키마: users/{uid}/workouts|meals|hydration|calendar + teams/{id}/posts
+  - 생성: firestore_data_repository.dart, sync_service.dart, firestore.rules
+- **Phase 4**: Firebase Storage (바디 프로그레스/팀 사진 업로드)
+  - 생성: storage_service.dart
+
+### Firestore 컬렉션 구조:
+```
+users/{uid}/ → profile, workouts/, meals/, hydration/, calendarPlans/, bodyProgress/, achievements/
+teams/{teamId}/ → members/, posts/, workoutShares/
+challenges/{id}/ → participants/
+```
+
+**Firebase Phase 0 완료 (2026-02-25):**
+- pubspec.yaml: firebase_core, firebase_auth, cloud_firestore, firebase_storage, google_sign_in, sign_in_with_apple, crypto 추가
+- main.dart: Firebase.initializeApp() + Firestore 오프라인 퍼시스턴스 설정
+- firebase_options.dart 생성 (kofilter-f28d8 프로젝트, TODO: flutterfire configure로 실제 앱 ID 교체)
+- Android: google-services.json 플레이스홀더, minSdk=23, google-services 플러그인
+- iOS: Info.plist에 Google Sign-In URL scheme 추가
+- flutter analyze: 0 issues, flutter test: 269 passed
+
+**Firebase Phase 1 완료 (2026-02-25) - Repository 추상화:**
+- core/repositories/data_repository.dart: 5개 추상 인터페이스 (Workout, Diet, Hydration, Calendar, Community)
+- core/repositories/local_data_repository.dart: SharedPreferences 구현체 5개
+- core/repositories/repository_providers.dart: Riverpod Provider 정의 (기본값: Local)
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 42파일 + test 9파일
+
+**다음 작업:**
+- Firebase Phase 2 (Auth + 로그인 UI) 시작
+- flutterfire configure 실행하여 실제 앱 ID 교체 필요
+
+**기타 대기:**
 - 홈화면 위젯 (iOS/Android)
 - 앱 아이콘 + Fastlane 빌드
