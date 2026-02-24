@@ -1,12 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health_app/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'helpers/test_overrides.dart';
 
 void main() {
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
+
   testWidgets('HealthApp renders without crashing', (tester) async {
     // Use runAsync so real async operations (SharedPreferences, etc.) complete.
     await tester.runAsync(() async {
-      await tester.pumpWidget(const ProviderScope(child: HealthApp()));
+      await tester.pumpWidget(
+        ProviderScope(overrides: testOverrides, child: const HealthApp()),
+      );
     });
 
     // Pump a couple of frames to let the widget tree build.

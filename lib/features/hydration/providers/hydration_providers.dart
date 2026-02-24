@@ -1,14 +1,13 @@
 // 수분 섭취 추적 상태 관리
 // HydrationNotifier: 일일 물 섭취 기록, 타이머, 알림 시간 관리
 
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:health_app/core/constants/app_constants.dart';
 import 'package:health_app/core/models/diet_model.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // DailyHydrationState - 일일 수분 섭취 상태
@@ -82,45 +81,36 @@ class DailyHydrationState {
 // ---------------------------------------------------------------------------
 
 class HydrationNotifier extends StateNotifier<DailyHydrationState> {
-  HydrationNotifier()
+  HydrationNotifier(this._repo)
       : super(DailyHydrationState(date: DateTime.now())) {
     _loadFromPrefs();
   }
 
-  static const String _prefsKeyPrefix = 'hydration_';
-  static const String _settingsKey = 'hydration_settings';
+  final HydrationRepository _repo;
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
   String _dateKey(DateTime date) =>
-      '$_prefsKeyPrefix${date.year}_${date.month}_${date.day}';
+      'hydration_${date.year}_${date.month}_${date.day}';
 
   Future<void> _loadFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       // 설정 로드 (목표/알림)
       int goalMl = AppDefaults.dailyWaterGoalMl;
       List<int> reminderHours = AppDefaults.defaultReminderHours;
 
-      final settingsJson = prefs.getString(_settingsKey);
-      if (settingsJson != null) {
-        final settings =
-            jsonDecode(settingsJson) as Map<String, dynamic>;
-        goalMl = settings['goal_ml'] as int? ?? 2000;
-        reminderHours = List<int>.from(
-            settings['reminder_hours'] as List? ?? [9, 12, 15, 18, 21]);
-      }
+      final settings = await _repo.loadHydrationSettings();
+      goalMl = settings['goal_ml'] as int? ?? 2000;
+      reminderHours = List<int>.from(
+          settings['reminder_hours'] as List? ?? [9, 12, 15, 18, 21]);
 
       // 오늘 섭취 기록 로드
       final today = DateTime.now();
-      final hydrationJson = prefs.getString(_dateKey(today));
+      final data = await _repo.loadHydrationData(_dateKey(today));
       List<WaterIntakeEntry> entries = [];
 
-      if (hydrationJson != null) {
-        final decoded =
-            jsonDecode(hydrationJson) as Map<String, dynamic>;
-        final hydState = DailyHydrationState.fromJson(decoded);
+      if (data.isNotEmpty) {
+        final hydState = DailyHydrationState.fromJson(data);
         entries = hydState.entries;
       }
 
@@ -135,17 +125,13 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
 
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       // 오늘 기록 저장
-      await prefs.setString(
-          _dateKey(state.date), jsonEncode(state.toJson()));
+      await _repo.saveHydrationData(_dateKey(state.date), state.toJson());
       // 설정 저장
-      await prefs.setString(
-          _settingsKey,
-          jsonEncode({
-            'goal_ml': state.goalMl,
-            'reminder_hours': state.reminderHours,
-          }));
+      await _repo.saveHydrationSettings({
+        'goal_ml': state.goalMl,
+        'reminder_hours': state.reminderHours,
+      });
     } catch (_) {}
   }
 
@@ -228,11 +214,9 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   /// 특정 날짜 기록 로드
   Future<DailyHydrationState?> loadDate(DateTime date) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final json = prefs.getString(_dateKey(date));
-      if (json != null) {
-        return DailyHydrationState.fromJson(
-            jsonDecode(json) as Map<String, dynamic>);
+      final data = await _repo.loadHydrationData(_dateKey(date));
+      if (data.isNotEmpty) {
+        return DailyHydrationState.fromJson(data);
       }
       return null;
     } catch (_) {
@@ -246,14 +230,12 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   Future<Map<DateTime, int>> getWeeklyStats() async {
     final stats = <DateTime, int>{};
     try {
-      final prefs = await SharedPreferences.getInstance();
       for (int i = 0; i < 7; i++) {
         final date = DateTime.now().subtract(Duration(days: i));
         final dateOnly = DateTime(date.year, date.month, date.day);
-        final json = prefs.getString(_dateKey(date));
-        if (json != null) {
-          final hydState = DailyHydrationState.fromJson(
-              jsonDecode(json) as Map<String, dynamic>);
+        final data = await _repo.loadHydrationData(_dateKey(date));
+        if (data.isNotEmpty) {
+          final hydState = DailyHydrationState.fromJson(data);
           stats[dateOnly] = hydState.totalMl;
         } else {
           stats[dateOnly] = 0;
@@ -276,15 +258,13 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   Future<int> getGoalStreak() async {
     int streak = 0;
     try {
-      final prefs = await SharedPreferences.getInstance();
       DateTime checkDate = DateTime.now();
 
       while (true) {
-        final json = prefs.getString(_dateKey(checkDate));
-        if (json == null) break;
+        final data = await _repo.loadHydrationData(_dateKey(checkDate));
+        if (data.isEmpty) break;
 
-        final hydState = DailyHydrationState.fromJson(
-            jsonDecode(json) as Map<String, dynamic>);
+        final hydState = DailyHydrationState.fromJson(data);
         if (!hydState.isGoalReached) break;
 
         streak++;
@@ -329,7 +309,10 @@ const List<WaterQuickAddOption> kWaterQuickAddOptions = [
 /// 오늘 수분 섭취 Provider
 final hydrationProvider =
     StateNotifierProvider<HydrationNotifier, DailyHydrationState>(
-  (ref) => HydrationNotifier(),
+  (ref) {
+    final repo = ref.watch(hydrationRepositoryProvider);
+    return HydrationNotifier(repo);
+  },
 );
 
 /// 오늘 총 수분 섭취량 Provider

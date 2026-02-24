@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:health_app/core/models/diet_model.dart';
 import 'package:health_app/features/hydration/providers/hydration_providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helpers/test_overrides.dart';
 
 // ---------------------------------------------------------------------------
 // Helper
@@ -145,8 +148,12 @@ void main() {
   group('HydrationNotifier', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      container = ProviderContainer(overrides: testOverrides);
+      // 프로바이더 초기화 - async _loadFromPrefs 완료 대기
+      container.read(hydrationProvider);
+      await Future<void>.delayed(Duration.zero);
     });
 
     tearDown(() {
@@ -310,8 +317,12 @@ void main() {
   group('Hydration derived providers', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      container = ProviderContainer(overrides: testOverrides);
+      // 프로바이더 초기화 - async _loadFromPrefs 완료 대기
+      container.read(hydrationProvider);
+      await Future<void>.delayed(Duration.zero);
     });
 
     tearDown(() {

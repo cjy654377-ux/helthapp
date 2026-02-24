@@ -3,13 +3,13 @@
 // WorkoutHistoryNotifier: 저장된 운동 기록 관리
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:health_app/core/models/workout_model.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // 추가 상태 클래스 정의 (workout_model에 없는 것들)
@@ -550,12 +550,11 @@ class WorkoutSessionNotifier extends StateNotifier<WorkoutSessionState> {
 // ---------------------------------------------------------------------------
 
 class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
-  WorkoutHistoryNotifier() : super([]) {
+  WorkoutHistoryNotifier(this._repo) : super([]) {
     _loadFromPrefs();
   }
 
-  static const String _prefsKey = 'workout_history';
-  static const String _prPrefsKey = 'personal_records';
+  final WorkoutRepository _repo;
 
   // 개인 기록 (별도 관리)
   List<PersonalRecord> _personalRecords = [];
@@ -563,44 +562,26 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
-  /// SharedPreferences에서 기록 로드
+  /// Repository에서 기록 로드
   Future<void> _loadFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       // 운동 기록 로드
-      final historyJson = prefs.getString(_prefsKey);
-      if (historyJson != null) {
-        final List<dynamic> decoded = jsonDecode(historyJson) as List<dynamic>;
-        state = decoded
-            .map((e) => WorkoutRecord.fromJson(e as Map<String, dynamic>))
-            .toList()
-          ..sort((a, b) => b.date.compareTo(a.date)); // 최신순 정렬
-      }
+      final history = await _repo.loadHistory();
+      state = List<WorkoutRecord>.from(history)
+        ..sort((a, b) => b.date.compareTo(a.date)); // 최신순 정렬
 
       // PR 기록 로드
-      final prJson = prefs.getString(_prPrefsKey);
-      if (prJson != null) {
-        final List<dynamic> decoded = jsonDecode(prJson) as List<dynamic>;
-        _personalRecords = decoded
-            .map((e) => PersonalRecord.fromJson(e as Map<String, dynamic>))
-            .toList();
-      }
+      _personalRecords = await _repo.loadPersonalRecords();
     } catch (_) {
       // 로드 실패 시 빈 상태 유지
     }
   }
 
-  /// SharedPreferences에 기록 저장
+  /// Repository에 기록 저장
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final historyJson = jsonEncode(state.map((r) => r.toJson()).toList());
-      await prefs.setString(_prefsKey, historyJson);
-
-      final prJson =
-          jsonEncode(_personalRecords.map((r) => r.toJson()).toList());
-      await prefs.setString(_prPrefsKey, prJson);
+      await _repo.saveAllRecords(state);
+      await _repo.savePersonalRecords(_personalRecords);
     } catch (_) {
       // 저장 실패 무시
     }
@@ -769,7 +750,10 @@ final workoutSessionProvider =
 /// 운동 기록 히스토리 Provider
 final workoutHistoryProvider =
     StateNotifierProvider<WorkoutHistoryNotifier, List<WorkoutRecord>>(
-  (ref) => WorkoutHistoryNotifier(),
+  (ref) {
+    final repo = ref.watch(workoutRepositoryProvider);
+    return WorkoutHistoryNotifier(repo);
+  },
 );
 
 /// 개인 기록(PR) Provider - WorkoutHistoryNotifier에서 파생

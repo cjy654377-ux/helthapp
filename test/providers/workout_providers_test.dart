@@ -2,6 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:health_app/core/models/workout_model.dart';
 import 'package:health_app/features/workout_log/providers/workout_providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../helpers/test_overrides.dart';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -45,7 +48,8 @@ void main() {
     late ProviderContainer container;
 
     setUp(() {
-      container = ProviderContainer();
+      SharedPreferences.setMockInitialValues({});
+      container = ProviderContainer(overrides: testOverrides);
     });
 
     tearDown(() {
@@ -314,8 +318,12 @@ void main() {
   group('WorkoutHistoryNotifier - initial state', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      container = ProviderContainer(overrides: testOverrides);
+      // 프로바이더 초기화 - async _loadFromPrefs 완료 대기
+      container.read(workoutHistoryProvider);
+      await Future<void>.delayed(Duration.zero);
     });
 
     tearDown(() {
@@ -355,8 +363,12 @@ void main() {
   group('WorkoutHistoryNotifier - PR detection', () {
     late ProviderContainer container;
 
-    setUp(() {
-      container = ProviderContainer();
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      container = ProviderContainer(overrides: testOverrides);
+      // 프로바이더 초기화 - async _loadFromPrefs 완료 대기
+      container.read(workoutHistoryProvider);
+      await Future<void>.delayed(Duration.zero);
     });
 
     tearDown(() {

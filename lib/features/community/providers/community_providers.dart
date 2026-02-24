@@ -1,13 +1,12 @@
 // 팀 커뮤니티 상태 관리
 // CommunityNotifier: 팀 생성/참가, 포스트 작성, 좋아요/댓글 관리
 
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:health_app/core/models/community_model.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // CommunityState - 커뮤니티 전체 상태
@@ -185,14 +184,11 @@ List<TeamPost> _buildSamplePosts(String teamId) {
 // ---------------------------------------------------------------------------
 
 class CommunityNotifier extends StateNotifier<CommunityState> {
-  CommunityNotifier() : super(const CommunityState()) {
+  CommunityNotifier(this._repo) : super(const CommunityState()) {
     _initialize();
   }
 
-  static const String _teamsPrefsKey = 'my_teams';
-  static const String _postsPrefsKeyPrefix = 'team_posts_';
-  static const String _sharesPrefsKeyPrefix = 'team_shares_';
-  static const String _userPrefsKey = 'current_user';
+  final CommunityRepository _repo;
 
   // ── 초기화 ────────────────────────────────────────────────────────────────
 
@@ -235,54 +231,19 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
 
   Future<void> _loadFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       // 사용자 정보 로드
-      final userJson = prefs.getString(_userPrefsKey);
-      UserProfile? user;
-      if (userJson != null) {
-        user = UserProfile.fromJson(
-            jsonDecode(userJson) as Map<String, dynamic>);
-      }
+      final user = await _repo.loadCurrentUser();
 
       // 팀 목록 로드
-      final teamsJson = prefs.getString(_teamsPrefsKey);
-      List<Team> teams = [];
-      if (teamsJson != null) {
-        final List<dynamic> decoded =
-            jsonDecode(teamsJson) as List<dynamic>;
-        teams = decoded
-            .map((t) => Team.fromJson(t as Map<String, dynamic>))
-            .toList();
-      }
+      final teams = await _repo.loadMyTeams();
 
-      // 각 팀의 게시글 로드
+      // 각 팀의 게시글 및 운동 공유 로드
       final teamPosts = <String, List<TeamPost>>{};
       final workoutShares = <String, List<WorkoutShare>>{};
 
       for (final team in teams) {
-        // 게시글
-        final postsJson =
-            prefs.getString('$_postsPrefsKeyPrefix${team.id}');
-        if (postsJson != null) {
-          final List<dynamic> decoded =
-              jsonDecode(postsJson) as List<dynamic>;
-          teamPosts[team.id] = decoded
-              .map((p) => TeamPost.fromJson(p as Map<String, dynamic>))
-              .toList();
-        }
-
-        // 운동 공유
-        final sharesJson =
-            prefs.getString('$_sharesPrefsKeyPrefix${team.id}');
-        if (sharesJson != null) {
-          final List<dynamic> decoded =
-              jsonDecode(sharesJson) as List<dynamic>;
-          workoutShares[team.id] = decoded
-              .map((s) =>
-                  WorkoutShare.fromJson(s as Map<String, dynamic>))
-              .toList();
-        }
+        teamPosts[team.id] = await _repo.loadTeamPosts(team.id);
+        workoutShares[team.id] = await _repo.loadTeamShares(team.id);
       }
 
       if (teams.isNotEmpty) {
@@ -305,31 +266,22 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
 
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       // 사용자 정보 저장
       if (state.currentUser != null) {
-        await prefs.setString(
-            _userPrefsKey, jsonEncode(state.currentUser!.toJson()));
+        await _repo.saveCurrentUser(state.currentUser!);
       }
 
       // 팀 목록 저장
-      await prefs.setString(
-          _teamsPrefsKey,
-          jsonEncode(state.myTeams.map((t) => t.toJson()).toList()));
+      await _repo.saveMyTeams(state.myTeams);
 
       // 각 팀의 게시글 저장
       for (final entry in state.teamPosts.entries) {
-        await prefs.setString(
-            '$_postsPrefsKeyPrefix${entry.key}',
-            jsonEncode(entry.value.map((p) => p.toJson()).toList()));
+        await _repo.saveTeamPosts(entry.key, entry.value);
       }
 
       // 운동 공유 저장
       for (final entry in state.workoutShares.entries) {
-        await prefs.setString(
-            '$_sharesPrefsKeyPrefix${entry.key}',
-            jsonEncode(entry.value.map((s) => s.toJson()).toList()));
+        await _repo.saveTeamShares(entry.key, entry.value);
       }
     } catch (_) {}
   }
@@ -634,9 +586,10 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
 
 /// 커뮤니티 전체 상태 Provider
 final communityProvider =
-    StateNotifierProvider<CommunityNotifier, CommunityState>(
-  (ref) => CommunityNotifier(),
-);
+    StateNotifierProvider<CommunityNotifier, CommunityState>((ref) {
+  final repo = ref.watch(communityRepositoryProvider);
+  return CommunityNotifier(repo);
+});
 
 /// 내 팀 목록 Provider
 final myTeamsProvider = Provider<List<Team>>((ref) {

@@ -2,13 +2,12 @@
 // DietNotifier: 일일 식단 기록 관리
 // FoodDatabaseProvider: 한국 음식 중심 데이터베이스 (30개 이상)
 
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:health_app/core/models/diet_model.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // 음식 데이터베이스 시드 데이터 (32개 한국 음식 중심)
@@ -569,43 +568,28 @@ class DailyDietState {
 // ---------------------------------------------------------------------------
 
 class DietNotifier extends StateNotifier<DailyDietState> {
-  DietNotifier()
+  DietNotifier(this._repo)
       : super(DailyDietState(date: DateTime.now())) {
     _loadFromPrefs();
   }
 
-  static const String _prefsKeyPrefix = 'diet_';
-  static const String _goalPrefsKey = 'nutrition_goal';
+  final DietRepository _repo;
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
   String _dateKey(DateTime date) =>
-      '$_prefsKeyPrefix${date.year}_${date.month}_${date.day}';
+      'diet_${date.year}_${date.month}_${date.day}';
 
-  /// SharedPreferences에서 오늘 식단 로드
+  /// Repository에서 오늘 식단 로드
   Future<void> _loadFromPrefs() async {
     state = state.copyWith(isLoading: true);
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       // 영양 목표 로드
-      final goalJson = prefs.getString(_goalPrefsKey);
-      NutritionGoal goal = NutritionGoal.standard;
-      if (goalJson != null) {
-        goal = NutritionGoal.fromJson(
-            jsonDecode(goalJson) as Map<String, dynamic>);
-      }
+      final goal = await _repo.loadNutritionGoal();
 
       // 오늘 식단 로드
       final today = DateTime.now();
-      final dietJson = prefs.getString(_dateKey(today));
-      List<Meal> meals = [];
-      if (dietJson != null) {
-        final decoded =
-            jsonDecode(dietJson) as Map<String, dynamic>;
-        final dietState = DailyDietState.fromJson(decoded);
-        meals = dietState.meals;
-      }
+      final meals = await _repo.loadMeals(_dateKey(today));
 
       state = DailyDietState(
         date: today,
@@ -618,14 +602,11 @@ class DietNotifier extends StateNotifier<DailyDietState> {
     }
   }
 
-  /// SharedPreferences에 저장
+  /// Repository에 저장
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          _dateKey(state.date), jsonEncode(state.toJson()));
-      await prefs.setString(
-          _goalPrefsKey, jsonEncode(state.goal.toJson()));
+      await _repo.saveMeals(_dateKey(state.date), state.meals);
+      await _repo.saveNutritionGoal(state.goal);
     } catch (_) {}
   }
 
@@ -634,15 +615,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   /// 특정 날짜 식단 로드
   Future<void> loadDate(DateTime date) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final dietJson = prefs.getString(_dateKey(date));
-      List<Meal> meals = [];
-      if (dietJson != null) {
-        final decoded =
-            jsonDecode(dietJson) as Map<String, dynamic>;
-        final dietState = DailyDietState.fromJson(decoded);
-        meals = dietState.meals;
-      }
+      final meals = await _repo.loadMeals(_dateKey(date));
       state = DailyDietState(
         date: date,
         meals: meals,
@@ -749,17 +722,15 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   /// 주간 평균 칼로리 계산
   Future<double> getWeeklyAverageCalories() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       final total = <double>[];
 
       for (int i = 0; i < 7; i++) {
         final date = DateTime.now().subtract(Duration(days: i));
-        final json = prefs.getString(_dateKey(date));
-        if (json != null) {
-          final decoded =
-              jsonDecode(json) as Map<String, dynamic>;
-          final dietState = DailyDietState.fromJson(decoded);
-          total.add(dietState.totalCalories);
+        final meals = await _repo.loadMeals(_dateKey(date));
+        if (meals.isNotEmpty) {
+          final dayCals = meals.fold<double>(
+              0, (sum, m) => sum + m.totalCalories);
+          total.add(dayCals);
         }
       }
 
@@ -810,32 +781,27 @@ class FoodDatabaseState {
 }
 
 class FoodDatabaseNotifier extends StateNotifier<FoodDatabaseState> {
-  FoodDatabaseNotifier()
+  FoodDatabaseNotifier(this._repo)
       : super(const FoodDatabaseState(allFoods: kAllFoodItems)) {
     _loadRecentFoods();
   }
 
-  static const String _recentKey = 'recent_foods';
+  final DietRepository _repo;
 
   Future<void> _loadRecentFoods() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final json = prefs.getString(_recentKey);
-      if (json != null) {
-        final List<dynamic> decoded = jsonDecode(json) as List<dynamic>;
-        final recentIds = decoded.cast<String>();
-        final recentFoods = recentIds
-            .map((id) {
-              try {
-                return state.allFoods.firstWhere((f) => f.id == id);
-              } catch (_) {
-                return null;
-              }
-            })
-            .whereType<FoodItem>()
-            .toList();
-        state = state.copyWith(recentFoods: recentFoods);
-      }
+      final recentIds = await _repo.loadRecentFoodIds();
+      final recentFoods = recentIds
+          .map((id) {
+            try {
+              return state.allFoods.firstWhere((f) => f.id == id);
+            } catch (_) {
+              return null;
+            }
+          })
+          .whereType<FoodItem>()
+          .toList();
+      state = state.copyWith(recentFoods: recentFoods);
     } catch (_) {}
   }
 
@@ -854,9 +820,7 @@ class FoodDatabaseNotifier extends StateNotifier<FoodDatabaseState> {
     state = state.copyWith(recentFoods: updated);
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          _recentKey, jsonEncode(updated.map((f) => f.id).toList()));
+      await _repo.saveRecentFoodIds(updated.map((f) => f.id).toList());
     } catch (_) {}
   }
 
@@ -895,13 +859,19 @@ class FoodDatabaseNotifier extends StateNotifier<FoodDatabaseState> {
 /// 오늘 식단 Provider
 final dietProvider =
     StateNotifierProvider<DietNotifier, DailyDietState>(
-  (ref) => DietNotifier(),
+  (ref) {
+    final repo = ref.watch(dietRepositoryProvider);
+    return DietNotifier(repo);
+  },
 );
 
 /// 음식 데이터베이스 Provider
 final foodDatabaseProvider =
     StateNotifierProvider<FoodDatabaseNotifier, FoodDatabaseState>(
-  (ref) => FoodDatabaseNotifier(),
+  (ref) {
+    final repo = ref.watch(dietRepositoryProvider);
+    return FoodDatabaseNotifier(repo);
+  },
 );
 
 /// 검색된 음식 목록 Provider

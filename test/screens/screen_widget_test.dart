@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/l10n/app_localizations.dart';
+import '../helpers/test_overrides.dart';
 import 'package:health_app/features/workout_guide/screens/workout_guide_screen.dart';
 import 'package:health_app/features/diet/screens/diet_screen.dart';
 import 'package:health_app/features/hydration/screens/hydration_screen.dart';
@@ -18,6 +19,7 @@ import 'package:health_app/features/community/screens/community_screen.dart';
 
 Widget _buildTestableWidget(Widget child) {
   return ProviderScope(
+    overrides: testOverrides,
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

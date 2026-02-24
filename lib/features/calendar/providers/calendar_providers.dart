@@ -1,13 +1,12 @@
 // 운동 일정 캘린더 상태 관리
 // CalendarNotifier: 날짜별 운동 계획 관리, 스플릿 템플릿, 반복 일정
 
-import 'dart:convert';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:health_app/core/models/workout_model.dart';
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 
 // ---------------------------------------------------------------------------
 // WorkoutPlanEntry - 캘린더 단일 운동 계획 항목
@@ -223,7 +222,7 @@ const Map<int, String> kFullBodyTemplate = {
 
 class CalendarNotifier
     extends StateNotifier<CalendarState> {
-  CalendarNotifier()
+  CalendarNotifier(this._repo)
       : super(CalendarState(
           selectedDate: DateTime.now(),
           focusedMonth: DateTime.now(),
@@ -231,27 +230,32 @@ class CalendarNotifier
     _loadFromPrefs();
   }
 
-  static const String _prefsKey = 'calendar_plans';
+  final CalendarRepository _repo;
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
   Future<void> _loadFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final json = prefs.getString(_prefsKey);
-      if (json != null) {
-        final decoded =
-            jsonDecode(json) as Map<String, dynamic>;
-        final loaded = CalendarState.fromJson(decoded);
-        state = state.copyWith(plans: loaded.plans);
-      }
+      final rawPlans = await _repo.loadAllPlans();
+      final plans = rawPlans.map((key, value) {
+        final entries = value
+            .map((e) => WorkoutPlanEntry.fromJson(e))
+            .toList();
+        return MapEntry(key, entries);
+      });
+      state = state.copyWith(plans: plans);
     } catch (_) {}
   }
 
   Future<void> _saveToPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_prefsKey, jsonEncode(state.toJson()));
+      final rawPlans = state.plans.map((key, value) {
+        return MapEntry(
+          key,
+          value.map((e) => e.toJson()).toList(),
+        );
+      });
+      await _repo.saveAllPlans(rawPlans);
     } catch (_) {}
   }
 
@@ -473,7 +477,10 @@ class CalendarNotifier
 /// 캘린더 전체 상태 Provider
 final calendarProvider =
     StateNotifierProvider<CalendarNotifier, CalendarState>(
-  (ref) => CalendarNotifier(),
+  (ref) {
+    final repo = ref.watch(calendarRepositoryProvider);
+    return CalendarNotifier(repo);
+  },
 );
 
 /// 선택된 날짜 Provider
