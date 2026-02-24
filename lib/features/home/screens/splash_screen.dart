@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/core/router/app_router.dart';
@@ -14,26 +15,39 @@ import 'package:health_app/l10n/app_localizations.dart';
 enum SplashStatus { initializing, done }
 
 // ---------------------------------------------------------------------------
+// 스플래시 초기화 결과
+// ---------------------------------------------------------------------------
+
+/// 스플래시 초기화 결과: 인증 여부 + 온보딩 완료 여부
+class SplashResult {
+  final bool isAuthenticated;
+  final bool onboardingCompleted;
+
+  const SplashResult({
+    required this.isAuthenticated,
+    required this.onboardingCompleted,
+  });
+}
+
+// ---------------------------------------------------------------------------
 // 초기화 Provider
 // ---------------------------------------------------------------------------
 
 /// 앱 초기화를 담당하는 FutureProvider.
-/// SharedPreferences를 초기화하고 온보딩 완료 여부를 반환합니다.
-final splashInitProvider = FutureProvider<bool>((ref) async {
+/// Firebase Auth 상태 확인 + 온보딩 완료 여부를 반환합니다.
+final splashInitProvider = FutureProvider<SplashResult>((ref) async {
   // 2초 딜레이 (스플래시 애니메이션 재생 시간 확보)
-  await Future.wait([
-    Future<void>.delayed(const Duration(seconds: 2)),
-    _checkOnboardingCompleted(),
-  ]).then((results) => results);
+  await Future<void>.delayed(const Duration(seconds: 2));
 
+  final firebaseUser = FirebaseAuth.instance.currentUser;
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('onboarding_completed') ?? false;
+  final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+
+  return SplashResult(
+    isAuthenticated: firebaseUser != null,
+    onboardingCompleted: onboardingCompleted,
+  );
 });
-
-Future<bool> _checkOnboardingCompleted() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('onboarding_completed') ?? false;
-}
 
 // ---------------------------------------------------------------------------
 // SplashScreen
@@ -118,16 +132,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     super.dispose();
   }
 
-  void _navigateWhenReady(bool onboardingCompleted) {
+  void _navigateWhenReady(SplashResult result) {
     if (_navigationTriggered || !mounted) return;
     _navigationTriggered = true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      if (onboardingCompleted) {
-        context.go(AppRoutes.home);
-      } else {
+
+      // 인증 플로우: 미인증 → 로그인, 인증+미온보딩 → 온보딩, 인증+완료 → 홈
+      if (!result.isAuthenticated) {
+        context.go(AppRoutes.login);
+      } else if (!result.onboardingCompleted) {
         context.go(AppRoutes.onboarding);
+      } else {
+        context.go(AppRoutes.home);
       }
     });
   }
@@ -136,7 +154,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     // Provider 감시 - 초기화 완료 시 자동 이동
-    ref.listen<AsyncValue<bool>>(splashInitProvider, (_, next) {
+    ref.listen<AsyncValue<SplashResult>>(splashInitProvider, (_, next) {
       next.whenData(_navigateWhenReady);
     });
 

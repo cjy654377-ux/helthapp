@@ -225,10 +225,49 @@ challenges/{id}/ → participants/
 - flutter analyze: 0 issues, flutter test: 269 passed
 - 총: lib 42파일 + test 9파일
 
+**Firebase Phase 2 완료 (2026-02-25) - Auth + 로그인 UI:**
+- core/models/app_user.dart: Firebase User 래핑 모델 (fromFirebaseUser, toJson, fromJson, copyWith)
+- core/services/auth_service.dart: Firebase Auth 래퍼 (이메일/Google/Apple 로그인, 로그아웃, 비밀번호 재설정)
+- features/auth/providers/auth_providers.dart: AuthState + AuthNotifier (StateNotifier), authProvider, currentUserProvider
+- features/auth/screens/login_screen.dart: 로그인/회원가입 UI (그라디언트 배경, 이메일/Google/Apple, 모드 토글)
+- core/router/app_router.dart: /login 라우트 추가
+- features/home/screens/splash_screen.dart: Firebase Auth 체크 → 미인증→로그인, 인증+미온보딩→온보딩, 인증+완료→홈
+- ARB 키 35개 추가 (로그인/회원가입/에러 메시지, ko+en)
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 46파일 + test 9파일
+
+**Firebase Phase 3 완료 (2026-02-25) - Firestore 클라우드 동기화:**
+- core/repositories/firestore_data_repository.dart: 5개 Firestore 구현체
+  - FirestoreWorkoutRepository: users/{uid}/workouts/*, personalRecords/*
+  - FirestoreDietRepository: users/{uid}/meals/{dateKey}, settings/nutritionGoal, settings/recentFoods
+  - FirestoreHydrationRepository: users/{uid}/hydration/{dateKey}, settings/hydrationSettings
+  - FirestoreCalendarRepository: users/{uid}/calendarPlans/{dateKey}
+  - FirestoreCommunityRepository: users/{uid}/settings/communityProfile, teams/{teamId}/posts/*, shares/*
+- core/services/sync_service.dart: 로컬→Firestore 마이그레이션 (synced_{uid} 키로 중복 방지)
+- core/repositories/repository_providers.dart: 인증 시 Firestore 구현체로 자동 전환
+- firestore.rules: 사용자 데이터 본인만 접근, 팀 인증 사용자 읽기/쓰기
+- 배치 쓰기 500개 단위 청크, 오프라인 퍼시스턴스 활성화
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 48파일 + test 9파일
+
+**Firebase Phase 4 완료 (2026-02-25) - Firebase Storage:**
+- core/services/storage_service.dart: 사진 업로드/삭제 서비스
+  - uploadBodyProgressPhoto: users/{uid}/body_progress/{timestamp}_{pose}.jpg
+  - uploadProfilePhoto: users/{uid}/profile/avatar.jpg
+  - uploadTeamPostImage: teams/{teamId}/posts/{postId}/{uuid}.jpg
+  - deleteByUrl, deleteByPath, deleteFolder (재귀 삭제)
+  - storageServiceProvider (Riverpod)
+- flutter analyze: 0 issues, flutter test: 269 passed
+- 총: lib 49파일 + test 9파일
+
+**Firebase 연동 전체 완료 (Phase 0~4)**
+
 **다음 작업:**
-- Firebase Phase 2 (Auth + 로그인 UI) 시작
-- flutterfire configure 실행하여 실제 앱 ID 교체 필요
+- 자가 리뷰 사이클 (코드 품질/개선 조사)
+- 기존 Provider들에 Repository 주입 연결 (현재 Provider들은 아직 직접 SharedPreferences 사용)
 
 **기타 대기:**
+- iOS GoogleService-Info.plist 생성/추가
+- Info.plist REVERSED_CLIENT_ID 실제 값 교체
 - 홈화면 위젯 (iOS/Android)
 - 앱 아이콘 + Fastlane 빌드

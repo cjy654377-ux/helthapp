@@ -382,5 +382,89 @@
   "daysAgo": "{count}d ago",
   "cannotLoadData": "Cannot load data.",
   "goalWithMl": "Goal {amount}ml",
-  "volumeInfo": "Volume: {value} kg"
+  "volumeInfo": "Volume: {value} kg",
+
+  "loginTitle": "Sign In",
+  "@loginTitle": { "description": "Login screen title" },
+
+  "loginSubtitle": "Start your healthy lifestyle",
+  "@loginSubtitle": { "description": "Login screen subtitle" },
+
+  "emailLabel": "Email",
+  "@emailLabel": { "description": "Email field label" },
+
+  "passwordLabel": "Password",
+  "@passwordLabel": { "description": "Password field label" },
+
+  "emailHint": "Enter your email",
+  "@emailHint": { "description": "Email field hint" },
+
+  "passwordHint": "Enter your password",
+  "@passwordHint": { "description": "Password field hint" },
+
+  "signIn": "Sign In",
+  "@signIn": { "description": "Sign in button" },
+
+  "signUp": "Sign Up",
+  "@signUp": { "description": "Sign up button" },
+
+  "signInWithGoogle": "Sign in with Google",
+  "@signInWithGoogle": { "description": "Google sign in button" },
+
+  "signInWithApple": "Sign in with Apple",
+  "@signInWithApple": { "description": "Apple sign in button" },
+
+  "forgotPassword": "Forgot your password?",
+  "@forgotPassword": { "description": "Forgot password link" },
+
+  "noAccount": "Don't have an account?",
+  "@noAccount": { "description": "No account prompt" },
+
+  "haveAccount": "Already have an account?",
+  "@haveAccount": { "description": "Have account prompt" },
+
+  "orDivider": "or",
+  "@orDivider": { "description": "Or divider text" },
+
+  "passwordResetSent": "Password Reset Email Sent",
+  "@passwordResetSent": { "description": "Password reset email sent title" },
+
+  "passwordResetDesc": "We've sent a password reset link to the email you provided.",
+  "@passwordResetDesc": { "description": "Password reset description" },
+
+  "authErrorEmailInUse": "This email is already in use.",
+  "@authErrorEmailInUse": { "description": "Auth error: email already in use" },
+
+  "authErrorInvalidEmail": "Invalid email format.",
+  "@authErrorInvalidEmail": { "description": "Auth error: invalid email" },
+
+  "authErrorWeakPassword": "Password is too weak. Use at least 6 characters.",
+  "@authErrorWeakPassword": { "description": "Auth error: weak password" },
+
+  "authErrorUserNotFound": "No account found with this email.",
+  "@authErrorUserNotFound": { "description": "Auth error: user not found" },
+
+  "authErrorWrongPassword": "Incorrect password.",
+  "@authErrorWrongPassword": { "description": "Auth error: wrong password" },
+
+  "authErrorTooManyRequests": "Too many requests. Please try again later.",
+  "@authErrorTooManyRequests": { "description": "Auth error: too many requests" },
+
+  "authErrorUserDisabled": "This account has been disabled.",
+  "@authErrorUserDisabled": { "description": "Auth error: user disabled" },
+
+  "authErrorCancelled": "Sign in was cancelled.",
+  "@authErrorCancelled": { "description": "Auth error: cancelled" },
+
+  "authErrorUnknown": "An unknown error occurred.",
+  "@authErrorUnknown": { "description": "Auth error: unknown" },
+
+  "sendResetLink": "Send Reset Link",
+  "@sendResetLink": { "description": "Send reset link button" },
+
+  "resetPasswordTitle": "Reset Password",
+  "@resetPasswordTitle": { "description": "Reset password dialog title" },
+
+  "resetPasswordDesc": "Enter your email and we'll send you a password reset link.",
+  "@resetPasswordDesc": { "description": "Reset password dialog description" }
 }

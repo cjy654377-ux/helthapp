@@ -17,6 +17,7 @@ import 'package:health_app/features/calendar/screens/calendar_screen.dart';
 import 'package:health_app/features/profile/screens/profile_screen.dart';
 import 'package:health_app/features/profile/screens/settings_screen.dart';
 import 'package:health_app/features/profile/screens/stats_screen.dart';
+import 'package:health_app/features/auth/screens/login_screen.dart';
 
 // ---------------------------------------------------------------------------
 // 라우트 경로 상수
@@ -36,6 +37,7 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String settings = '/settings';
   static const String stats = '/stats';
+  static const String login = '/login';
 
   // 프라이빗 생성자 - 인스턴스화 방지
   AppRoutes._();
@@ -77,6 +79,15 @@ class AppRouter {
         path: AppRoutes.splash,
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+
+      // ------------------------------------------------------------------
+      // 로그인 라우트 - 바텀 네비게이션 없이 전체 화면
+      // ------------------------------------------------------------------
+      GoRoute(
+        path: AppRoutes.login,
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
       ),
 
       // ------------------------------------------------------------------

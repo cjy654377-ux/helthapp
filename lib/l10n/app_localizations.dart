@@ -2275,6 +2275,174 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'볼륨: {value} kg'**
   String volumeInfo(String value);
+
+  /// Login screen title
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get loginTitle;
+
+  /// Login screen subtitle
+  ///
+  /// In ko, this message translates to:
+  /// **'건강한 라이프스타일을 시작하세요'**
+  String get loginSubtitle;
+
+  /// Email field label
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일'**
+  String get emailLabel;
+
+  /// Password field label
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호'**
+  String get passwordLabel;
+
+  /// Email field hint
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 입력하세요'**
+  String get emailHint;
+
+  /// Password field hint
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 입력하세요'**
+  String get passwordHint;
+
+  /// Sign in button
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get signIn;
+
+  /// Sign up button
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입'**
+  String get signUp;
+
+  /// Google sign in button
+  ///
+  /// In ko, this message translates to:
+  /// **'Google로 로그인'**
+  String get signInWithGoogle;
+
+  /// Apple sign in button
+  ///
+  /// In ko, this message translates to:
+  /// **'Apple로 로그인'**
+  String get signInWithApple;
+
+  /// Forgot password link
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 잊으셨나요?'**
+  String get forgotPassword;
+
+  /// No account prompt
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 없으신가요?'**
+  String get noAccount;
+
+  /// Have account prompt
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 계정이 있으신가요?'**
+  String get haveAccount;
+
+  /// Or divider text
+  ///
+  /// In ko, this message translates to:
+  /// **'또는'**
+  String get orDivider;
+
+  /// Password reset email sent title
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 재설정 메일 전송'**
+  String get passwordResetSent;
+
+  /// Password reset description
+  ///
+  /// In ko, this message translates to:
+  /// **'입력하신 이메일로 비밀번호 재설정 링크를 보냈습니다.'**
+  String get passwordResetDesc;
+
+  /// Auth error: email already in use
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 사용 중인 이메일입니다.'**
+  String get authErrorEmailInUse;
+
+  /// Auth error: invalid email
+  ///
+  /// In ko, this message translates to:
+  /// **'유효하지 않은 이메일 형식입니다.'**
+  String get authErrorInvalidEmail;
+
+  /// Auth error: weak password
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 너무 약합니다. 6자 이상 입력하세요.'**
+  String get authErrorWeakPassword;
+
+  /// Auth error: user not found
+  ///
+  /// In ko, this message translates to:
+  /// **'등록되지 않은 이메일입니다.'**
+  String get authErrorUserNotFound;
+
+  /// Auth error: wrong password
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 올바르지 않습니다.'**
+  String get authErrorWrongPassword;
+
+  /// Auth error: too many requests
+  ///
+  /// In ko, this message translates to:
+  /// **'너무 많은 요청이 발생했습니다. 잠시 후 다시 시도하세요.'**
+  String get authErrorTooManyRequests;
+
+  /// Auth error: user disabled
+  ///
+  /// In ko, this message translates to:
+  /// **'비활성화된 계정입니다.'**
+  String get authErrorUserDisabled;
+
+  /// Auth error: cancelled
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인이 취소되었습니다.'**
+  String get authErrorCancelled;
+
+  /// Auth error: unknown
+  ///
+  /// In ko, this message translates to:
+  /// **'알 수 없는 오류가 발생했습니다.'**
+  String get authErrorUnknown;
+
+  /// Send reset link button
+  ///
+  /// In ko, this message translates to:
+  /// **'재설정 링크 보내기'**
+  String get sendResetLink;
+
+  /// Reset password dialog title
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 재설정'**
+  String get resetPasswordTitle;
+
+  /// Reset password dialog description
+  ///
+  /// In ko, this message translates to:
+  /// **'가입한 이메일을 입력하면 비밀번호 재설정 링크를 보내드립니다.'**
+  String get resetPasswordDesc;
 }
 
 class _AppLocalizationsDelegate

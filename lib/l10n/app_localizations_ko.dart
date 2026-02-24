@@ -1138,4 +1138,88 @@ class AppLocalizationsKo extends AppLocalizations {
   String volumeInfo(String value) {
     return '볼륨: $value kg';
   }
+
+  @override
+  String get loginTitle => '로그인';
+
+  @override
+  String get loginSubtitle => '건강한 라이프스타일을 시작하세요';
+
+  @override
+  String get emailLabel => '이메일';
+
+  @override
+  String get passwordLabel => '비밀번호';
+
+  @override
+  String get emailHint => '이메일을 입력하세요';
+
+  @override
+  String get passwordHint => '비밀번호를 입력하세요';
+
+  @override
+  String get signIn => '로그인';
+
+  @override
+  String get signUp => '회원가입';
+
+  @override
+  String get signInWithGoogle => 'Google로 로그인';
+
+  @override
+  String get signInWithApple => 'Apple로 로그인';
+
+  @override
+  String get forgotPassword => '비밀번호를 잊으셨나요?';
+
+  @override
+  String get noAccount => '계정이 없으신가요?';
+
+  @override
+  String get haveAccount => '이미 계정이 있으신가요?';
+
+  @override
+  String get orDivider => '또는';
+
+  @override
+  String get passwordResetSent => '비밀번호 재설정 메일 전송';
+
+  @override
+  String get passwordResetDesc => '입력하신 이메일로 비밀번호 재설정 링크를 보냈습니다.';
+
+  @override
+  String get authErrorEmailInUse => '이미 사용 중인 이메일입니다.';
+
+  @override
+  String get authErrorInvalidEmail => '유효하지 않은 이메일 형식입니다.';
+
+  @override
+  String get authErrorWeakPassword => '비밀번호가 너무 약합니다. 6자 이상 입력하세요.';
+
+  @override
+  String get authErrorUserNotFound => '등록되지 않은 이메일입니다.';
+
+  @override
+  String get authErrorWrongPassword => '비밀번호가 올바르지 않습니다.';
+
+  @override
+  String get authErrorTooManyRequests => '너무 많은 요청이 발생했습니다. 잠시 후 다시 시도하세요.';
+
+  @override
+  String get authErrorUserDisabled => '비활성화된 계정입니다.';
+
+  @override
+  String get authErrorCancelled => '로그인이 취소되었습니다.';
+
+  @override
+  String get authErrorUnknown => '알 수 없는 오류가 발생했습니다.';
+
+  @override
+  String get sendResetLink => '재설정 링크 보내기';
+
+  @override
+  String get resetPasswordTitle => '비밀번호 재설정';
+
+  @override
+  String get resetPasswordDesc => '가입한 이메일을 입력하면 비밀번호 재설정 링크를 보내드립니다.';
 }

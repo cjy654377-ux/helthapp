@@ -1144,4 +1144,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String volumeInfo(String value) {
     return 'Volume: $value kg';
   }
+
+  @override
+  String get loginTitle => 'Sign In';
+
+  @override
+  String get loginSubtitle => 'Start your healthy lifestyle';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get emailHint => 'Enter your email';
+
+  @override
+  String get passwordHint => 'Enter your password';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get signInWithGoogle => 'Sign in with Google';
+
+  @override
+  String get signInWithApple => 'Sign in with Apple';
+
+  @override
+  String get forgotPassword => 'Forgot your password?';
+
+  @override
+  String get noAccount => 'Don\'t have an account?';
+
+  @override
+  String get haveAccount => 'Already have an account?';
+
+  @override
+  String get orDivider => 'or';
+
+  @override
+  String get passwordResetSent => 'Password Reset Email Sent';
+
+  @override
+  String get passwordResetDesc =>
+      'We\'ve sent a password reset link to the email you provided.';
+
+  @override
+  String get authErrorEmailInUse => 'This email is already in use.';
+
+  @override
+  String get authErrorInvalidEmail => 'Invalid email format.';
+
+  @override
+  String get authErrorWeakPassword =>
+      'Password is too weak. Use at least 6 characters.';
+
+  @override
+  String get authErrorUserNotFound => 'No account found with this email.';
+
+  @override
+  String get authErrorWrongPassword => 'Incorrect password.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many requests. Please try again later.';
+
+  @override
+  String get authErrorUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get authErrorCancelled => 'Sign in was cancelled.';
+
+  @override
+  String get authErrorUnknown => 'An unknown error occurred.';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get resetPasswordTitle => 'Reset Password';
+
+  @override
+  String get resetPasswordDesc =>
+      'Enter your email and we\'ll send you a password reset link.';
 }
