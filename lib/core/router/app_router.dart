@@ -28,11 +28,11 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String home = '/';
   static const String workoutGuide = '/workout-guide';
-  static const String workoutLog = '/workout-log';
+  static const String workoutLog = '/workout-guide/log';
   static const String community = '/community';
   static const String challenges = '/challenges';
   static const String diet = '/diet';
-  static const String hydration = '/hydration';
+  static const String hydration = '/diet/hydration';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
   static const String settings = '/settings';

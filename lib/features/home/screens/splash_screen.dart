@@ -43,10 +43,13 @@ final splashInitProvider = FutureProvider<SplashResult>((ref) async {
   final firebaseUser = FirebaseAuth.instance.currentUser;
   final isAuthenticated = firebaseUser != null;
 
-  // 로그인 사용자: 로컬 → 클라우드 동기화
+  // 로그인 사용자: 로컬 → 클라우드 동기화 (실패해도 앱 진입 차단하지 않음)
   if (isAuthenticated) {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    await SyncService(uid: uid).migrateLocalToCloud();
+    try {
+      await SyncService(uid: firebaseUser.uid).migrateLocalToCloud();
+    } catch (_) {
+      // 동기화 실패는 비치명적 — 다음 실행 시 재시도
+    }
   }
 
   final prefs = await SharedPreferences.getInstance();

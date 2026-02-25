@@ -478,10 +478,9 @@ class LocalAchievementRepository implements AchievementRepository {
   Future<List<String>> loadUnlockedIds() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final settings = prefs.getString('user_settings');
-      if (settings == null) return [];
-      final map = jsonDecode(settings) as Map<String, dynamic>;
-      final list = map[_unlockedKey];
+      final raw = prefs.getString(_unlockedKey);
+      if (raw == null) return [];
+      final list = jsonDecode(raw);
       if (list is List) return list.whereType<String>().toList();
       return [];
     } catch (_) {
@@ -501,12 +500,11 @@ class LocalAchievementRepository implements AchievementRepository {
   Future<Map<String, int>> loadProgressCounts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final settings = prefs.getString('user_settings');
-      if (settings == null) return {};
-      final map = jsonDecode(settings) as Map<String, dynamic>;
-      final progress = map[_progressKey];
-      if (progress is Map<String, dynamic>) {
-        return progress.map((k, v) => MapEntry(k, v is int ? v : 0));
+      final raw = prefs.getString(_progressKey);
+      if (raw == null) return {};
+      final decoded = jsonDecode(raw);
+      if (decoded is Map<String, dynamic>) {
+        return decoded.map((k, v) => MapEntry(k, v is int ? v : 0));
       }
       return {};
     } catch (_) {
