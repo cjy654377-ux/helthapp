@@ -142,7 +142,8 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
   Map<String, List<BodyProgressEntry>> groupByMonth() {
     final map = <String, List<BodyProgressEntry>>{};
     for (final e in state) {
-      final key = DateFormat('yyyy년 MM월').format(e.date);
+      // locale-neutral key (yyyy-MM) → UI에서 l10n 포맷으로 표시
+      final key = DateFormat('yyyy-MM').format(e.date);
       map.putIfAbsent(key, () => []).add(e);
     }
     return map;
@@ -299,6 +300,13 @@ class _MonthGroup extends StatelessWidget {
 
   const _MonthGroup({required this.month, required this.entries});
 
+  // "yyyy-MM" key → l10n 포맷된 월 표시
+  String _formatMonth(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final parts = month.split('-');
+    return l10n.dateFormatYearMonth(parts[0], parts[1]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -309,7 +317,7 @@ class _MonthGroup extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Text(
-            month,
+            _formatMonth(context),
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.bold,
@@ -487,7 +495,11 @@ class _PhotoDetailScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         title: Text(
-          DateFormat('yyyy년 MM월 dd일').format(entry.date),
+          l10n.dateFormatFull(
+            entry.date.year.toString(),
+            entry.date.month.toString().padLeft(2, '0'),
+            entry.date.day.toString().padLeft(2, '0'),
+          ),
           style: const TextStyle(color: Colors.white),
         ),
       ),
@@ -844,7 +856,11 @@ class _EntryPickerSheet extends StatelessWidget {
                             ),
                     ),
                   ),
-                  title: Text(DateFormat('yyyy년 MM월 dd일').format(e.date)),
+                  title: Text(l10n.dateFormatFull(
+                    e.date.year.toString(),
+                    e.date.month.toString().padLeft(2, '0'),
+                    e.date.day.toString().padLeft(2, '0'),
+                  )),
                   subtitle: Text(
                     [
                       e.pose.label,
@@ -1368,6 +1384,7 @@ class _TimelineItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final file = File(entry.imagePath);
 
     return IntrinsicHeight(
@@ -1417,7 +1434,11 @@ class _TimelineItem extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                DateFormat('yyyy년 MM월 dd일').format(entry.date),
+                                l10n.dateFormatFull(
+                                  entry.date.year.toString(),
+                                  entry.date.month.toString().padLeft(2, '0'),
+                                  entry.date.day.toString().padLeft(2, '0'),
+                                ),
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),

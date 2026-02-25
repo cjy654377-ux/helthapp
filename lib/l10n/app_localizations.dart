@@ -2605,6 +2605,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'홈으로 돌아가기'**
   String get goHome;
+
+  /// Height input hint
+  ///
+  /// In ko, this message translates to:
+  /// **'예: 175'**
+  String get hintHeight;
+
+  /// Weight input hint
+  ///
+  /// In ko, this message translates to:
+  /// **'예: 70'**
+  String get hintWeight;
+
+  /// Year-month format
+  ///
+  /// In ko, this message translates to:
+  /// **'{year}년 {month}월'**
+  String dateFormatYearMonth(String year, String month);
+
+  /// Full date format
+  ///
+  /// In ko, this message translates to:
+  /// **'{year}년 {month}월 {day}일'**
+  String dateFormatFull(String year, String month, String day);
 }
 
 class _AppLocalizationsDelegate

@@ -554,5 +554,23 @@
   "@requestedPageNotFound": { "description": "404 error page message" },
 
   "goHome": "Go Home",
-  "@goHome": { "description": "Go home button on error page" }
+  "@goHome": { "description": "Go home button on error page" },
+
+  "hintHeight": "e.g. 175",
+  "@hintHeight": { "description": "Height input hint" },
+
+  "hintWeight": "e.g. 70",
+  "@hintWeight": { "description": "Weight input hint" },
+
+  "dateFormatYearMonth": "{month}/{year}",
+  "@dateFormatYearMonth": {
+    "description": "Year-month format",
+    "placeholders": { "year": { "type": "String" }, "month": { "type": "String" } }
+  },
+
+  "dateFormatFull": "{month}/{day}/{year}",
+  "@dateFormatFull": {
+    "description": "Full date format",
+    "placeholders": { "year": { "type": "String" }, "month": { "type": "String" }, "day": { "type": "String" } }
+  }
 }

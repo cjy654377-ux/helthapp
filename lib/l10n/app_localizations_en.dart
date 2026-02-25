@@ -1316,4 +1316,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goHome => 'Go Home';
+
+  @override
+  String get hintHeight => 'e.g. 175';
+
+  @override
+  String get hintWeight => 'e.g. 70';
+
+  @override
+  String dateFormatYearMonth(String year, String month) {
+    return '$month/$year';
+  }
+
+  @override
+  String dateFormatFull(String year, String month, String day) {
+    return '$month/$day/$year';
+  }
 }

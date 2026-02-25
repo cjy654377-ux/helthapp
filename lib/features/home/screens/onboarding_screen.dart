@@ -490,8 +490,8 @@ class _BasicInfoPageState extends ConsumerState<_BasicInfoPage> {
                       controller: _heightController,
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: true),
-                      decoration: const InputDecoration(
-                        hintText: '예: 175',
+                      decoration: InputDecoration(
+                        hintText: l10n.hintHeight,
                         suffixText: 'cm',
                       ),
                       onChanged: notifier.setHeight,
@@ -510,8 +510,8 @@ class _BasicInfoPageState extends ConsumerState<_BasicInfoPage> {
                       controller: _weightController,
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: true),
-                      decoration: const InputDecoration(
-                        hintText: '예: 70',
+                      decoration: InputDecoration(
+                        hintText: l10n.hintWeight,
                         suffixText: 'kg',
                       ),
                       onChanged: notifier.setWeight,

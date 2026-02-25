@@ -1260,5 +1260,23 @@
   "@requestedPageNotFound": { "description": "404 error page message" },
 
   "goHome": "홈으로 돌아가기",
-  "@goHome": { "description": "Go home button on error page" }
+  "@goHome": { "description": "Go home button on error page" },
+
+  "hintHeight": "예: 175",
+  "@hintHeight": { "description": "Height input hint" },
+
+  "hintWeight": "예: 70",
+  "@hintWeight": { "description": "Weight input hint" },
+
+  "dateFormatYearMonth": "{year}년 {month}월",
+  "@dateFormatYearMonth": {
+    "description": "Year-month format",
+    "placeholders": { "year": { "type": "String" }, "month": { "type": "String" } }
+  },
+
+  "dateFormatFull": "{year}년 {month}월 {day}일",
+  "@dateFormatFull": {
+    "description": "Full date format",
+    "placeholders": { "year": { "type": "String" }, "month": { "type": "String" }, "day": { "type": "String" } }
+  }
 }

@@ -1306,4 +1306,20 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get goHome => '홈으로 돌아가기';
+
+  @override
+  String get hintHeight => '예: 175';
+
+  @override
+  String get hintWeight => '예: 70';
+
+  @override
+  String dateFormatYearMonth(String year, String month) {
+    return '$year년 $month월';
+  }
+
+  @override
+  String dateFormatFull(String year, String month, String day) {
+    return '$year년 $month월 $day일';
+  }
 }
