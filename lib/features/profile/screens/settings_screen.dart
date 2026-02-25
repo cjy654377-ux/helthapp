@@ -1,4 +1,5 @@
 // 설정 화면 - 프로필/운동/알림/앱/기타 섹션 포함
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -145,60 +146,72 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
     _load();
   }
 
+  Timer? _debounce;
+
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
-    state = SettingsState(
-      nickname: prefs.getString(_SettingsKeys.nickname) ?? '',
-      height: prefs.getString(_SettingsKeys.height) ?? '',
-      weight: prefs.getString(_SettingsKeys.weight) ?? '',
-      gender: prefs.getString(_SettingsKeys.gender) ?? '남',
-      avatarPath: prefs.getString(_SettingsKeys.avatarPath),
-      restSeconds: prefs.getInt(_SettingsKeys.restSeconds) ?? 90,
-      weightUnit: prefs.getString(_SettingsKeys.weightUnit) ?? 'kg',
-      workoutSplit: prefs.getString(_SettingsKeys.workoutSplit) ?? 'PPL',
-      workoutNotif: prefs.getBool(_SettingsKeys.workoutNotif) ?? false,
-      workoutNotifHour: prefs.getInt(_SettingsKeys.workoutNotifHour) ?? 7,
-      workoutNotifMin: prefs.getInt(_SettingsKeys.workoutNotifMin) ?? 0,
-      hydrationNotif: prefs.getBool(_SettingsKeys.hydrationNotif) ?? false,
-      hydrationInterval: prefs.getInt(_SettingsKeys.hydrationInterval) ?? 2,
-      dietBreakfast: prefs.getBool(_SettingsKeys.dietBreakfast) ?? false,
-      dietLunch: prefs.getBool(_SettingsKeys.dietLunch) ?? false,
-      dietDinner: prefs.getBool(_SettingsKeys.dietDinner) ?? false,
-      themeMode: prefs.getString(_SettingsKeys.themeMode) ?? 'system',
-      language: prefs.getString(_SettingsKeys.language) ?? 'ko',
-    );
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      state = SettingsState(
+        nickname: prefs.getString(_SettingsKeys.nickname) ?? '',
+        height: prefs.getString(_SettingsKeys.height) ?? '',
+        weight: prefs.getString(_SettingsKeys.weight) ?? '',
+        gender: prefs.getString(_SettingsKeys.gender) ?? '남',
+        avatarPath: prefs.getString(_SettingsKeys.avatarPath),
+        restSeconds: prefs.getInt(_SettingsKeys.restSeconds) ?? 90,
+        weightUnit: prefs.getString(_SettingsKeys.weightUnit) ?? 'kg',
+        workoutSplit: prefs.getString(_SettingsKeys.workoutSplit) ?? 'PPL',
+        workoutNotif: prefs.getBool(_SettingsKeys.workoutNotif) ?? false,
+        workoutNotifHour: prefs.getInt(_SettingsKeys.workoutNotifHour) ?? 7,
+        workoutNotifMin: prefs.getInt(_SettingsKeys.workoutNotifMin) ?? 0,
+        hydrationNotif: prefs.getBool(_SettingsKeys.hydrationNotif) ?? false,
+        hydrationInterval: prefs.getInt(_SettingsKeys.hydrationInterval) ?? 2,
+        dietBreakfast: prefs.getBool(_SettingsKeys.dietBreakfast) ?? false,
+        dietLunch: prefs.getBool(_SettingsKeys.dietLunch) ?? false,
+        dietDinner: prefs.getBool(_SettingsKeys.dietDinner) ?? false,
+        themeMode: prefs.getString(_SettingsKeys.themeMode) ?? 'system',
+        language: prefs.getString(_SettingsKeys.language) ?? 'ko',
+      );
+    } catch (_) {
+      // 로드 실패 시 기본값 유지
+    }
   }
 
   Future<void> _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    final s = state;
-    await prefs.setString(_SettingsKeys.nickname, s.nickname);
-    await prefs.setString(_SettingsKeys.height, s.height);
-    await prefs.setString(_SettingsKeys.weight, s.weight);
-    await prefs.setString(_SettingsKeys.gender, s.gender);
-    if (s.avatarPath != null) {
-      await prefs.setString(_SettingsKeys.avatarPath, s.avatarPath!);
-    } else {
-      await prefs.remove(_SettingsKeys.avatarPath);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final s = state;
+      await prefs.setString(_SettingsKeys.nickname, s.nickname);
+      await prefs.setString(_SettingsKeys.height, s.height);
+      await prefs.setString(_SettingsKeys.weight, s.weight);
+      await prefs.setString(_SettingsKeys.gender, s.gender);
+      if (s.avatarPath != null) {
+        await prefs.setString(_SettingsKeys.avatarPath, s.avatarPath!);
+      } else {
+        await prefs.remove(_SettingsKeys.avatarPath);
+      }
+      await prefs.setInt(_SettingsKeys.restSeconds, s.restSeconds);
+      await prefs.setString(_SettingsKeys.weightUnit, s.weightUnit);
+      await prefs.setString(_SettingsKeys.workoutSplit, s.workoutSplit);
+      await prefs.setBool(_SettingsKeys.workoutNotif, s.workoutNotif);
+      await prefs.setInt(_SettingsKeys.workoutNotifHour, s.workoutNotifHour);
+      await prefs.setInt(_SettingsKeys.workoutNotifMin, s.workoutNotifMin);
+      await prefs.setBool(_SettingsKeys.hydrationNotif, s.hydrationNotif);
+      await prefs.setInt(_SettingsKeys.hydrationInterval, s.hydrationInterval);
+      await prefs.setBool(_SettingsKeys.dietBreakfast, s.dietBreakfast);
+      await prefs.setBool(_SettingsKeys.dietLunch, s.dietLunch);
+      await prefs.setBool(_SettingsKeys.dietDinner, s.dietDinner);
+      await prefs.setString(_SettingsKeys.themeMode, s.themeMode);
+      await prefs.setString(_SettingsKeys.language, s.language);
+    } catch (_) {
+      // 저장 실패 시 무시 — UI 상태는 이미 갱신됨
     }
-    await prefs.setInt(_SettingsKeys.restSeconds, s.restSeconds);
-    await prefs.setString(_SettingsKeys.weightUnit, s.weightUnit);
-    await prefs.setString(_SettingsKeys.workoutSplit, s.workoutSplit);
-    await prefs.setBool(_SettingsKeys.workoutNotif, s.workoutNotif);
-    await prefs.setInt(_SettingsKeys.workoutNotifHour, s.workoutNotifHour);
-    await prefs.setInt(_SettingsKeys.workoutNotifMin, s.workoutNotifMin);
-    await prefs.setBool(_SettingsKeys.hydrationNotif, s.hydrationNotif);
-    await prefs.setInt(_SettingsKeys.hydrationInterval, s.hydrationInterval);
-    await prefs.setBool(_SettingsKeys.dietBreakfast, s.dietBreakfast);
-    await prefs.setBool(_SettingsKeys.dietLunch, s.dietLunch);
-    await prefs.setBool(_SettingsKeys.dietDinner, s.dietDinner);
-    await prefs.setString(_SettingsKeys.themeMode, s.themeMode);
-    await prefs.setString(_SettingsKeys.language, s.language);
   }
 
   void _update(SettingsState updated) {
     state = updated;
-    _save();
+    // 디바운스: 연속 입력 시 500ms 후 1회만 저장
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), _save);
   }
 
   void setNickname(String v) => _update(state.copyWith(nickname: v));
@@ -231,9 +244,19 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   void setLanguage(String v) => _update(state.copyWith(language: v));
 
   Future<void> clearAllData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    state = const SettingsState();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      state = const SettingsState();
+    } catch (_) {
+      // 삭제 실패 시 상태 유지
+    }
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 }
 

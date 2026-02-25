@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/core/services/sync_service.dart';
+import 'package:health_app/features/home/screens/onboarding_screen.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
@@ -52,8 +52,7 @@ final splashInitProvider = FutureProvider<SplashResult>((ref) async {
     }
   }
 
-  final prefs = await SharedPreferences.getInstance();
-  final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+  final onboardingCompleted = await ref.read(onboardingCompletedProvider.future);
 
   return SplashResult(
     isAuthenticated: isAuthenticated,

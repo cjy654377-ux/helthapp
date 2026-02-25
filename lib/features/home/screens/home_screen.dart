@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
@@ -11,15 +9,7 @@ import 'package:health_app/features/workout_log/providers/workout_providers.dart
 import 'package:health_app/features/hydration/providers/hydration_providers.dart';
 import 'package:health_app/features/diet/providers/diet_providers.dart';
 import 'package:health_app/features/calendar/providers/calendar_providers.dart';
-
-// ---------------------------------------------------------------------------
-// Providers
-// ---------------------------------------------------------------------------
-
-final userNicknameProvider = FutureProvider<String>((ref) async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('user_nickname') ?? '사용자';
-});
+import 'package:health_app/features/profile/screens/settings_screen.dart';
 
 // ---------------------------------------------------------------------------
 // HomeScreen
@@ -67,7 +57,9 @@ class HomeScreen extends ConsumerWidget {
 
   SliverAppBar _buildAppBar(BuildContext context, ColorScheme colorScheme, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final nickname = ref.watch(userNicknameProvider).valueOrNull ?? l10n.defaultUser;
+    final nickname = ref.watch(settingsProvider).nickname.isEmpty
+        ? l10n.defaultUser
+        : ref.watch(settingsProvider).nickname;
     return SliverAppBar(
       expandedHeight: 120,
       floating: true,
