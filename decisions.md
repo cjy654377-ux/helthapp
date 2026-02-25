@@ -286,10 +286,31 @@ challenges/{id}/ → participants/
 - main.dart에서 LocalStorageService().init() 제거
 - flutter analyze: 0 issues, flutter test: 269 passed
 
+**자가 리뷰 2차 완료 (2026-02-25):**
+- body fat TextField controller 누락 버그 수정 (const 제거)
+- 비밀번호 리셋 결과 미확인 → success/fail 분기 처리
+- SyncService: Challenge + Achievement 마이그레이션 추가 + splash 배선
+- flutter analyze: 0 issues, flutter test: 269 passed
+
+**자가 리뷰 3차 완료 (2026-02-25):**
+- LocalAchievementRepository: load에서 잘못된 키('user_settings') → 올바른 키로 수정 (데이터 유실 방지)
+- AppRoutes: workoutLog('/workout-log' → '/workout-guide/log'), hydration('/hydration' → '/diet/hydration') 경로 수정
+- SyncService try-catch + firebaseUser 변수 재사용 (null 안전성)
+- 바텀 네비게이션 5개 탭 + 404 에러 페이지 + 공통 재시도 버튼 i18n 전환 (8 ARB 키)
+- 에러 페이지: 릴리즈 모드에서 에러 상세 숨김 (kDebugMode)
+- home_screen: userNicknameProvider 제거 → settingsProvider 직접 참조
+- splash_screen: SharedPreferences 직접 접근 → onboardingCompletedProvider 재사용
+- settings_screen: _load/_save/clearAllData 에러 핸들링 + _save 500ms 디바운스 + dispose
+- flutter analyze: 0 issues, flutter test: 269 passed
+
 **다음 작업:**
-- 자가 리뷰 2차 (추가 개선사항 탐색)
+- 자가 리뷰 4차 (notification_service i18n, achievement_service i18n 등)
 
 **기타 대기:**
+- notification_service.dart 푸시 알림 텍스트 i18n
+- achievement_service.dart 업적 제목/설명 i18n
+- body_progress_screen BodyProgressRepository 추출
+- onboarding_screen SharedPreferences → settingsProvider 통합
 - iOS GoogleService-Info.plist 생성/추가
 - Info.plist REVERSED_CLIENT_ID 실제 값 교체
 - 홈화면 위젯 (iOS/Android)
