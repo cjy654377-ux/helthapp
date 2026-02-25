@@ -98,10 +98,12 @@ class CommunityScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
+            tooltip: l10n.tooltipSearch,
             onPressed: () {},
           ),
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
+            tooltip: l10n.tooltipNotifications,
             onPressed: () {},
           ),
         ],
@@ -475,6 +477,8 @@ class _FeedPostCard extends StatelessWidget {
                                 fontSize: 11,
                                 color: authorColor,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           const SizedBox(width: 6),
@@ -492,6 +496,7 @@ class _FeedPostCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.more_horiz, color: Colors.grey),
+                  tooltip: l10n.tooltipMoreOptions,
                   onPressed: () {},
                 ),
               ],

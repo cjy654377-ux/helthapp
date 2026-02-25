@@ -578,5 +578,135 @@
   "@privacyPolicyContent": { "description": "Privacy policy content placeholder" },
 
   "termsOfServiceContent": "Terms of service content is being prepared.",
-  "@termsOfServiceContent": { "description": "Terms of service content placeholder" }
+  "@termsOfServiceContent": { "description": "Terms of service content placeholder" },
+
+  "splitLabelPpl": "PPL",
+  "@splitLabelPpl": { "description": "Split label: PPL" },
+
+  "splitLabelUpperLower": "Upper/Lower",
+  "@splitLabelUpperLower": { "description": "Split label: upper/lower" },
+
+  "splitLabelFullBody": "Full Body",
+  "@splitLabelFullBody": { "description": "Split label: full body" },
+
+  "splitLabelCustom": "Custom",
+  "@splitLabelCustom": { "description": "Split label: custom" },
+
+  "templateAppliedPpl": "PPL template applied.",
+  "@templateAppliedPpl": { "description": "PPL template applied snackbar" },
+
+  "templateAppliedUpperLower": "Upper/Lower split template applied.",
+  "@templateAppliedUpperLower": { "description": "Upper/lower template applied snackbar" },
+
+  "templateAppliedFullBody": "Full Body template applied.",
+  "@templateAppliedFullBody": { "description": "Full body template applied snackbar" },
+
+  "templateAppliedCustom": "Custom template: please add plans manually.",
+  "@templateAppliedCustom": { "description": "Custom template applied snackbar" },
+
+  "planCompleted": "Done",
+  "@planCompleted": { "description": "Plan completed badge" },
+
+  "restOneMinute": "1 min",
+  "@restOneMinute": { "description": "Rest preset: 1 minute" },
+
+  "restOneMinuteHalf": "1 min 30 sec",
+  "@restOneMinuteHalf": { "description": "Rest preset: 1 minute 30 seconds" },
+
+  "restTwoMinutes": "2 min",
+  "@restTwoMinutes": { "description": "Rest preset: 2 minutes" },
+
+  "restThreeMinutes": "3 min",
+  "@restThreeMinutes": { "description": "Rest preset: 3 minutes" },
+
+  "noMealsRecorded": "No meals recorded today",
+  "@noMealsRecorded": { "description": "Empty state: no meals recorded today" },
+
+  "addMealToStart": "Add a meal to start tracking nutrition",
+  "@addMealToStart": { "description": "Empty state subtitle: add meal to start tracking" },
+
+  "macroNutrients": "Macronutrients",
+  "@macroNutrients": { "description": "Macro nutrients section title" },
+
+  "noMealRecord": "No record",
+  "@noMealRecord": { "description": "No meal record label" },
+
+  "foodCountCalories": "{count} foods · {calories} kcal",
+  "@foodCountCalories": {
+    "description": "Food count and calories summary",
+    "placeholders": {
+      "count": { "type": "int" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "addMealTypeLabel": "Add {mealType}",
+  "@addMealTypeLabel": {
+    "description": "Add meal of type label",
+    "placeholders": { "mealType": { "type": "String" } }
+  },
+
+  "noMealTypeRecord": "No {mealType} record",
+  "@noMealTypeRecord": {
+    "description": "No record for meal type",
+    "placeholders": { "mealType": { "type": "String" } }
+  },
+
+  "mealFoodCountCalories": "{count} foods · {calories} kcal",
+  "@mealFoodCountCalories": {
+    "description": "Meal food count and calories",
+    "placeholders": {
+      "count": { "type": "int" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "addFoodPrompt": "Please add food",
+  "@addFoodPrompt": { "description": "Prompt to add food to meal" },
+
+  "addFood": "Add Food",
+  "@addFood": { "description": "Add food sheet title" },
+
+  "searchFoodHint": "Search food name",
+  "@searchFoodHint": { "description": "Search food hint text" },
+
+  "servingReference": "Per serving {size}{unit} · {calories} kcal",
+  "@servingReference": {
+    "description": "Serving reference info",
+    "placeholders": {
+      "size": { "type": "String" },
+      "unit": { "type": "String" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "recentFoods": "Recent Foods",
+  "@recentFoods": { "description": "Recent foods section label" },
+
+  "frequentFoods": "Frequent Foods",
+  "@frequentFoods": { "description": "Frequent foods section label" },
+
+  "searchResultCount": "Results ({count})",
+  "@searchResultCount": {
+    "description": "Search result count label",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "noSearchResultsFood": "No search results",
+  "@noSearchResultsFood": { "description": "No food search results" },
+
+  "confirmAdd": "Add",
+  "@confirmAdd": { "description": "Confirm add button" },
+
+  "tooltipSearch": "Search",
+  "@tooltipSearch": { "description": "Tooltip for search icon button" },
+
+  "tooltipNotifications": "Notifications",
+  "@tooltipNotifications": { "description": "Tooltip for notifications icon button" },
+
+  "tooltipCalendar": "Calendar",
+  "@tooltipCalendar": { "description": "Tooltip for calendar icon button" },
+
+  "tooltipMoreOptions": "More options",
+  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" }
 }

@@ -11,12 +11,6 @@ import 'package:health_app/l10n/app_localizations.dart';
 // Split template helpers (pure UI helpers, no local state)
 // ---------------------------------------------------------------------------
 
-const _kSplitLabels = {
-  'ppl': 'PPL',
-  'upper_lower': '상하체 분할',
-  'full_body': '풀바디',
-};
-
 Color _splitColor(String? splitType) {
   switch (splitType) {
     case 'ppl':
@@ -30,8 +24,17 @@ Color _splitColor(String? splitType) {
   }
 }
 
-String _splitLabel(String? splitType) {
-  return _kSplitLabels[splitType] ?? '사용자 정의';
+String _splitLabel(AppLocalizations l10n, String? splitType) {
+  switch (splitType) {
+    case 'ppl':
+      return l10n.splitLabelPpl;
+    case 'upper_lower':
+      return l10n.splitLabelUpperLower;
+    case 'full_body':
+      return l10n.splitLabelFullBody;
+    default:
+      return l10n.splitLabelCustom;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -63,10 +66,10 @@ class CalendarScreen extends ConsumerWidget {
             onSelected: (template) =>
                 _applyTemplate(context, template, ref),
             itemBuilder: (_) => [
-              _buildTemplateMenuItem('ppl', '🔵 PPL'),
-              _buildTemplateMenuItem('upper_lower', '🟣 상하체 분할'),
-              _buildTemplateMenuItem('full_body', '🟢 풀바디'),
-              _buildTemplateMenuItem('custom', '🟠 사용자 정의'),
+              _buildTemplateMenuItem(l10n, 'ppl'),
+              _buildTemplateMenuItem(l10n, 'upper_lower'),
+              _buildTemplateMenuItem(l10n, 'full_body'),
+              _buildTemplateMenuItem(l10n, 'custom'),
             ],
           ),
         ],
@@ -147,7 +150,9 @@ class CalendarScreen extends ConsumerWidget {
     );
   }
 
-  PopupMenuItem<String> _buildTemplateMenuItem(String value, String label) {
+  PopupMenuItem<String> _buildTemplateMenuItem(
+      AppLocalizations l10n, String value) {
+    final splitType = value == 'custom' ? null : value;
     return PopupMenuItem<String>(
       value: value,
       child: Row(
@@ -156,12 +161,12 @@ class CalendarScreen extends ConsumerWidget {
             width: 10,
             height: 10,
             decoration: BoxDecoration(
-              color: _splitColor(value == 'custom' ? null : value),
+              color: _splitColor(splitType),
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: 8),
-          Text(_splitLabel(value == 'custom' ? null : value)),
+          Text(_splitLabel(l10n, splitType)),
         ],
       ),
     );
@@ -169,12 +174,13 @@ class CalendarScreen extends ConsumerWidget {
 
   void _applyTemplate(
       BuildContext context, String template, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     switch (template) {
       case 'ppl':
         ref.read(calendarProvider.notifier).applyPPLSplit();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('PPL 템플릿이 적용되었습니다.'),
+            content: Text(l10n.templateAppliedPpl),
             backgroundColor: _splitColor('ppl'),
           ),
         );
@@ -183,7 +189,7 @@ class CalendarScreen extends ConsumerWidget {
         ref.read(calendarProvider.notifier).applyUpperLowerSplit();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('상하체 분할 템플릿이 적용되었습니다.'),
+            content: Text(l10n.templateAppliedUpperLower),
             backgroundColor: _splitColor('upper_lower'),
           ),
         );
@@ -192,7 +198,7 @@ class CalendarScreen extends ConsumerWidget {
         ref.read(calendarProvider.notifier).applyFullBodySplit();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('풀바디 템플릿이 적용되었습니다.'),
+            content: Text(l10n.templateAppliedFullBody),
             backgroundColor: _splitColor('full_body'),
           ),
         );
@@ -201,7 +207,7 @@ class CalendarScreen extends ConsumerWidget {
       default:
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('사용자 정의 템플릿: 직접 계획을 추가해 주세요.'),
+            content: Text(l10n.templateAppliedCustom),
             backgroundColor: _splitColor(null),
           ),
         );
@@ -216,7 +222,14 @@ class CalendarScreen extends ConsumerWidget {
     List<String> selectedBodyParts = [];
     String? selectedSplitType; // null = custom/orange
 
-    const bodyPartOptions = ['가슴', '등', '어깨', '팔', '하체', '코어'];
+    final bodyPartOptions = [
+      l10n.chest,
+      l10n.back,
+      l10n.shoulders,
+      l10n.arms,
+      l10n.legs,
+      l10n.core,
+    ];
     const splitOptions = <String?>['ppl', 'upper_lower', 'full_body', null];
 
     showModalBottomSheet(
@@ -235,7 +248,7 @@ class CalendarScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${date.month}월 ${date.day}일 운동 계획 추가',
+                  l10n.addPlanForDate(date.month, date.day),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -288,7 +301,7 @@ class CalendarScreen extends ConsumerWidget {
                   spacing: 8,
                   children: splitOptions.map((type) {
                     return ChoiceChip(
-                      label: Text(_splitLabel(type)),
+                      label: Text(_splitLabel(l10n, type)),
                       selected: selectedSplitType == type,
                       selectedColor:
                           _splitColor(type).withValues(alpha: 0.2),
@@ -355,8 +368,16 @@ class _DayPlanList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
-    final dayLabel = weekdays[selectedDay.weekday - 1];
+    final weekdayLabels = [
+      l10n.weekdayMon,
+      l10n.weekdayTue,
+      l10n.weekdayWed,
+      l10n.weekdayThu,
+      l10n.weekdayFri,
+      l10n.weekdaySat,
+      l10n.weekdaySun,
+    ];
+    final dayLabel = weekdayLabels[selectedDay.weekday - 1];
 
     return Column(
       children: [
@@ -365,7 +386,8 @@ class _DayPlanList extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                '${selectedDay.month}월 ${selectedDay.day}일 ($dayLabel)',
+                l10n.dateFormatMonthDay(
+                    selectedDay.month, selectedDay.day, dayLabel),
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -375,7 +397,7 @@ class _DayPlanList extends StatelessWidget {
               TextButton.icon(
                 onPressed: onAdd,
                 icon: const Icon(Icons.add, size: 16),
-                label: const Text('추가'),
+                label: Text(l10n.add),
               ),
             ],
           ),
@@ -422,8 +444,9 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final color = _splitColor(plan.splitType);
-    final label = _splitLabel(plan.splitType);
+    final label = _splitLabel(l10n, plan.splitType);
     final isCompleted = plan.isCompleted;
 
     return Card(
@@ -474,15 +497,15 @@ class _PlanCard extends StatelessWidget {
                         color: Colors.green.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.check_circle,
+                          const Icon(Icons.check_circle,
                               size: 11, color: Colors.green),
-                          SizedBox(width: 3),
+                          const SizedBox(width: 3),
                           Text(
-                            '완료',
-                            style: TextStyle(
+                            l10n.planCompleted,
+                            style: const TextStyle(
                               fontSize: 11,
                               color: Colors.green,
                               fontWeight: FontWeight.w600,

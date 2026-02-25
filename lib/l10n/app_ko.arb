@@ -1284,5 +1284,135 @@
   "@privacyPolicyContent": { "description": "Privacy policy content placeholder" },
 
   "termsOfServiceContent": "이용약관 내용은 준비 중입니다.",
-  "@termsOfServiceContent": { "description": "Terms of service content placeholder" }
+  "@termsOfServiceContent": { "description": "Terms of service content placeholder" },
+
+  "splitLabelPpl": "PPL",
+  "@splitLabelPpl": { "description": "Split label: PPL" },
+
+  "splitLabelUpperLower": "상하체 분할",
+  "@splitLabelUpperLower": { "description": "Split label: upper/lower" },
+
+  "splitLabelFullBody": "풀바디",
+  "@splitLabelFullBody": { "description": "Split label: full body" },
+
+  "splitLabelCustom": "사용자 정의",
+  "@splitLabelCustom": { "description": "Split label: custom" },
+
+  "templateAppliedPpl": "PPL 템플릿이 적용되었습니다.",
+  "@templateAppliedPpl": { "description": "PPL template applied snackbar" },
+
+  "templateAppliedUpperLower": "상하체 분할 템플릿이 적용되었습니다.",
+  "@templateAppliedUpperLower": { "description": "Upper/lower template applied snackbar" },
+
+  "templateAppliedFullBody": "풀바디 템플릿이 적용되었습니다.",
+  "@templateAppliedFullBody": { "description": "Full body template applied snackbar" },
+
+  "templateAppliedCustom": "사용자 정의 템플릿: 직접 계획을 추가해 주세요.",
+  "@templateAppliedCustom": { "description": "Custom template applied snackbar" },
+
+  "planCompleted": "완료",
+  "@planCompleted": { "description": "Plan completed badge" },
+
+  "restOneMinute": "1분",
+  "@restOneMinute": { "description": "Rest preset: 1 minute" },
+
+  "restOneMinuteHalf": "1분 30초",
+  "@restOneMinuteHalf": { "description": "Rest preset: 1 minute 30 seconds" },
+
+  "restTwoMinutes": "2분",
+  "@restTwoMinutes": { "description": "Rest preset: 2 minutes" },
+
+  "restThreeMinutes": "3분",
+  "@restThreeMinutes": { "description": "Rest preset: 3 minutes" },
+
+  "noMealsRecorded": "오늘 기록된 식사가 없습니다",
+  "@noMealsRecorded": { "description": "Empty state: no meals recorded today" },
+
+  "addMealToStart": "식사를 추가하여 영양 관리를 시작하세요",
+  "@addMealToStart": { "description": "Empty state subtitle: add meal to start tracking" },
+
+  "macroNutrients": "매크로 영양소",
+  "@macroNutrients": { "description": "Macro nutrients section title" },
+
+  "noMealRecord": "기록 없음",
+  "@noMealRecord": { "description": "No meal record label" },
+
+  "foodCountCalories": "{count}개 음식 · {calories} kcal",
+  "@foodCountCalories": {
+    "description": "Food count and calories summary",
+    "placeholders": {
+      "count": { "type": "int" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "addMealTypeLabel": "{mealType} 추가",
+  "@addMealTypeLabel": {
+    "description": "Add meal of type label",
+    "placeholders": { "mealType": { "type": "String" } }
+  },
+
+  "noMealTypeRecord": "{mealType} 기록이 없습니다",
+  "@noMealTypeRecord": {
+    "description": "No record for meal type",
+    "placeholders": { "mealType": { "type": "String" } }
+  },
+
+  "mealFoodCountCalories": "{count}개 음식 · {calories} kcal",
+  "@mealFoodCountCalories": {
+    "description": "Meal food count and calories",
+    "placeholders": {
+      "count": { "type": "int" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "addFoodPrompt": "음식을 추가해 주세요",
+  "@addFoodPrompt": { "description": "Prompt to add food to meal" },
+
+  "addFood": "음식 추가",
+  "@addFood": { "description": "Add food sheet title" },
+
+  "searchFoodHint": "음식 이름 검색",
+  "@searchFoodHint": { "description": "Search food hint text" },
+
+  "servingReference": "기준 1회 {size}{unit} · {calories} kcal",
+  "@servingReference": {
+    "description": "Serving reference info",
+    "placeholders": {
+      "size": { "type": "String" },
+      "unit": { "type": "String" },
+      "calories": { "type": "String" }
+    }
+  },
+
+  "recentFoods": "최근 음식",
+  "@recentFoods": { "description": "Recent foods section label" },
+
+  "frequentFoods": "자주 먹는 음식",
+  "@frequentFoods": { "description": "Frequent foods section label" },
+
+  "searchResultCount": "검색 결과 ({count})",
+  "@searchResultCount": {
+    "description": "Search result count label",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "noSearchResultsFood": "검색 결과가 없습니다",
+  "@noSearchResultsFood": { "description": "No food search results" },
+
+  "confirmAdd": "추가하기",
+  "@confirmAdd": { "description": "Confirm add button" },
+
+  "tooltipSearch": "검색",
+  "@tooltipSearch": { "description": "Tooltip for search icon button" },
+
+  "tooltipNotifications": "알림",
+  "@tooltipNotifications": { "description": "Tooltip for notifications icon button" },
+
+  "tooltipCalendar": "캘린더",
+  "@tooltipCalendar": { "description": "Tooltip for calendar icon button" },
+
+  "tooltipMoreOptions": "더보기",
+  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" }
 }

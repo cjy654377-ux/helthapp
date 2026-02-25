@@ -65,6 +65,7 @@ class DietScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_today_outlined),
+            tooltip: l10n.tooltipCalendar,
             onPressed: () {},
           ),
         ],
@@ -77,13 +78,13 @@ class DietScreen extends ConsumerWidget {
           _MacroCard(dietState: dietState),
           const SizedBox(height: 16),
           if (dietState.totalCalories == 0 && dietState.meals.isEmpty)
-            const EmptyStateWidget(
+            EmptyStateWidget(
               icon: Icons.restaurant_outlined,
-              title: '오늘 기록된 식사가 없습니다',
-              subtitle: '식사를 추가하여 영양 관리를 시작하세요',
+              title: l10n.noMealsRecorded,
+              subtitle: l10n.addMealToStart,
             )
           else
-            ...const [
+            ...[
               MealType.breakfast,
               MealType.lunch,
               MealType.dinner,
@@ -247,9 +248,9 @@ class _MacroCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              '매크로 영양소',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Text(
+              l10n.macroNutrients,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
@@ -389,6 +390,7 @@ class _MealTypeSectionCardState extends ConsumerState<_MealTypeSectionCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final dietState = ref.watch(dietProvider);
     final meals = dietState.getMealsByType(widget.mealType);
     final color = widget.mealType.color;
@@ -438,8 +440,11 @@ class _MealTypeSectionCardState extends ConsumerState<_MealTypeSectionCard> {
                         ),
                         Text(
                           meals.isEmpty
-                              ? '기록 없음'
-                              : '${totalCalories.toStringAsFixed(0)} kcal · $totalFoods개 음식',
+                              ? l10n.noMealRecord
+                              : l10n.foodCountCalories(
+                                  totalFoods,
+                                  totalCalories.toStringAsFixed(0),
+                                ),
                           style: const TextStyle(
                               fontSize: 12, color: Colors.grey),
                         ),
@@ -454,7 +459,7 @@ class _MealTypeSectionCardState extends ConsumerState<_MealTypeSectionCard> {
                         meals.last.id,
                       ),
                       icon: const Icon(Icons.add, size: 16),
-                      label: const Text('추가'),
+                      label: Text(l10n.add),
                       style: TextButton.styleFrom(
                         foregroundColor: color,
                         padding: EdgeInsets.zero,
@@ -521,20 +526,21 @@ class _EmptyMealPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final color = mealType.color;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         children: [
           Text(
-            '${mealType.label} 기록이 없습니다',
+            l10n.noMealTypeRecord(mealType.label),
             style: const TextStyle(color: Colors.grey, fontSize: 13),
           ),
           const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: onAddMeal,
             icon: const Icon(Icons.add, size: 16),
-            label: Text('${mealType.label} 추가'),
+            label: Text(l10n.addMealTypeLabel(mealType.label)),
             style: OutlinedButton.styleFrom(
               foregroundColor: color,
               side: BorderSide(color: color.withValues(alpha: 0.5)),
@@ -560,6 +566,7 @@ class _MealBlock extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -571,7 +578,10 @@ class _MealBlock extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  '${meal.foods.length}개 음식 · ${meal.totalCalories.toStringAsFixed(0)} kcal',
+                  l10n.mealFoodCountCalories(
+                    meal.foods.length,
+                    meal.totalCalories.toStringAsFixed(0),
+                  ),
                   style: const TextStyle(
                       fontSize: 12, color: Colors.grey),
                 ),
@@ -598,7 +608,7 @@ class _MealBlock extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: 16, vertical: 8),
             child: Text(
-              '음식을 추가해 주세요',
+              l10n.addFoodPrompt,
               style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey.withValues(alpha: 0.7)),
@@ -730,6 +740,7 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final filteredFoods = ref.watch(filteredFoodsProvider);
     final recentFoods = ref.watch(recentFoodsProvider);
     final isSearching = _searchController.text.isNotEmpty;
@@ -741,9 +752,9 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '음식 추가',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          Text(
+            l10n.addFood,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
 
@@ -753,7 +764,7 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
             autofocus: true,
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: '음식 이름 검색',
+              hintText: l10n.searchFoodHint,
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -795,8 +806,11 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
                               fontSize: 14),
                         ),
                         Text(
-                          '기준 1회 ${_selectedFood!.servingSize.toStringAsFixed(0)}${_selectedFood!.servingUnit} · '
-                          '${_selectedFood!.calories.toStringAsFixed(0)} kcal',
+                          l10n.servingReference(
+                            _selectedFood!.servingSize.toStringAsFixed(0),
+                            _selectedFood!.servingUnit,
+                            _selectedFood!.calories.toStringAsFixed(0),
+                          ),
                           style: const TextStyle(
                               fontSize: 11, color: Colors.grey),
                         ),
@@ -832,9 +846,9 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
 
           // Recent foods (shown when not searching)
           if (!isSearching && recentFoods.isNotEmpty) ...[
-            const Text(
-              '최근 음식',
-              style: TextStyle(
+            Text(
+              l10n.recentFoods,
+              style: const TextStyle(
                   fontWeight: FontWeight.w600, color: Colors.grey),
             ),
             const SizedBox(height: 8),
@@ -862,14 +876,14 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
           // Search results
           if (isSearching || recentFoods.isEmpty) ...[
             if (!isSearching && recentFoods.isEmpty)
-              const Text(
-                '자주 먹는 음식',
-                style: TextStyle(
+              Text(
+                l10n.frequentFoods,
+                style: const TextStyle(
                     fontWeight: FontWeight.w600, color: Colors.grey),
               ),
             if (isSearching)
               Text(
-                '검색 결과 (${filteredFoods.length})',
+                l10n.searchResultCount(filteredFoods.length),
                 style: const TextStyle(
                     fontWeight: FontWeight.w600, color: Colors.grey),
               ),
@@ -877,17 +891,19 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 200),
               child: filteredFoods.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: Text(
-                          '검색 결과가 없습니다',
-                          style: TextStyle(color: Colors.grey),
+                          l10n.noSearchResultsFood,
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ),
                     )
                   : ListView.separated(
                       shrinkWrap: true,
+                      keyboardDismissBehavior:
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       itemCount: filteredFoods.length,
                       separatorBuilder: (_, _) =>
                           const Divider(height: 1),
@@ -936,7 +952,7 @@ class _AddFoodSheetState extends ConsumerState<_AddFoodSheet> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('추가하기'),
+              child: Text(l10n.confirmAdd),
             ),
           ),
         ],

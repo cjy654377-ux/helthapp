@@ -43,7 +43,10 @@ class _WorkoutLogScreenState extends ConsumerState<WorkoutLogScreen> {
         actions: [
           if (session.exercises.isNotEmpty)
             TextButton.icon(
-              onPressed: () => _showCompleteDialog(context),
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                _showCompleteDialog(context);
+              },
               icon: const Icon(Icons.check_circle_outline),
               label: Text(l10n.complete),
               style: TextButton.styleFrom(foregroundColor: Colors.green),
@@ -163,6 +166,7 @@ class _WorkoutLogScreenState extends ConsumerState<WorkoutLogScreen> {
           ),
           ElevatedButton(
             onPressed: () {
+              HapticFeedback.heavyImpact();
               Navigator.pop(ctx);
               _completeWorkout();
             },
@@ -793,7 +797,10 @@ class _ExerciseCardState extends State<_ExerciseCard> {
                 children: [
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: widget.onAddSet,
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        widget.onAddSet();
+                      },
                       icon: const Icon(Icons.add, size: 16),
                       label: Text(l10n.addSet),
                       style: OutlinedButton.styleFrom(
@@ -829,13 +836,23 @@ class _ExerciseCardState extends State<_ExerciseCard> {
                         ],
                       ),
                     ),
-                    itemBuilder: (_) => const [
-                      PopupMenuItem(value: 60, child: Text('1분')),
-                      PopupMenuItem(
-                          value: 90, child: Text('1분 30초')),
-                      PopupMenuItem(value: 120, child: Text('2분')),
-                      PopupMenuItem(value: 180, child: Text('3분')),
-                    ],
+                    itemBuilder: (ctx) {
+                      final restL10n = AppLocalizations.of(ctx);
+                      return [
+                        PopupMenuItem(
+                            value: 60,
+                            child: Text(restL10n.restOneMinute)),
+                        PopupMenuItem(
+                            value: 90,
+                            child: Text(restL10n.restOneMinuteHalf)),
+                        PopupMenuItem(
+                            value: 120,
+                            child: Text(restL10n.restTwoMinutes)),
+                        PopupMenuItem(
+                            value: 180,
+                            child: Text(restL10n.restThreeMinutes)),
+                      ];
+                    },
                   ),
                 ],
               ),
@@ -955,7 +972,10 @@ class _SetRow extends StatelessWidget {
             width: 32,
             child: Checkbox(
               value: isCompleted,
-              onChanged: (_) => onToggleComplete(),
+              onChanged: (_) {
+                HapticFeedback.lightImpact();
+                onToggleComplete();
+              },
               activeColor: Colors.green,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),

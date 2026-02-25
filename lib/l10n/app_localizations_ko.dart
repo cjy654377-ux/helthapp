@@ -1328,4 +1328,118 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get termsOfServiceContent => '이용약관 내용은 준비 중입니다.';
+
+  @override
+  String get splitLabelPpl => 'PPL';
+
+  @override
+  String get splitLabelUpperLower => '상하체 분할';
+
+  @override
+  String get splitLabelFullBody => '풀바디';
+
+  @override
+  String get splitLabelCustom => '사용자 정의';
+
+  @override
+  String get templateAppliedPpl => 'PPL 템플릿이 적용되었습니다.';
+
+  @override
+  String get templateAppliedUpperLower => '상하체 분할 템플릿이 적용되었습니다.';
+
+  @override
+  String get templateAppliedFullBody => '풀바디 템플릿이 적용되었습니다.';
+
+  @override
+  String get templateAppliedCustom => '사용자 정의 템플릿: 직접 계획을 추가해 주세요.';
+
+  @override
+  String get planCompleted => '완료';
+
+  @override
+  String get restOneMinute => '1분';
+
+  @override
+  String get restOneMinuteHalf => '1분 30초';
+
+  @override
+  String get restTwoMinutes => '2분';
+
+  @override
+  String get restThreeMinutes => '3분';
+
+  @override
+  String get noMealsRecorded => '오늘 기록된 식사가 없습니다';
+
+  @override
+  String get addMealToStart => '식사를 추가하여 영양 관리를 시작하세요';
+
+  @override
+  String get macroNutrients => '매크로 영양소';
+
+  @override
+  String get noMealRecord => '기록 없음';
+
+  @override
+  String foodCountCalories(int count, String calories) {
+    return '$count개 음식 · $calories kcal';
+  }
+
+  @override
+  String addMealTypeLabel(String mealType) {
+    return '$mealType 추가';
+  }
+
+  @override
+  String noMealTypeRecord(String mealType) {
+    return '$mealType 기록이 없습니다';
+  }
+
+  @override
+  String mealFoodCountCalories(int count, String calories) {
+    return '$count개 음식 · $calories kcal';
+  }
+
+  @override
+  String get addFoodPrompt => '음식을 추가해 주세요';
+
+  @override
+  String get addFood => '음식 추가';
+
+  @override
+  String get searchFoodHint => '음식 이름 검색';
+
+  @override
+  String servingReference(String size, String unit, String calories) {
+    return '기준 1회 $size$unit · $calories kcal';
+  }
+
+  @override
+  String get recentFoods => '최근 음식';
+
+  @override
+  String get frequentFoods => '자주 먹는 음식';
+
+  @override
+  String searchResultCount(int count) {
+    return '검색 결과 ($count)';
+  }
+
+  @override
+  String get noSearchResultsFood => '검색 결과가 없습니다';
+
+  @override
+  String get confirmAdd => '추가하기';
+
+  @override
+  String get tooltipSearch => '검색';
+
+  @override
+  String get tooltipNotifications => '알림';
+
+  @override
+  String get tooltipCalendar => '캘린더';
+
+  @override
+  String get tooltipMoreOptions => '더보기';
 }

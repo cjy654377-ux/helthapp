@@ -619,6 +619,16 @@ class _QuickActionButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
+  // VoidCallback은 const가 불가능하므로 const 인스턴스 생성은 호출부에 달려 있음.
+  // 내부에서 const로 고정 가능한 값은 const로 선언.
+  static const _borderRadius = BorderRadius.all(Radius.circular(16));
+  static const _padding = EdgeInsets.symmetric(vertical: 16);
+  static const _iconSize = 26.0;
+  static const _textStyle = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+  );
+
   const _QuickActionButton({
     required this.icon,
     required this.label,
@@ -630,25 +640,21 @@ class _QuickActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: _borderRadius,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: _padding,
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: _borderRadius,
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 26),
+            Icon(icon, color: color, size: _iconSize),
             const SizedBox(height: 6),
             Text(
               label,
-              style: TextStyle(
-                color: color,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
+              style: _textStyle.copyWith(color: color),
             ),
           ],
         ),

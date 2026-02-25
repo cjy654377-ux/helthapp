@@ -2641,6 +2641,210 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이용약관 내용은 준비 중입니다.'**
   String get termsOfServiceContent;
+
+  /// Split label: PPL
+  ///
+  /// In ko, this message translates to:
+  /// **'PPL'**
+  String get splitLabelPpl;
+
+  /// Split label: upper/lower
+  ///
+  /// In ko, this message translates to:
+  /// **'상하체 분할'**
+  String get splitLabelUpperLower;
+
+  /// Split label: full body
+  ///
+  /// In ko, this message translates to:
+  /// **'풀바디'**
+  String get splitLabelFullBody;
+
+  /// Split label: custom
+  ///
+  /// In ko, this message translates to:
+  /// **'사용자 정의'**
+  String get splitLabelCustom;
+
+  /// PPL template applied snackbar
+  ///
+  /// In ko, this message translates to:
+  /// **'PPL 템플릿이 적용되었습니다.'**
+  String get templateAppliedPpl;
+
+  /// Upper/lower template applied snackbar
+  ///
+  /// In ko, this message translates to:
+  /// **'상하체 분할 템플릿이 적용되었습니다.'**
+  String get templateAppliedUpperLower;
+
+  /// Full body template applied snackbar
+  ///
+  /// In ko, this message translates to:
+  /// **'풀바디 템플릿이 적용되었습니다.'**
+  String get templateAppliedFullBody;
+
+  /// Custom template applied snackbar
+  ///
+  /// In ko, this message translates to:
+  /// **'사용자 정의 템플릿: 직접 계획을 추가해 주세요.'**
+  String get templateAppliedCustom;
+
+  /// Plan completed badge
+  ///
+  /// In ko, this message translates to:
+  /// **'완료'**
+  String get planCompleted;
+
+  /// Rest preset: 1 minute
+  ///
+  /// In ko, this message translates to:
+  /// **'1분'**
+  String get restOneMinute;
+
+  /// Rest preset: 1 minute 30 seconds
+  ///
+  /// In ko, this message translates to:
+  /// **'1분 30초'**
+  String get restOneMinuteHalf;
+
+  /// Rest preset: 2 minutes
+  ///
+  /// In ko, this message translates to:
+  /// **'2분'**
+  String get restTwoMinutes;
+
+  /// Rest preset: 3 minutes
+  ///
+  /// In ko, this message translates to:
+  /// **'3분'**
+  String get restThreeMinutes;
+
+  /// Empty state: no meals recorded today
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 기록된 식사가 없습니다'**
+  String get noMealsRecorded;
+
+  /// Empty state subtitle: add meal to start tracking
+  ///
+  /// In ko, this message translates to:
+  /// **'식사를 추가하여 영양 관리를 시작하세요'**
+  String get addMealToStart;
+
+  /// Macro nutrients section title
+  ///
+  /// In ko, this message translates to:
+  /// **'매크로 영양소'**
+  String get macroNutrients;
+
+  /// No meal record label
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 없음'**
+  String get noMealRecord;
+
+  /// Food count and calories summary
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 음식 · {calories} kcal'**
+  String foodCountCalories(int count, String calories);
+
+  /// Add meal of type label
+  ///
+  /// In ko, this message translates to:
+  /// **'{mealType} 추가'**
+  String addMealTypeLabel(String mealType);
+
+  /// No record for meal type
+  ///
+  /// In ko, this message translates to:
+  /// **'{mealType} 기록이 없습니다'**
+  String noMealTypeRecord(String mealType);
+
+  /// Meal food count and calories
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 음식 · {calories} kcal'**
+  String mealFoodCountCalories(int count, String calories);
+
+  /// Prompt to add food to meal
+  ///
+  /// In ko, this message translates to:
+  /// **'음식을 추가해 주세요'**
+  String get addFoodPrompt;
+
+  /// Add food sheet title
+  ///
+  /// In ko, this message translates to:
+  /// **'음식 추가'**
+  String get addFood;
+
+  /// Search food hint text
+  ///
+  /// In ko, this message translates to:
+  /// **'음식 이름 검색'**
+  String get searchFoodHint;
+
+  /// Serving reference info
+  ///
+  /// In ko, this message translates to:
+  /// **'기준 1회 {size}{unit} · {calories} kcal'**
+  String servingReference(String size, String unit, String calories);
+
+  /// Recent foods section label
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 음식'**
+  String get recentFoods;
+
+  /// Frequent foods section label
+  ///
+  /// In ko, this message translates to:
+  /// **'자주 먹는 음식'**
+  String get frequentFoods;
+
+  /// Search result count label
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 결과 ({count})'**
+  String searchResultCount(int count);
+
+  /// No food search results
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 결과가 없습니다'**
+  String get noSearchResultsFood;
+
+  /// Confirm add button
+  ///
+  /// In ko, this message translates to:
+  /// **'추가하기'**
+  String get confirmAdd;
+
+  /// Tooltip for search icon button
+  ///
+  /// In ko, this message translates to:
+  /// **'검색'**
+  String get tooltipSearch;
+
+  /// Tooltip for notifications icon button
+  ///
+  /// In ko, this message translates to:
+  /// **'알림'**
+  String get tooltipNotifications;
+
+  /// Tooltip for calendar icon button
+  ///
+  /// In ko, this message translates to:
+  /// **'캘린더'**
+  String get tooltipCalendar;
+
+  /// Tooltip for more options icon button
+  ///
+  /// In ko, this message translates to:
+  /// **'더보기'**
+  String get tooltipMoreOptions;
 }
 
 class _AppLocalizationsDelegate

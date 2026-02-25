@@ -1340,4 +1340,119 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get termsOfServiceContent =>
       'Terms of service content is being prepared.';
+
+  @override
+  String get splitLabelPpl => 'PPL';
+
+  @override
+  String get splitLabelUpperLower => 'Upper/Lower';
+
+  @override
+  String get splitLabelFullBody => 'Full Body';
+
+  @override
+  String get splitLabelCustom => 'Custom';
+
+  @override
+  String get templateAppliedPpl => 'PPL template applied.';
+
+  @override
+  String get templateAppliedUpperLower => 'Upper/Lower split template applied.';
+
+  @override
+  String get templateAppliedFullBody => 'Full Body template applied.';
+
+  @override
+  String get templateAppliedCustom =>
+      'Custom template: please add plans manually.';
+
+  @override
+  String get planCompleted => 'Done';
+
+  @override
+  String get restOneMinute => '1 min';
+
+  @override
+  String get restOneMinuteHalf => '1 min 30 sec';
+
+  @override
+  String get restTwoMinutes => '2 min';
+
+  @override
+  String get restThreeMinutes => '3 min';
+
+  @override
+  String get noMealsRecorded => 'No meals recorded today';
+
+  @override
+  String get addMealToStart => 'Add a meal to start tracking nutrition';
+
+  @override
+  String get macroNutrients => 'Macronutrients';
+
+  @override
+  String get noMealRecord => 'No record';
+
+  @override
+  String foodCountCalories(int count, String calories) {
+    return '$count foods · $calories kcal';
+  }
+
+  @override
+  String addMealTypeLabel(String mealType) {
+    return 'Add $mealType';
+  }
+
+  @override
+  String noMealTypeRecord(String mealType) {
+    return 'No $mealType record';
+  }
+
+  @override
+  String mealFoodCountCalories(int count, String calories) {
+    return '$count foods · $calories kcal';
+  }
+
+  @override
+  String get addFoodPrompt => 'Please add food';
+
+  @override
+  String get addFood => 'Add Food';
+
+  @override
+  String get searchFoodHint => 'Search food name';
+
+  @override
+  String servingReference(String size, String unit, String calories) {
+    return 'Per serving $size$unit · $calories kcal';
+  }
+
+  @override
+  String get recentFoods => 'Recent Foods';
+
+  @override
+  String get frequentFoods => 'Frequent Foods';
+
+  @override
+  String searchResultCount(int count) {
+    return 'Results ($count)';
+  }
+
+  @override
+  String get noSearchResultsFood => 'No search results';
+
+  @override
+  String get confirmAdd => 'Add';
+
+  @override
+  String get tooltipSearch => 'Search';
+
+  @override
+  String get tooltipNotifications => 'Notifications';
+
+  @override
+  String get tooltipCalendar => 'Calendar';
+
+  @override
+  String get tooltipMoreOptions => 'More options';
 }
