@@ -530,5 +530,29 @@
   "@weekdaySat": { "description": "Saturday full name" },
 
   "weekdaySun": "Sun",
-  "@weekdaySun": { "description": "Sunday full name" }
+  "@weekdaySun": { "description": "Sunday full name" },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Bottom nav home tab" },
+
+  "navWorkout": "Workout",
+  "@navWorkout": { "description": "Bottom nav workout tab" },
+
+  "navCommunity": "Community",
+  "@navCommunity": { "description": "Bottom nav community tab" },
+
+  "navDiet": "Diet",
+  "@navDiet": { "description": "Bottom nav diet tab" },
+
+  "navCalendar": "Calendar",
+  "@navCalendar": { "description": "Bottom nav calendar tab" },
+
+  "pageNotFound": "Page Not Found",
+  "@pageNotFound": { "description": "404 error page title" },
+
+  "requestedPageNotFound": "The requested page could not be found.",
+  "@requestedPageNotFound": { "description": "404 error page message" },
+
+  "goHome": "Go Home",
+  "@goHome": { "description": "Go home button on error page" }
 }

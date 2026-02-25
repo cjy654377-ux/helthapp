@@ -1282,4 +1282,28 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get weekdaySun => '일';
+
+  @override
+  String get navHome => '홈';
+
+  @override
+  String get navWorkout => '운동';
+
+  @override
+  String get navCommunity => '커뮤니티';
+
+  @override
+  String get navDiet => '식단';
+
+  @override
+  String get navCalendar => '캘린더';
+
+  @override
+  String get pageNotFound => '페이지를 찾을 수 없음';
+
+  @override
+  String get requestedPageNotFound => '요청한 페이지를 찾을 수 없습니다.';
+
+  @override
+  String get goHome => '홈으로 돌아가기';
 }

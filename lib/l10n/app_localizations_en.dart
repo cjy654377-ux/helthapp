@@ -1292,4 +1292,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weekdaySun => 'Sun';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navWorkout => 'Workout';
+
+  @override
+  String get navCommunity => 'Community';
+
+  @override
+  String get navDiet => 'Diet';
+
+  @override
+  String get navCalendar => 'Calendar';
+
+  @override
+  String get pageNotFound => 'Page Not Found';
+
+  @override
+  String get requestedPageNotFound => 'The requested page could not be found.';
+
+  @override
+  String get goHome => 'Go Home';
 }

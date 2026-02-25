@@ -1,7 +1,9 @@
 // 앱 라우터 설정 - go_router를 사용한 네비게이션 구성
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:health_app/l10n/app_localizations.dart';
 
 import 'package:health_app/core/widgets/bottom_nav_scaffold.dart';
 import 'package:health_app/features/home/screens/home_screen.dart';
@@ -229,33 +231,39 @@ class AppRouter {
     ],
 
     // 에러 페이지 처리
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(title: const Text('페이지를 찾을 수 없음')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(
-              '요청한 페이지를 찾을 수 없습니다.',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              state.error?.toString() ?? '',
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () => context.go(AppRoutes.home),
-              child: const Text('홈으로 돌아가기'),
-            ),
-          ],
+    errorBuilder: (context, state) {
+      final l10n = AppLocalizations.of(context);
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.pageNotFound)),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 64, color: Colors.red),
+              const SizedBox(height: 16),
+              Text(
+                l10n.requestedPageNotFound,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              // 디버그 모드에서만 에러 상세 표시
+              if (kDebugMode) ...[
+                const SizedBox(height: 8),
+                Text(
+                  state.error?.toString() ?? '',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => context.go(AppRoutes.home),
+                child: Text(l10n.goHome),
+              ),
+            ],
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 
   // 프라이빗 생성자 - 인스턴스화 방지

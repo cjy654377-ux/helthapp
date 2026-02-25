@@ -1236,5 +1236,29 @@
   "@weekdaySat": { "description": "Saturday full name" },
 
   "weekdaySun": "일",
-  "@weekdaySun": { "description": "Sunday full name" }
+  "@weekdaySun": { "description": "Sunday full name" },
+
+  "navHome": "홈",
+  "@navHome": { "description": "Bottom nav home tab" },
+
+  "navWorkout": "운동",
+  "@navWorkout": { "description": "Bottom nav workout tab" },
+
+  "navCommunity": "커뮤니티",
+  "@navCommunity": { "description": "Bottom nav community tab" },
+
+  "navDiet": "식단",
+  "@navDiet": { "description": "Bottom nav diet tab" },
+
+  "navCalendar": "캘린더",
+  "@navCalendar": { "description": "Bottom nav calendar tab" },
+
+  "pageNotFound": "페이지를 찾을 수 없음",
+  "@pageNotFound": { "description": "404 error page title" },
+
+  "requestedPageNotFound": "요청한 페이지를 찾을 수 없습니다.",
+  "@requestedPageNotFound": { "description": "404 error page message" },
+
+  "goHome": "홈으로 돌아가기",
+  "@goHome": { "description": "Go home button on error page" }
 }

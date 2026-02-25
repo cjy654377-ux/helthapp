@@ -1,6 +1,7 @@
 // 바텀 네비게이션 스캐폴드 - 앱 셸 레이아웃
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_app/l10n/app_localizations.dart';
 
 /// 앱 전체의 셸 스캐폴드 위젯
 /// StatefulShellRoute.indexedStack과 함께 사용되어 탭 상태를 유지합니다.
@@ -17,34 +18,38 @@ class BottomNavScaffold extends StatelessWidget {
     required this.navigationShell,
   });
 
-  // 바텀 네비게이션 탭 정보
+  // 바텀 네비게이션 탭 아이콘 정보
   static const List<_NavItem> _items = [
     _NavItem(
-      label: '홈',
       icon: Icons.home_outlined,
       activeIcon: Icons.home_rounded,
     ),
     _NavItem(
-      label: '운동',
       icon: Icons.fitness_center_outlined,
       activeIcon: Icons.fitness_center,
     ),
     _NavItem(
-      label: '커뮤니티',
       icon: Icons.groups_outlined,
       activeIcon: Icons.groups,
     ),
     _NavItem(
-      label: '식단',
       icon: Icons.restaurant_outlined,
       activeIcon: Icons.restaurant,
     ),
     _NavItem(
-      label: '캘린더',
       icon: Icons.calendar_month_outlined,
       activeIcon: Icons.calendar_month,
     ),
   ];
+
+  // l10n 기반 탭 라벨 목록
+  List<String> _labels(AppLocalizations l10n) => [
+        l10n.navHome,
+        l10n.navWorkout,
+        l10n.navCommunity,
+        l10n.navDiet,
+        l10n.navCalendar,
+      ];
 
   void _onTabTapped(BuildContext context, int index) {
     // 같은 탭을 눌렀을 때는 해당 탭의 루트로 이동
@@ -57,6 +62,8 @@ class BottomNavScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
+    final labels = _labels(l10n);
 
     return Scaffold(
       body: navigationShell,
@@ -80,15 +87,14 @@ class BottomNavScaffold extends StatelessWidget {
           selectedFontSize: 12,
           unselectedFontSize: 11,
           elevation: 0,
-          items: _items
-              .map(
-                (item) => BottomNavigationBarItem(
-                  icon: Icon(item.icon),
-                  activeIcon: Icon(item.activeIcon),
-                  label: item.label,
-                ),
-              )
-              .toList(),
+          items: List.generate(
+            _items.length,
+            (i) => BottomNavigationBarItem(
+              icon: Icon(_items[i].icon),
+              activeIcon: Icon(_items[i].activeIcon),
+              label: labels[i],
+            ),
+          ),
         ),
       ),
     );
@@ -97,12 +103,10 @@ class BottomNavScaffold extends StatelessWidget {
 
 /// 바텀 네비게이션 아이템 데이터 클래스
 class _NavItem {
-  final String label;
   final IconData icon;
   final IconData activeIcon;
 
   const _NavItem({
-    required this.label,
     required this.icon,
     required this.activeIcon,
   });

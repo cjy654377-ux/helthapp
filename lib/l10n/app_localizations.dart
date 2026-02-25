@@ -2557,6 +2557,54 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'일'**
   String get weekdaySun;
+
+  /// Bottom nav home tab
+  ///
+  /// In ko, this message translates to:
+  /// **'홈'**
+  String get navHome;
+
+  /// Bottom nav workout tab
+  ///
+  /// In ko, this message translates to:
+  /// **'운동'**
+  String get navWorkout;
+
+  /// Bottom nav community tab
+  ///
+  /// In ko, this message translates to:
+  /// **'커뮤니티'**
+  String get navCommunity;
+
+  /// Bottom nav diet tab
+  ///
+  /// In ko, this message translates to:
+  /// **'식단'**
+  String get navDiet;
+
+  /// Bottom nav calendar tab
+  ///
+  /// In ko, this message translates to:
+  /// **'캘린더'**
+  String get navCalendar;
+
+  /// 404 error page title
+  ///
+  /// In ko, this message translates to:
+  /// **'페이지를 찾을 수 없음'**
+  String get pageNotFound;
+
+  /// 404 error page message
+  ///
+  /// In ko, this message translates to:
+  /// **'요청한 페이지를 찾을 수 없습니다.'**
+  String get requestedPageNotFound;
+
+  /// Go home button on error page
+  ///
+  /// In ko, this message translates to:
+  /// **'홈으로 돌아가기'**
+  String get goHome;
 }
 
 class _AppLocalizationsDelegate

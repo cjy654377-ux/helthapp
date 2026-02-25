@@ -1,5 +1,6 @@
 // 공통 상태 위젯 - Empty / Loading / Error 상태 표시
 import 'package:flutter/material.dart';
+import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
 // Empty State Widget
@@ -146,7 +147,7 @@ class ErrorStateWidget extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('다시 시도'),
+                label: Text(AppLocalizations.of(context).retry),
               ),
             ],
           ],
