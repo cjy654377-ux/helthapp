@@ -115,7 +115,12 @@ class CommunityScreen extends ConsumerWidget {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
+          : RefreshIndicator(
+              // 커뮤니티 데이터 새로고침: provider 재생성으로 최신 팀/포스트 로드
+              onRefresh: () async {
+                ref.invalidate(communityProvider);
+              },
+              child: ListView(
               children: [
                 // Team list header
                 _TeamListSection(
@@ -158,6 +163,7 @@ class CommunityScreen extends ConsumerWidget {
                   ),
                 const SizedBox(height: 80),
               ],
+              ),
             ),
     );
   }

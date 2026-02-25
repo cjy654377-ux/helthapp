@@ -2845,6 +2845,360 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'더보기'**
   String get tooltipMoreOptions;
+
+  /// Remaining achievements motivational text
+  ///
+  /// In ko, this message translates to:
+  /// **'앞으로 {count}개의 업적을 달성해보세요!'**
+  String achievementsRemaining(int count);
+
+  /// Achievement: first workout - title
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 운동'**
+  String get achievementFirstWorkoutTitle;
+
+  /// Achievement: first workout - description
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 번째 운동 기록을 완료했습니다'**
+  String get achievementFirstWorkoutDesc;
+
+  /// Achievement: 10 workouts - title
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 마니아'**
+  String get achievementWorkout10Title;
+
+  /// Achievement: 10 workouts - description
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 기록을 10회 완료했습니다'**
+  String get achievementWorkout10Desc;
+
+  /// Achievement: 50 workouts - title
+  ///
+  /// In ko, this message translates to:
+  /// **'헬스 중독자'**
+  String get achievementWorkout50Title;
+
+  /// Achievement: 50 workouts - description
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 기록을 50회 완료했습니다'**
+  String get achievementWorkout50Desc;
+
+  /// Achievement: 100 workouts - title
+  ///
+  /// In ko, this message translates to:
+  /// **'운동의 신'**
+  String get achievementWorkout100Title;
+
+  /// Achievement: 100 workouts - description
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 기록을 100회 완료했습니다'**
+  String get achievementWorkout100Desc;
+
+  /// Achievement: 1000kg volume - title
+  ///
+  /// In ko, this message translates to:
+  /// **'1톤 클럽'**
+  String get achievementVolume1000Title;
+
+  /// Achievement: 1000kg volume - description
+  ///
+  /// In ko, this message translates to:
+  /// **'한 세션에 총 볼륨 1,000kg을 달성했습니다'**
+  String get achievementVolume1000Desc;
+
+  /// Achievement: first PR - title
+  ///
+  /// In ko, this message translates to:
+  /// **'새 기록!'**
+  String get achievementPrFirstTitle;
+
+  /// Achievement: first PR - description
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 개인 최고 기록(PR)을 달성했습니다'**
+  String get achievementPrFirstDesc;
+
+  /// Achievement: morning warrior - title
+  ///
+  /// In ko, this message translates to:
+  /// **'새벽 전사'**
+  String get achievementMorningWarriorTitle;
+
+  /// Achievement: morning warrior - description
+  ///
+  /// In ko, this message translates to:
+  /// **'오전 운동을 10회 완료했습니다'**
+  String get achievementMorningWarriorDesc;
+
+  /// Achievement: 10 exercise variety - title
+  ///
+  /// In ko, this message translates to:
+  /// **'만능 운동인'**
+  String get achievementVariety10Title;
+
+  /// Achievement: 10 exercise variety - description
+  ///
+  /// In ko, this message translates to:
+  /// **'10가지 이상의 다양한 운동을 수행했습니다'**
+  String get achievementVariety10Desc;
+
+  /// Achievement: 3-day streak - title
+  ///
+  /// In ko, this message translates to:
+  /// **'3일 연속'**
+  String get achievementStreak3Title;
+
+  /// Achievement: 3-day streak - description
+  ///
+  /// In ko, this message translates to:
+  /// **'3일 연속으로 운동했습니다'**
+  String get achievementStreak3Desc;
+
+  /// Achievement: 7-day streak - title
+  ///
+  /// In ko, this message translates to:
+  /// **'일주일 연속'**
+  String get achievementStreak7Title;
+
+  /// Achievement: 7-day streak - description
+  ///
+  /// In ko, this message translates to:
+  /// **'7일 연속으로 운동했습니다'**
+  String get achievementStreak7Desc;
+
+  /// Achievement: 30-day streak - title
+  ///
+  /// In ko, this message translates to:
+  /// **'한 달 연속'**
+  String get achievementStreak30Title;
+
+  /// Achievement: 30-day streak - description
+  ///
+  /// In ko, this message translates to:
+  /// **'30일 연속으로 운동했습니다'**
+  String get achievementStreak30Desc;
+
+  /// Achievement: first water goal - title
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 첫 목표!'**
+  String get achievementWaterFirstGoalTitle;
+
+  /// Achievement: first water goal - description
+  ///
+  /// In ko, this message translates to:
+  /// **'처음으로 하루 수분 섭취 목표를 달성했습니다'**
+  String get achievementWaterFirstGoalDesc;
+
+  /// Achievement: water master - title
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 마스터'**
+  String get achievementWaterMasterTitle;
+
+  /// Achievement: water master - description
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 섭취 목표를 7일 달성했습니다'**
+  String get achievementWaterMasterDesc;
+
+  /// Achievement: 30-day water streak - title
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 왕'**
+  String get achievementWaterStreak30Title;
+
+  /// Achievement: 30-day water streak - description
+  ///
+  /// In ko, this message translates to:
+  /// **'30일 연속 수분 섭취 목표를 달성했습니다'**
+  String get achievementWaterStreak30Desc;
+
+  /// Achievement: first diet log - title
+  ///
+  /// In ko, this message translates to:
+  /// **'식단 시작'**
+  String get achievementDietFirstLogTitle;
+
+  /// Achievement: first diet log - description
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 번째 식단을 기록했습니다'**
+  String get achievementDietFirstLogDesc;
+
+  /// Achievement: 7-day diet streak - title
+  ///
+  /// In ko, this message translates to:
+  /// **'식단 기록왕'**
+  String get achievementDietStreak7Title;
+
+  /// Achievement: 7-day diet streak - description
+  ///
+  /// In ko, this message translates to:
+  /// **'7일 연속 식단을 기록했습니다'**
+  String get achievementDietStreak7Desc;
+
+  /// Achievement: team join - title
+  ///
+  /// In ko, this message translates to:
+  /// **'팀 플레이어'**
+  String get achievementTeamJoinTitle;
+
+  /// Achievement: team join - description
+  ///
+  /// In ko, this message translates to:
+  /// **'팀에 가입했습니다'**
+  String get achievementTeamJoinDesc;
+
+  /// Achievement: social butterfly - title
+  ///
+  /// In ko, this message translates to:
+  /// **'소셜 버터플라이'**
+  String get achievementSocialButterflyTitle;
+
+  /// Achievement: social butterfly - description
+  ///
+  /// In ko, this message translates to:
+  /// **'팀 활동(게시글/댓글)을 10회 이상 했습니다'**
+  String get achievementSocialButterflyDesc;
+
+  /// Achievement: body transformation - title
+  ///
+  /// In ko, this message translates to:
+  /// **'변신 성공'**
+  String get achievementBodyTransformationTitle;
+
+  /// Achievement: body transformation - description
+  ///
+  /// In ko, this message translates to:
+  /// **'체중 변화 목표를 달성했습니다'**
+  String get achievementBodyTransformationDesc;
+
+  /// Hydration reminder notification title
+  ///
+  /// In ko, this message translates to:
+  /// **'물 마실 시간이에요!'**
+  String get notifHydrationTitle;
+
+  /// Hydration reminder notification body
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 섭취 목표를 달성하기 위해 지금 물을 마셔보세요.'**
+  String get notifHydrationBody;
+
+  /// Hydration reminder Android notification channel name
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 섭취 알림'**
+  String get notifHydrationChannelName;
+
+  /// Hydration reminder Android notification channel description
+  ///
+  /// In ko, this message translates to:
+  /// **'수분 섭취 리마인더'**
+  String get notifHydrationChannelDesc;
+
+  /// Workout reminder notification title
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 시간이에요!'**
+  String get notifWorkoutTitle;
+
+  /// Workout reminder notification body
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 {workoutName} 운동을 시작할 시간입니다.'**
+  String notifWorkoutBody(String workoutName);
+
+  /// Workout reminder Android notification channel name
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 알림'**
+  String get notifWorkoutChannelName;
+
+  /// Workout reminder Android notification channel description
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 리마인더'**
+  String get notifWorkoutChannelDesc;
+
+  /// Meal reminder notification title
+  ///
+  /// In ko, this message translates to:
+  /// **'{mealLabel} 기록 시간이에요!'**
+  String notifMealTitle(String mealLabel);
+
+  /// Meal reminder notification body
+  ///
+  /// In ko, this message translates to:
+  /// **'{mealLabel} 식단을 기록하고 영양 목표를 확인하세요.'**
+  String notifMealBody(String mealLabel);
+
+  /// Meal reminder Android notification channel name
+  ///
+  /// In ko, this message translates to:
+  /// **'식단 알림'**
+  String get notifMealChannelName;
+
+  /// Meal reminder Android notification channel description
+  ///
+  /// In ko, this message translates to:
+  /// **'식단 기록 리마인더'**
+  String get notifMealChannelDesc;
+
+  /// Rest reminder notification title
+  ///
+  /// In ko, this message translates to:
+  /// **'잠깐 휴식을 취하세요!'**
+  String get notifRestTitle;
+
+  /// Rest reminder notification body
+  ///
+  /// In ko, this message translates to:
+  /// **'오랫동안 앉아 계셨네요. 잠깐 스트레칭을 해보세요.'**
+  String get notifRestBody;
+
+  /// General Android notification channel name
+  ///
+  /// In ko, this message translates to:
+  /// **'일반 알림'**
+  String get notifGeneralChannelName;
+
+  /// General Android notification channel description
+  ///
+  /// In ko, this message translates to:
+  /// **'휴식 및 일반 리마인더'**
+  String get notifGeneralChannelDesc;
+
+  /// Meal label: breakfast
+  ///
+  /// In ko, this message translates to:
+  /// **'아침'**
+  String get mealLabelBreakfast;
+
+  /// Meal label: lunch
+  ///
+  /// In ko, this message translates to:
+  /// **'점심'**
+  String get mealLabelLunch;
+
+  /// Meal label: dinner
+  ///
+  /// In ko, this message translates to:
+  /// **'저녁'**
+  String get mealLabelDinner;
+
+  /// Meal label: snack
+  ///
+  /// In ko, this message translates to:
+  /// **'간식'**
+  String get mealLabelSnack;
 }
 
 class _AppLocalizationsDelegate

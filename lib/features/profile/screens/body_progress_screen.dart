@@ -1,15 +1,15 @@
 // 바디 프로그레스 사진 비교 화면 – Before/After 사진 기록 및 비교
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
+import 'package:health_app/core/repositories/data_repository.dart';
+import 'package:health_app/core/repositories/repository_providers.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
@@ -92,51 +92,46 @@ class BodyProgressEntry {
 // ---------------------------------------------------------------------------
 
 class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
-  static const _prefsKey = 'body_progress_entries';
+  final BodyProgressRepository _repo;
 
-  BodyProgressNotifier() : super([]) {
+  BodyProgressNotifier(this._repo) : super([]) {
     _load();
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_prefsKey) ?? [];
+    final rawEntries = await _repo.loadEntries();
     final entries = <BodyProgressEntry>[];
-    for (final s in raw) {
+    for (final map in rawEntries) {
       try {
-        final map = jsonDecode(s) as Map<String, dynamic>;
         entries.add(BodyProgressEntry.fromJson(map));
       } catch (_) {
-        // skip corrupt entries
+        // corrupt entry 무시
       }
     }
     entries.sort((a, b) => b.date.compareTo(a.date));
     state = entries;
   }
 
-  Future<void> _save() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = state.map((e) => jsonEncode(e.toJson())).toList();
-    await prefs.setStringList(_prefsKey, raw);
-  }
-
   Future<void> addEntry(BodyProgressEntry entry) async {
+    await _repo.addEntry(entry.toJson());
     final updated = [entry, ...state];
     updated.sort((a, b) => b.date.compareTo(a.date));
     state = updated;
-    await _save();
   }
 
   Future<void> removeEntry(String id) async {
-    // Remove the image file too
-    final entry = state.firstWhere((e) => e.id == id, orElse: () => throw StateError('not found'));
+    // 이미지 파일 삭제
+    final entry = state.firstWhere(
+      (e) => e.id == id,
+      orElse: () => throw StateError('not found'),
+    );
     try {
       final file = File(entry.imagePath);
       if (await file.exists()) await file.delete();
     } catch (_) {}
 
+    await _repo.deleteEntry(id);
     state = state.where((e) => e.id != id).toList();
-    await _save();
   }
 
   Map<String, List<BodyProgressEntry>> groupByMonth() {
@@ -148,7 +143,6 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
     }
     return map;
   }
-
 }
 
 // ---------------------------------------------------------------------------
@@ -157,7 +151,7 @@ class BodyProgressNotifier extends StateNotifier<List<BodyProgressEntry>> {
 
 final bodyProgressProvider =
     StateNotifierProvider<BodyProgressNotifier, List<BodyProgressEntry>>(
-  (_) => BodyProgressNotifier(),
+  (ref) => BodyProgressNotifier(ref.watch(bodyProgressRepositoryProvider)),
 );
 
 // ---------------------------------------------------------------------------

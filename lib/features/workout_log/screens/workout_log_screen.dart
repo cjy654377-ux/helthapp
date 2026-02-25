@@ -80,7 +80,12 @@ class _WorkoutLogScreenState extends ConsumerState<WorkoutLogScreen> {
                     actionLabel: l10n.addExercise,
                     onAction: () => _showAddExerciseDialog(context),
                   )
-                : ListView(
+                : RefreshIndicator(
+                    // 운동 기록 새로고침: provider 재생성으로 최신 데이터 로드
+                    onRefresh: () async {
+                      ref.invalidate(workoutHistoryProvider);
+                    },
+                    child: ListView(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
                     children: session.exercises.map((exercise) {
                       return _ExerciseCard(
@@ -109,6 +114,7 @@ class _WorkoutLogScreenState extends ConsumerState<WorkoutLogScreen> {
                       );
                     }).toList(),
                   ),
+                    ),
           ),
         ],
       ),

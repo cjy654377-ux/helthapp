@@ -74,10 +74,46 @@ class CalendarScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Calendar
-          TableCalendar<WorkoutPlanEntry>(
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          final isLandscape = orientation == Orientation.landscape;
+          // 가로 모드에서는 전체 컨텐츠를 스크롤 가능하게 만들어 달력이 공간을 절약
+          final body = _calendarBody(
+              context, ref, calendarState, selectedDay, selectedPlans,
+              focusedDay, isLandscape);
+          if (isLandscape) {
+            return SingleChildScrollView(child: body);
+          }
+          return body;
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddPlanDialog(context, selectedDay, ref),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  /// 캘린더 + 플랜 리스트 레이아웃.
+  /// [isLandscape]가 true이면 플랜 리스트를 고정 높이로 제한하여
+  /// SingleChildScrollView 안에서 자연스럽게 스크롤됩니다.
+  Widget _calendarBody(
+    BuildContext context,
+    WidgetRef ref,
+    CalendarState calendarState,
+    DateTime selectedDay,
+    List<WorkoutPlanEntry> selectedPlans,
+    DateTime focusedDay,
+    bool isLandscape,
+  ) {
+    return Column(
+      mainAxisSize: isLandscape ? MainAxisSize.min : MainAxisSize.max,
+      children: [
+        // 달력: 가로 모드에서는 Flexible로 감싸 과도한 공간 차지 방지
+        Flexible(
+          flex: isLandscape ? 0 : 1,
+          fit: isLandscape ? FlexFit.loose : FlexFit.loose,
+          child: TableCalendar<WorkoutPlanEntry>(
             firstDay: DateTime.utc(2024, 1, 1),
             lastDay: DateTime.utc(2027, 12, 31),
             focusedDay: focusedDay,
@@ -124,14 +160,30 @@ class CalendarScreen extends ConsumerWidget {
               ),
             ),
           ),
+        ),
 
-          const Divider(height: 1),
+        const Divider(height: 1),
 
-          // Selected day plans
+        // 플랜 리스트: 가로 모드에서는 shrinkWrap으로 내용 높이에 맞춤
+        if (isLandscape)
+          _DayPlanList(
+            selectedDay: selectedDay,
+            plans: selectedPlans,
+            shrinkWrap: true,
+            onRemove: (planId) => ref
+                .read(calendarProvider.notifier)
+                .removePlan(selectedDay, planId),
+            onToggleComplete: (planId) => ref
+                .read(calendarProvider.notifier)
+                .togglePlanComplete(selectedDay, planId),
+            onAdd: () => _showAddPlanDialog(context, selectedDay, ref),
+          )
+        else
           Expanded(
             child: _DayPlanList(
               selectedDay: selectedDay,
               plans: selectedPlans,
+              shrinkWrap: false,
               onRemove: (planId) => ref
                   .read(calendarProvider.notifier)
                   .removePlan(selectedDay, planId),
@@ -141,12 +193,7 @@ class CalendarScreen extends ConsumerWidget {
               onAdd: () => _showAddPlanDialog(context, selectedDay, ref),
             ),
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddPlanDialog(context, selectedDay, ref),
-        child: const Icon(Icons.add),
-      ),
+      ],
     );
   }
 
@@ -356,6 +403,8 @@ class _DayPlanList extends StatelessWidget {
   final ValueChanged<String> onRemove;
   final ValueChanged<String> onToggleComplete;
   final VoidCallback onAdd;
+  /// 가로 모드처럼 외부 스크롤뷰 안에 있을 때 true로 설정
+  final bool shrinkWrap;
 
   const _DayPlanList({
     required this.selectedDay,
@@ -363,6 +412,7 @@ class _DayPlanList extends StatelessWidget {
     required this.onRemove,
     required this.onToggleComplete,
     required this.onAdd,
+    this.shrinkWrap = false,
   });
 
   @override
@@ -402,8 +452,9 @@ class _DayPlanList extends StatelessWidget {
             ],
           ),
         ),
-        Expanded(
-          child: plans.isEmpty
+        // shrinkWrap=true(가로 모드)이면 Expanded 없이 내용만큼만 차지
+        if (shrinkWrap)
+          plans.isEmpty
               ? EmptyStateWidget(
                   icon: Icons.event_note,
                   title: l10n.noWorkoutPlan,
@@ -412,6 +463,8 @@ class _DayPlanList extends StatelessWidget {
                   onAction: onAdd,
                 )
               : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   itemCount: plans.length,
@@ -420,8 +473,28 @@ class _DayPlanList extends StatelessWidget {
                     onRemove: () => onRemove(plans[i].id),
                     onToggleComplete: () => onToggleComplete(plans[i].id),
                   ),
-                ),
-        ),
+                )
+        else
+          Expanded(
+            child: plans.isEmpty
+                ? EmptyStateWidget(
+                    icon: Icons.event_note,
+                    title: l10n.noWorkoutPlan,
+                    subtitle: l10n.addWorkoutPlanSubtitle,
+                    actionLabel: l10n.addPlan,
+                    onAction: onAdd,
+                  )
+                : ListView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    itemCount: plans.length,
+                    itemBuilder: (_, i) => _PlanCard(
+                      plan: plans[i],
+                      onRemove: () => onRemove(plans[i].id),
+                      onToggleComplete: () => onToggleComplete(plans[i].id),
+                    ),
+                  ),
+          ),
       ],
     );
   }

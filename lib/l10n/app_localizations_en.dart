@@ -1455,4 +1455,199 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tooltipMoreOptions => 'More options';
+
+  @override
+  String achievementsRemaining(int count) {
+    return 'Unlock $count more achievements!';
+  }
+
+  @override
+  String get achievementFirstWorkoutTitle => 'First Workout';
+
+  @override
+  String get achievementFirstWorkoutDesc => 'Completed your first workout log';
+
+  @override
+  String get achievementWorkout10Title => 'Fitness Enthusiast';
+
+  @override
+  String get achievementWorkout10Desc => 'Completed 10 workout sessions';
+
+  @override
+  String get achievementWorkout50Title => 'Gym Addict';
+
+  @override
+  String get achievementWorkout50Desc => 'Completed 50 workout sessions';
+
+  @override
+  String get achievementWorkout100Title => 'Workout God';
+
+  @override
+  String get achievementWorkout100Desc => 'Completed 100 workout sessions';
+
+  @override
+  String get achievementVolume1000Title => '1-Ton Club';
+
+  @override
+  String get achievementVolume1000Desc =>
+      'Lifted a total of 1,000 kg in a single session';
+
+  @override
+  String get achievementPrFirstTitle => 'New Record!';
+
+  @override
+  String get achievementPrFirstDesc =>
+      'Achieved your first personal record (PR)';
+
+  @override
+  String get achievementMorningWarriorTitle => 'Morning Warrior';
+
+  @override
+  String get achievementMorningWarriorDesc =>
+      'Completed 10 morning workout sessions';
+
+  @override
+  String get achievementVariety10Title => 'All-Rounder';
+
+  @override
+  String get achievementVariety10Desc =>
+      'Performed 10 or more different exercises';
+
+  @override
+  String get achievementStreak3Title => '3-Day Streak';
+
+  @override
+  String get achievementStreak3Desc => 'Worked out 3 days in a row';
+
+  @override
+  String get achievementStreak7Title => 'Week Streak';
+
+  @override
+  String get achievementStreak7Desc => 'Worked out 7 days in a row';
+
+  @override
+  String get achievementStreak30Title => 'Month Streak';
+
+  @override
+  String get achievementStreak30Desc => 'Worked out 30 days in a row';
+
+  @override
+  String get achievementWaterFirstGoalTitle => 'First Water Goal!';
+
+  @override
+  String get achievementWaterFirstGoalDesc =>
+      'Achieved your daily hydration goal for the first time';
+
+  @override
+  String get achievementWaterMasterTitle => 'Hydration Master';
+
+  @override
+  String get achievementWaterMasterDesc => 'Met your hydration goal 7 days';
+
+  @override
+  String get achievementWaterStreak30Title => 'Hydration King';
+
+  @override
+  String get achievementWaterStreak30Desc =>
+      'Met your hydration goal 30 days in a row';
+
+  @override
+  String get achievementDietFirstLogTitle => 'Diet Start';
+
+  @override
+  String get achievementDietFirstLogDesc => 'Logged your first meal';
+
+  @override
+  String get achievementDietStreak7Title => 'Diet Tracker';
+
+  @override
+  String get achievementDietStreak7Desc => 'Logged meals 7 days in a row';
+
+  @override
+  String get achievementTeamJoinTitle => 'Team Player';
+
+  @override
+  String get achievementTeamJoinDesc => 'Joined a team';
+
+  @override
+  String get achievementSocialButterflyTitle => 'Social Butterfly';
+
+  @override
+  String get achievementSocialButterflyDesc =>
+      'Participated in 10+ team activities (posts/comments)';
+
+  @override
+  String get achievementBodyTransformationTitle => 'Transformation';
+
+  @override
+  String get achievementBodyTransformationDesc =>
+      'Achieved your body weight change goal';
+
+  @override
+  String get notifHydrationTitle => 'Time to Drink Water!';
+
+  @override
+  String get notifHydrationBody =>
+      'Drink some water now to reach your hydration goal.';
+
+  @override
+  String get notifHydrationChannelName => 'Hydration Reminders';
+
+  @override
+  String get notifHydrationChannelDesc => 'Hydration intake reminders';
+
+  @override
+  String get notifWorkoutTitle => 'Time to Work Out!';
+
+  @override
+  String notifWorkoutBody(String workoutName) {
+    return 'It\'s time to start your $workoutName workout.';
+  }
+
+  @override
+  String get notifWorkoutChannelName => 'Workout Reminders';
+
+  @override
+  String get notifWorkoutChannelDesc => 'Workout reminders';
+
+  @override
+  String notifMealTitle(String mealLabel) {
+    return 'Time to log $mealLabel!';
+  }
+
+  @override
+  String notifMealBody(String mealLabel) {
+    return 'Log your $mealLabel and check your nutrition goals.';
+  }
+
+  @override
+  String get notifMealChannelName => 'Meal Reminders';
+
+  @override
+  String get notifMealChannelDesc => 'Meal logging reminders';
+
+  @override
+  String get notifRestTitle => 'Take a Break!';
+
+  @override
+  String get notifRestBody =>
+      'You\'ve been sitting for a while. Try a quick stretch.';
+
+  @override
+  String get notifGeneralChannelName => 'General Notifications';
+
+  @override
+  String get notifGeneralChannelDesc => 'Rest and general reminders';
+
+  @override
+  String get mealLabelBreakfast => 'Breakfast';
+
+  @override
+  String get mealLabelLunch => 'Lunch';
+
+  @override
+  String get mealLabelDinner => 'Dinner';
+
+  @override
+  String get mealLabelSnack => 'Snack';
 }

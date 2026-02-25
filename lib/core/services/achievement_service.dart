@@ -10,10 +10,15 @@ import 'package:health_app/core/repositories/repository_providers.dart';
 // ---------------------------------------------------------------------------
 
 /// 업적/배지 정보 모델
+///
+/// [titleKey]와 [descriptionKey]는 ARB l10n 키 식별자입니다.
+/// UI에서 AppLocalizations를 통해 실제 번역 문자열로 변환해야 합니다.
 class Achievement {
   final String id;
-  final String title;
-  final String description;
+  /// ARB 로컬라이제이션 키 (예: 'achievementFirstWorkoutTitle')
+  final String titleKey;
+  /// ARB 로컬라이제이션 키 (예: 'achievementFirstWorkoutDesc')
+  final String descriptionKey;
   final String icon; // 이모지 아이콘
   final AchievementCategory category;
   final int requiredCount; // 달성에 필요한 횟수/수치 (0이면 1회 달성)
@@ -21,8 +26,8 @@ class Achievement {
 
   const Achievement({
     required this.id,
-    required this.title,
-    required this.description,
+    required this.titleKey,
+    required this.descriptionKey,
     required this.icon,
     required this.category,
     this.requiredCount = 1,
@@ -40,7 +45,7 @@ class Achievement {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Achievement(id: $id, title: $title)';
+  String toString() => 'Achievement(id: $id, titleKey: $titleKey)';
 }
 
 /// 업적 카테고리 열거형
@@ -203,12 +208,15 @@ class AchievementService {
   // ---------------------------------------------------------------------------
 
   /// 앱의 전체 업적 목록
+  ///
+  /// [titleKey], [descriptionKey]는 ARB l10n 키 식별자입니다.
+  /// UI에서 AppLocalizations를 통해 번역 문자열로 변환해야 합니다.
   static const List<Achievement> achievements = [
     // --- 운동 카테고리 ---
     Achievement(
       id: 'first_workout',
-      title: '첫 운동',
-      description: '첫 번째 운동 기록을 완료했습니다',
+      titleKey: 'achievementFirstWorkoutTitle',
+      descriptionKey: 'achievementFirstWorkoutDesc',
       icon: '💪',
       category: AchievementCategory.workout,
       requiredCount: 1,
@@ -216,8 +224,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'workout_10',
-      title: '운동 마니아',
-      description: '운동 기록을 10회 완료했습니다',
+      titleKey: 'achievementWorkout10Title',
+      descriptionKey: 'achievementWorkout10Desc',
       icon: '🏋️',
       category: AchievementCategory.workout,
       requiredCount: 10,
@@ -225,8 +233,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'workout_50',
-      title: '헬스 중독자',
-      description: '운동 기록을 50회 완료했습니다',
+      titleKey: 'achievementWorkout50Title',
+      descriptionKey: 'achievementWorkout50Desc',
       icon: '🔥',
       category: AchievementCategory.workout,
       requiredCount: 50,
@@ -234,8 +242,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'workout_100',
-      title: '운동의 신',
-      description: '운동 기록을 100회 완료했습니다',
+      titleKey: 'achievementWorkout100Title',
+      descriptionKey: 'achievementWorkout100Desc',
       icon: '⚡',
       category: AchievementCategory.workout,
       requiredCount: 100,
@@ -243,8 +251,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'volume_1000',
-      title: '1톤 클럽',
-      description: '한 세션에 총 볼륨 1,000kg을 달성했습니다',
+      titleKey: 'achievementVolume1000Title',
+      descriptionKey: 'achievementVolume1000Desc',
       icon: '🏆',
       category: AchievementCategory.workout,
       requiredCount: 1,
@@ -252,8 +260,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'pr_first',
-      title: '새 기록!',
-      description: '첫 개인 최고 기록(PR)을 달성했습니다',
+      titleKey: 'achievementPrFirstTitle',
+      descriptionKey: 'achievementPrFirstDesc',
       icon: '🥇',
       category: AchievementCategory.workout,
       requiredCount: 1,
@@ -261,8 +269,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'morning_warrior',
-      title: '새벽 전사',
-      description: '오전 운동을 10회 완료했습니다',
+      titleKey: 'achievementMorningWarriorTitle',
+      descriptionKey: 'achievementMorningWarriorDesc',
       icon: '🌅',
       category: AchievementCategory.workout,
       requiredCount: 10,
@@ -270,8 +278,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'variety_10',
-      title: '만능 운동인',
-      description: '10가지 이상의 다양한 운동을 수행했습니다',
+      titleKey: 'achievementVariety10Title',
+      descriptionKey: 'achievementVariety10Desc',
       icon: '🎯',
       category: AchievementCategory.workout,
       requiredCount: 10,
@@ -281,8 +289,8 @@ class AchievementService {
     // --- 연속 기록 카테고리 ---
     Achievement(
       id: 'streak_3',
-      title: '3일 연속',
-      description: '3일 연속으로 운동했습니다',
+      titleKey: 'achievementStreak3Title',
+      descriptionKey: 'achievementStreak3Desc',
       icon: '🔥',
       category: AchievementCategory.streak,
       requiredCount: 3,
@@ -290,8 +298,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'streak_7',
-      title: '일주일 연속',
-      description: '7일 연속으로 운동했습니다',
+      titleKey: 'achievementStreak7Title',
+      descriptionKey: 'achievementStreak7Desc',
       icon: '⭐',
       category: AchievementCategory.streak,
       requiredCount: 7,
@@ -299,8 +307,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'streak_30',
-      title: '한 달 연속',
-      description: '30일 연속으로 운동했습니다',
+      titleKey: 'achievementStreak30Title',
+      descriptionKey: 'achievementStreak30Desc',
       icon: '🌟',
       category: AchievementCategory.streak,
       requiredCount: 30,
@@ -310,8 +318,8 @@ class AchievementService {
     // --- 수분 카테고리 ---
     Achievement(
       id: 'water_first_goal',
-      title: '수분 첫 목표!',
-      description: '처음으로 하루 수분 섭취 목표를 달성했습니다',
+      titleKey: 'achievementWaterFirstGoalTitle',
+      descriptionKey: 'achievementWaterFirstGoalDesc',
       icon: '💧',
       category: AchievementCategory.hydration,
       requiredCount: 1,
@@ -319,8 +327,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'water_master',
-      title: '수분 마스터',
-      description: '수분 섭취 목표를 7일 달성했습니다',
+      titleKey: 'achievementWaterMasterTitle',
+      descriptionKey: 'achievementWaterMasterDesc',
       icon: '🌊',
       category: AchievementCategory.hydration,
       requiredCount: 7,
@@ -328,8 +336,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'water_streak_30',
-      title: '수분 왕',
-      description: '30일 연속 수분 섭취 목표를 달성했습니다',
+      titleKey: 'achievementWaterStreak30Title',
+      descriptionKey: 'achievementWaterStreak30Desc',
       icon: '🏄',
       category: AchievementCategory.hydration,
       requiredCount: 30,
@@ -339,8 +347,8 @@ class AchievementService {
     // --- 식단 카테고리 ---
     Achievement(
       id: 'diet_first_log',
-      title: '식단 시작',
-      description: '첫 번째 식단을 기록했습니다',
+      titleKey: 'achievementDietFirstLogTitle',
+      descriptionKey: 'achievementDietFirstLogDesc',
       icon: '🥗',
       category: AchievementCategory.diet,
       requiredCount: 1,
@@ -348,8 +356,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'diet_streak_7',
-      title: '식단 기록왕',
-      description: '7일 연속 식단을 기록했습니다',
+      titleKey: 'achievementDietStreak7Title',
+      descriptionKey: 'achievementDietStreak7Desc',
       icon: '📊',
       category: AchievementCategory.diet,
       requiredCount: 7,
@@ -359,8 +367,8 @@ class AchievementService {
     // --- 커뮤니티 카테고리 ---
     Achievement(
       id: 'team_join',
-      title: '팀 플레이어',
-      description: '팀에 가입했습니다',
+      titleKey: 'achievementTeamJoinTitle',
+      descriptionKey: 'achievementTeamJoinDesc',
       icon: '👥',
       category: AchievementCategory.community,
       requiredCount: 1,
@@ -368,8 +376,8 @@ class AchievementService {
     ),
     Achievement(
       id: 'social_butterfly',
-      title: '소셜 버터플라이',
-      description: '팀 활동(게시글/댓글)을 10회 이상 했습니다',
+      titleKey: 'achievementSocialButterflyTitle',
+      descriptionKey: 'achievementSocialButterflyDesc',
       icon: '🦋',
       category: AchievementCategory.community,
       requiredCount: 10,
@@ -379,8 +387,8 @@ class AchievementService {
     // --- 특별 카테고리 ---
     Achievement(
       id: 'body_transformation',
-      title: '변신 성공',
-      description: '체중 변화 목표를 달성했습니다',
+      titleKey: 'achievementBodyTransformationTitle',
+      descriptionKey: 'achievementBodyTransformationDesc',
       icon: '✨',
       category: AchievementCategory.special,
       requiredCount: 1,

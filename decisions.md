@@ -303,15 +303,42 @@ challenges/{id}/ → participants/
 - settings_screen: _load/_save/clearAllData 에러 핸들링 + _save 500ms 디바운스 + dispose
 - flutter analyze: 0 issues, flutter test: 269 passed
 
+**자가 리뷰 4차 완료 (2026-02-26) - 코드 품질 + 메모리 안정성:**
+- AuthNotifier 스트림 구독 누수 수정 (StreamSubscription 저장 + dispose cancel)
+- DietNotifier/Hydration/Calendar/Community/WorkoutHistory: disposed 가드 추가 (async state 접근 크래시 방지)
+- SettingsNotifier 디바운스 레이스 컨디션 수정 (_disposed 플래그)
+- Google/Apple 로그인 크래시 핸들링 (PlatformException → FirebaseAuthException 래핑)
+- SplashScreen Firebase 직접 접근 → authServiceProvider 전환
+- Firestore 레포 silent catch → debugPrint 로깅 24개 추가
+- 알림 서비스 중첩 타이머 레이스 컨디션 수정
+- 중복 날짜 포맷 → AppDefaults.dateKey() 유틸 추출
+- 하드코딩 한국어 2건 → i18n 전환 (privacyPolicy/termsOfService)
+- flutter analyze: 0 issues, flutter test: 269 passed
+
+**자가 리뷰 5차 완료 (2026-02-26) - UI/UX + i18n 완성:**
+- 하드코딩 한국어 30개 → l10n 전환 (calendar/diet/workout_log)
+  - 캘린더: 스플릿 템플릿 라벨, 부위명, 날짜 포맷, 완료 배지
+  - 식단: 빈 상태, 매크로, 음식 추가 시트, 검색 UI 전체
+  - 운동기록: 휴식 타이머 시간 라벨
+- 접근성: IconButton tooltip 추가 (검색/알림/캘린더/더보기)
+- 키보드: 식단 음식 검색 스크롤 시 자동 dismiss (onDrag)
+- 햅틱: 운동 세트 체크/추가/완료 시 진동 피드백
+- 팀명 텍스트 ellipsis 일관성 적용
+- _QuickActionButton static const 필드 추출 (성능)
+- flutter analyze: 0 issues, flutter test: 269 passed
+
 **다음 작업:**
-- 자가 리뷰 4차 (notification_service i18n, achievement_service i18n 등)
+- 자가 리뷰 6차 (notification_service i18n, achievement_service i18n 등)
 
 **기타 대기:**
 - notification_service.dart 푸시 알림 텍스트 i18n
 - achievement_service.dart 업적 제목/설명 i18n
 - body_progress_screen BodyProgressRepository 추출
 - onboarding_screen SharedPreferences → settingsProvider 통합
-- iOS GoogleService-Info.plist 생성/추가
+- iOS GoogleService-Info.plist CLIENT_ID 추가 (Firebase Console에서 Google Sign-In 활성화 필요)
 - Info.plist REVERSED_CLIENT_ID 실제 값 교체
 - 홈화면 위젯 (iOS/Android)
 - 앱 아이콘 + Fastlane 빌드
+- 캘린더 landscape 대응
+- pull-to-refresh 패턴 추가
+- 스크롤-투-탑 (바텀 네비 탭 재탭)

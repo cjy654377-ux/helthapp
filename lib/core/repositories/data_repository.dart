@@ -127,3 +127,18 @@ abstract class AchievementRepository {
   /// 업적 진행 카운트 맵 저장
   Future<void> saveProgressCounts(Map<String, int> counts);
 }
+
+/// 바디 프로그레스(사진/측정값) 저장소
+abstract class BodyProgressRepository {
+  /// 전체 바디 프로그레스 항목 로드 (날짜 내림차순)
+  Future<List<Map<String, dynamic>>> loadEntries();
+
+  /// 바디 프로그레스 항목 목록 저장 (전체 덮어쓰기)
+  Future<void> saveEntries(List<Map<String, dynamic>> entries);
+
+  /// 단일 항목 추가
+  Future<void> addEntry(Map<String, dynamic> entry);
+
+  /// ID로 항목 삭제
+  Future<void> deleteEntry(String id);
+}

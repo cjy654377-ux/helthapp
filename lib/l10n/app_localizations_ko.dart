@@ -1442,4 +1442,189 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get tooltipMoreOptions => '더보기';
+
+  @override
+  String achievementsRemaining(int count) {
+    return '앞으로 $count개의 업적을 달성해보세요!';
+  }
+
+  @override
+  String get achievementFirstWorkoutTitle => '첫 운동';
+
+  @override
+  String get achievementFirstWorkoutDesc => '첫 번째 운동 기록을 완료했습니다';
+
+  @override
+  String get achievementWorkout10Title => '운동 마니아';
+
+  @override
+  String get achievementWorkout10Desc => '운동 기록을 10회 완료했습니다';
+
+  @override
+  String get achievementWorkout50Title => '헬스 중독자';
+
+  @override
+  String get achievementWorkout50Desc => '운동 기록을 50회 완료했습니다';
+
+  @override
+  String get achievementWorkout100Title => '운동의 신';
+
+  @override
+  String get achievementWorkout100Desc => '운동 기록을 100회 완료했습니다';
+
+  @override
+  String get achievementVolume1000Title => '1톤 클럽';
+
+  @override
+  String get achievementVolume1000Desc => '한 세션에 총 볼륨 1,000kg을 달성했습니다';
+
+  @override
+  String get achievementPrFirstTitle => '새 기록!';
+
+  @override
+  String get achievementPrFirstDesc => '첫 개인 최고 기록(PR)을 달성했습니다';
+
+  @override
+  String get achievementMorningWarriorTitle => '새벽 전사';
+
+  @override
+  String get achievementMorningWarriorDesc => '오전 운동을 10회 완료했습니다';
+
+  @override
+  String get achievementVariety10Title => '만능 운동인';
+
+  @override
+  String get achievementVariety10Desc => '10가지 이상의 다양한 운동을 수행했습니다';
+
+  @override
+  String get achievementStreak3Title => '3일 연속';
+
+  @override
+  String get achievementStreak3Desc => '3일 연속으로 운동했습니다';
+
+  @override
+  String get achievementStreak7Title => '일주일 연속';
+
+  @override
+  String get achievementStreak7Desc => '7일 연속으로 운동했습니다';
+
+  @override
+  String get achievementStreak30Title => '한 달 연속';
+
+  @override
+  String get achievementStreak30Desc => '30일 연속으로 운동했습니다';
+
+  @override
+  String get achievementWaterFirstGoalTitle => '수분 첫 목표!';
+
+  @override
+  String get achievementWaterFirstGoalDesc => '처음으로 하루 수분 섭취 목표를 달성했습니다';
+
+  @override
+  String get achievementWaterMasterTitle => '수분 마스터';
+
+  @override
+  String get achievementWaterMasterDesc => '수분 섭취 목표를 7일 달성했습니다';
+
+  @override
+  String get achievementWaterStreak30Title => '수분 왕';
+
+  @override
+  String get achievementWaterStreak30Desc => '30일 연속 수분 섭취 목표를 달성했습니다';
+
+  @override
+  String get achievementDietFirstLogTitle => '식단 시작';
+
+  @override
+  String get achievementDietFirstLogDesc => '첫 번째 식단을 기록했습니다';
+
+  @override
+  String get achievementDietStreak7Title => '식단 기록왕';
+
+  @override
+  String get achievementDietStreak7Desc => '7일 연속 식단을 기록했습니다';
+
+  @override
+  String get achievementTeamJoinTitle => '팀 플레이어';
+
+  @override
+  String get achievementTeamJoinDesc => '팀에 가입했습니다';
+
+  @override
+  String get achievementSocialButterflyTitle => '소셜 버터플라이';
+
+  @override
+  String get achievementSocialButterflyDesc => '팀 활동(게시글/댓글)을 10회 이상 했습니다';
+
+  @override
+  String get achievementBodyTransformationTitle => '변신 성공';
+
+  @override
+  String get achievementBodyTransformationDesc => '체중 변화 목표를 달성했습니다';
+
+  @override
+  String get notifHydrationTitle => '물 마실 시간이에요!';
+
+  @override
+  String get notifHydrationBody => '수분 섭취 목표를 달성하기 위해 지금 물을 마셔보세요.';
+
+  @override
+  String get notifHydrationChannelName => '수분 섭취 알림';
+
+  @override
+  String get notifHydrationChannelDesc => '수분 섭취 리마인더';
+
+  @override
+  String get notifWorkoutTitle => '운동 시간이에요!';
+
+  @override
+  String notifWorkoutBody(String workoutName) {
+    return '오늘의 $workoutName 운동을 시작할 시간입니다.';
+  }
+
+  @override
+  String get notifWorkoutChannelName => '운동 알림';
+
+  @override
+  String get notifWorkoutChannelDesc => '운동 리마인더';
+
+  @override
+  String notifMealTitle(String mealLabel) {
+    return '$mealLabel 기록 시간이에요!';
+  }
+
+  @override
+  String notifMealBody(String mealLabel) {
+    return '$mealLabel 식단을 기록하고 영양 목표를 확인하세요.';
+  }
+
+  @override
+  String get notifMealChannelName => '식단 알림';
+
+  @override
+  String get notifMealChannelDesc => '식단 기록 리마인더';
+
+  @override
+  String get notifRestTitle => '잠깐 휴식을 취하세요!';
+
+  @override
+  String get notifRestBody => '오랫동안 앉아 계셨네요. 잠깐 스트레칭을 해보세요.';
+
+  @override
+  String get notifGeneralChannelName => '일반 알림';
+
+  @override
+  String get notifGeneralChannelDesc => '휴식 및 일반 리마인더';
+
+  @override
+  String get mealLabelBreakfast => '아침';
+
+  @override
+  String get mealLabelLunch => '점심';
+
+  @override
+  String get mealLabelDinner => '저녁';
+
+  @override
+  String get mealLabelSnack => '간식';
 }

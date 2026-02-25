@@ -54,7 +54,13 @@ class _HydrationScreenState extends ConsumerState<HydrationScreen> {
           ),
         ],
       ),
-      body: ListView(
+      body: RefreshIndicator(
+        // 수분 데이터 새로고침: provider 재생성 + 주간 통계 재로드
+        onRefresh: () async {
+          ref.invalidate(hydrationProvider);
+          _loadWeeklyStats();
+        },
+        child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           _HydrationRing(
@@ -82,6 +88,7 @@ class _HydrationScreenState extends ConsumerState<HydrationScreen> {
           ),
           const SizedBox(height: 80),
         ],
+        ),
       ),
     );
   }

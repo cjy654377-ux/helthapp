@@ -36,15 +36,15 @@ void main() {
     test('has correct fields', () {
       const a = Achievement(
         id: 'test_ach',
-        title: '테스트 업적',
-        description: '테스트 설명',
+        titleKey: 'achievementTestTitle',
+        descriptionKey: 'achievementTestDesc',
         icon: '🏆',
         category: AchievementCategory.workout,
         requiredCount: 10,
         points: 50,
       );
       expect(a.id, 'test_ach');
-      expect(a.title, '테스트 업적');
+      expect(a.titleKey, 'achievementTestTitle');
       expect(a.requiredCount, 10);
       expect(a.points, 50);
       expect(a.category, AchievementCategory.workout);
@@ -53,15 +53,15 @@ void main() {
     test('equality is based on id', () {
       const a1 = Achievement(
         id: 'same',
-        title: 'Title A',
-        description: 'Desc A',
+        titleKey: 'keyA',
+        descriptionKey: 'descKeyA',
         icon: '🔥',
         category: AchievementCategory.workout,
       );
       const a2 = Achievement(
         id: 'same',
-        title: 'Title B',
-        description: 'Desc B',
+        titleKey: 'keyB',
+        descriptionKey: 'descKeyB',
         icon: '⭐',
         category: AchievementCategory.diet,
       );
@@ -71,8 +71,8 @@ void main() {
     test('default requiredCount is 1 and points is 10', () {
       const a = Achievement(
         id: 'default_ach',
-        title: '기본',
-        description: '설명',
+        titleKey: 'achievementDefaultTitle',
+        descriptionKey: 'achievementDefaultDesc',
         icon: '✅',
         category: AchievementCategory.streak,
       );
@@ -87,8 +87,8 @@ void main() {
   group('AchievementProgress', () {
     const achievement = Achievement(
       id: 'prog_test',
-      title: '진행 테스트',
-      description: '설명',
+      titleKey: 'achievementProgTestTitle',
+      descriptionKey: 'achievementProgTestDesc',
       icon: '🎯',
       category: AchievementCategory.workout,
       requiredCount: 10,
@@ -159,8 +159,8 @@ void main() {
     test('progress for zero requiredCount achievement', () {
       const zeroAch = Achievement(
         id: 'zero_req',
-        title: '즉시 달성',
-        description: '설명',
+        titleKey: 'achievementZeroReqTitle',
+        descriptionKey: 'achievementZeroReqDesc',
         icon: '✨',
         category: AchievementCategory.special,
         requiredCount: 0,
@@ -267,12 +267,12 @@ void main() {
       expect(ach.points, greaterThan(0));
     });
 
-    test('all achievements have non-empty title, description, and icon', () {
+    test('all achievements have non-empty titleKey, descriptionKey, and icon', () {
       for (final ach in AchievementService.achievements) {
-        expect(ach.title, isNotEmpty,
-            reason: 'Achievement ${ach.id} has empty title');
-        expect(ach.description, isNotEmpty,
-            reason: 'Achievement ${ach.id} has empty description');
+        expect(ach.titleKey, isNotEmpty,
+            reason: 'Achievement ${ach.id} has empty titleKey');
+        expect(ach.descriptionKey, isNotEmpty,
+            reason: 'Achievement ${ach.id} has empty descriptionKey');
         expect(ach.icon, isNotEmpty,
             reason: 'Achievement ${ach.id} has empty icon');
       }

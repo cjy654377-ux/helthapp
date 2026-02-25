@@ -1414,5 +1414,194 @@
   "@tooltipCalendar": { "description": "Tooltip for calendar icon button" },
 
   "tooltipMoreOptions": "더보기",
-  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" }
+  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" },
+
+  "achievementsRemaining": "앞으로 {count}개의 업적을 달성해보세요!",
+  "@achievementsRemaining": {
+    "description": "Remaining achievements motivational text",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "achievementFirstWorkoutTitle": "첫 운동",
+  "@achievementFirstWorkoutTitle": { "description": "Achievement: first workout - title" },
+
+  "achievementFirstWorkoutDesc": "첫 번째 운동 기록을 완료했습니다",
+  "@achievementFirstWorkoutDesc": { "description": "Achievement: first workout - description" },
+
+  "achievementWorkout10Title": "운동 마니아",
+  "@achievementWorkout10Title": { "description": "Achievement: 10 workouts - title" },
+
+  "achievementWorkout10Desc": "운동 기록을 10회 완료했습니다",
+  "@achievementWorkout10Desc": { "description": "Achievement: 10 workouts - description" },
+
+  "achievementWorkout50Title": "헬스 중독자",
+  "@achievementWorkout50Title": { "description": "Achievement: 50 workouts - title" },
+
+  "achievementWorkout50Desc": "운동 기록을 50회 완료했습니다",
+  "@achievementWorkout50Desc": { "description": "Achievement: 50 workouts - description" },
+
+  "achievementWorkout100Title": "운동의 신",
+  "@achievementWorkout100Title": { "description": "Achievement: 100 workouts - title" },
+
+  "achievementWorkout100Desc": "운동 기록을 100회 완료했습니다",
+  "@achievementWorkout100Desc": { "description": "Achievement: 100 workouts - description" },
+
+  "achievementVolume1000Title": "1톤 클럽",
+  "@achievementVolume1000Title": { "description": "Achievement: 1000kg volume - title" },
+
+  "achievementVolume1000Desc": "한 세션에 총 볼륨 1,000kg을 달성했습니다",
+  "@achievementVolume1000Desc": { "description": "Achievement: 1000kg volume - description" },
+
+  "achievementPrFirstTitle": "새 기록!",
+  "@achievementPrFirstTitle": { "description": "Achievement: first PR - title" },
+
+  "achievementPrFirstDesc": "첫 개인 최고 기록(PR)을 달성했습니다",
+  "@achievementPrFirstDesc": { "description": "Achievement: first PR - description" },
+
+  "achievementMorningWarriorTitle": "새벽 전사",
+  "@achievementMorningWarriorTitle": { "description": "Achievement: morning warrior - title" },
+
+  "achievementMorningWarriorDesc": "오전 운동을 10회 완료했습니다",
+  "@achievementMorningWarriorDesc": { "description": "Achievement: morning warrior - description" },
+
+  "achievementVariety10Title": "만능 운동인",
+  "@achievementVariety10Title": { "description": "Achievement: 10 exercise variety - title" },
+
+  "achievementVariety10Desc": "10가지 이상의 다양한 운동을 수행했습니다",
+  "@achievementVariety10Desc": { "description": "Achievement: 10 exercise variety - description" },
+
+  "achievementStreak3Title": "3일 연속",
+  "@achievementStreak3Title": { "description": "Achievement: 3-day streak - title" },
+
+  "achievementStreak3Desc": "3일 연속으로 운동했습니다",
+  "@achievementStreak3Desc": { "description": "Achievement: 3-day streak - description" },
+
+  "achievementStreak7Title": "일주일 연속",
+  "@achievementStreak7Title": { "description": "Achievement: 7-day streak - title" },
+
+  "achievementStreak7Desc": "7일 연속으로 운동했습니다",
+  "@achievementStreak7Desc": { "description": "Achievement: 7-day streak - description" },
+
+  "achievementStreak30Title": "한 달 연속",
+  "@achievementStreak30Title": { "description": "Achievement: 30-day streak - title" },
+
+  "achievementStreak30Desc": "30일 연속으로 운동했습니다",
+  "@achievementStreak30Desc": { "description": "Achievement: 30-day streak - description" },
+
+  "achievementWaterFirstGoalTitle": "수분 첫 목표!",
+  "@achievementWaterFirstGoalTitle": { "description": "Achievement: first water goal - title" },
+
+  "achievementWaterFirstGoalDesc": "처음으로 하루 수분 섭취 목표를 달성했습니다",
+  "@achievementWaterFirstGoalDesc": { "description": "Achievement: first water goal - description" },
+
+  "achievementWaterMasterTitle": "수분 마스터",
+  "@achievementWaterMasterTitle": { "description": "Achievement: water master - title" },
+
+  "achievementWaterMasterDesc": "수분 섭취 목표를 7일 달성했습니다",
+  "@achievementWaterMasterDesc": { "description": "Achievement: water master - description" },
+
+  "achievementWaterStreak30Title": "수분 왕",
+  "@achievementWaterStreak30Title": { "description": "Achievement: 30-day water streak - title" },
+
+  "achievementWaterStreak30Desc": "30일 연속 수분 섭취 목표를 달성했습니다",
+  "@achievementWaterStreak30Desc": { "description": "Achievement: 30-day water streak - description" },
+
+  "achievementDietFirstLogTitle": "식단 시작",
+  "@achievementDietFirstLogTitle": { "description": "Achievement: first diet log - title" },
+
+  "achievementDietFirstLogDesc": "첫 번째 식단을 기록했습니다",
+  "@achievementDietFirstLogDesc": { "description": "Achievement: first diet log - description" },
+
+  "achievementDietStreak7Title": "식단 기록왕",
+  "@achievementDietStreak7Title": { "description": "Achievement: 7-day diet streak - title" },
+
+  "achievementDietStreak7Desc": "7일 연속 식단을 기록했습니다",
+  "@achievementDietStreak7Desc": { "description": "Achievement: 7-day diet streak - description" },
+
+  "achievementTeamJoinTitle": "팀 플레이어",
+  "@achievementTeamJoinTitle": { "description": "Achievement: team join - title" },
+
+  "achievementTeamJoinDesc": "팀에 가입했습니다",
+  "@achievementTeamJoinDesc": { "description": "Achievement: team join - description" },
+
+  "achievementSocialButterflyTitle": "소셜 버터플라이",
+  "@achievementSocialButterflyTitle": { "description": "Achievement: social butterfly - title" },
+
+  "achievementSocialButterflyDesc": "팀 활동(게시글/댓글)을 10회 이상 했습니다",
+  "@achievementSocialButterflyDesc": { "description": "Achievement: social butterfly - description" },
+
+  "achievementBodyTransformationTitle": "변신 성공",
+  "@achievementBodyTransformationTitle": { "description": "Achievement: body transformation - title" },
+
+  "achievementBodyTransformationDesc": "체중 변화 목표를 달성했습니다",
+  "@achievementBodyTransformationDesc": { "description": "Achievement: body transformation - description" },
+
+  "notifHydrationTitle": "물 마실 시간이에요!",
+  "@notifHydrationTitle": { "description": "Hydration reminder notification title" },
+
+  "notifHydrationBody": "수분 섭취 목표를 달성하기 위해 지금 물을 마셔보세요.",
+  "@notifHydrationBody": { "description": "Hydration reminder notification body" },
+
+  "notifHydrationChannelName": "수분 섭취 알림",
+  "@notifHydrationChannelName": { "description": "Hydration reminder Android notification channel name" },
+
+  "notifHydrationChannelDesc": "수분 섭취 리마인더",
+  "@notifHydrationChannelDesc": { "description": "Hydration reminder Android notification channel description" },
+
+  "notifWorkoutTitle": "운동 시간이에요!",
+  "@notifWorkoutTitle": { "description": "Workout reminder notification title" },
+
+  "notifWorkoutBody": "오늘의 {workoutName} 운동을 시작할 시간입니다.",
+  "@notifWorkoutBody": {
+    "description": "Workout reminder notification body",
+    "placeholders": { "workoutName": { "type": "String" } }
+  },
+
+  "notifWorkoutChannelName": "운동 알림",
+  "@notifWorkoutChannelName": { "description": "Workout reminder Android notification channel name" },
+
+  "notifWorkoutChannelDesc": "운동 리마인더",
+  "@notifWorkoutChannelDesc": { "description": "Workout reminder Android notification channel description" },
+
+  "notifMealTitle": "{mealLabel} 기록 시간이에요!",
+  "@notifMealTitle": {
+    "description": "Meal reminder notification title",
+    "placeholders": { "mealLabel": { "type": "String" } }
+  },
+
+  "notifMealBody": "{mealLabel} 식단을 기록하고 영양 목표를 확인하세요.",
+  "@notifMealBody": {
+    "description": "Meal reminder notification body",
+    "placeholders": { "mealLabel": { "type": "String" } }
+  },
+
+  "notifMealChannelName": "식단 알림",
+  "@notifMealChannelName": { "description": "Meal reminder Android notification channel name" },
+
+  "notifMealChannelDesc": "식단 기록 리마인더",
+  "@notifMealChannelDesc": { "description": "Meal reminder Android notification channel description" },
+
+  "notifRestTitle": "잠깐 휴식을 취하세요!",
+  "@notifRestTitle": { "description": "Rest reminder notification title" },
+
+  "notifRestBody": "오랫동안 앉아 계셨네요. 잠깐 스트레칭을 해보세요.",
+  "@notifRestBody": { "description": "Rest reminder notification body" },
+
+  "notifGeneralChannelName": "일반 알림",
+  "@notifGeneralChannelName": { "description": "General Android notification channel name" },
+
+  "notifGeneralChannelDesc": "휴식 및 일반 리마인더",
+  "@notifGeneralChannelDesc": { "description": "General Android notification channel description" },
+
+  "mealLabelBreakfast": "아침",
+  "@mealLabelBreakfast": { "description": "Meal label: breakfast" },
+
+  "mealLabelLunch": "점심",
+  "@mealLabelLunch": { "description": "Meal label: lunch" },
+
+  "mealLabelDinner": "저녁",
+  "@mealLabelDinner": { "description": "Meal label: dinner" },
+
+  "mealLabelSnack": "간식",
+  "@mealLabelSnack": { "description": "Meal label: snack" }
 }

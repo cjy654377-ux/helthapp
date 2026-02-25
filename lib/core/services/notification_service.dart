@@ -176,15 +176,21 @@ class NotificationService {
   // 수분 섭취 리마인더
   // ---------------------------------------------------------------------------
 
-  Future<void> scheduleHydrationReminder({required Duration interval}) async {
+  Future<void> scheduleHydrationReminder({
+    required Duration interval,
+    required String title,
+    required String body,
+    required String channelName,
+    required String channelDesc,
+  }) async {
     const id = 'hydration_reminder';
     await cancelReminder(id);
 
     final now = DateTime.now();
     final info = ReminderInfo(
       id: id,
-      title: '물 마실 시간이에요!',
-      body: '수분 섭취 목표를 달성하기 위해 지금 물을 마셔보세요.',
+      title: title,
+      body: body,
       scheduledTime: now.add(interval),
       type: ReminderType.hydration,
       isRepeating: true,
@@ -200,8 +206,8 @@ class NotificationService {
         repeatInterval: _durationToRepeatInterval(interval),
         notificationDetails: _details(
           channelId: _Channels.hydration,
-          channelName: '수분 섭취 알림',
-          channelDesc: '수분 섭취 리마인더',
+          channelName: channelName,
+          channelDesc: channelDesc,
         ),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
@@ -218,7 +224,10 @@ class NotificationService {
 
   Future<void> scheduleWorkoutReminder({
     required DateTime time,
-    required String workoutName,
+    required String title,
+    required String body,
+    required String channelName,
+    required String channelDesc,
   }) async {
     final id = 'workout_${time.millisecondsSinceEpoch}';
     final now = DateTime.now();
@@ -226,8 +235,8 @@ class NotificationService {
 
     final info = ReminderInfo(
       id: id,
-      title: '운동 시간이에요!',
-      body: '오늘의 $workoutName 운동을 시작할 시간입니다.',
+      title: title,
+      body: body,
       scheduledTime: time,
       type: ReminderType.workout,
     );
@@ -241,8 +250,8 @@ class NotificationService {
         scheduledDate: _toTZ(time),
         notificationDetails: _details(
           channelId: _Channels.workout,
-          channelName: '운동 알림',
-          channelDesc: '운동 리마인더',
+          channelName: channelName,
+          channelDesc: channelDesc,
         ),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
@@ -260,7 +269,13 @@ class NotificationService {
   // 식단 리마인더
   // ---------------------------------------------------------------------------
 
-  Future<void> scheduleMealReminder({required MealTime mealTime}) async {
+  Future<void> scheduleMealReminder({
+    required MealTime mealTime,
+    required String title,
+    required String body,
+    required String channelName,
+    required String channelDesc,
+  }) async {
     final id = 'meal_${mealTime.name}';
     await cancelReminder(id);
 
@@ -274,8 +289,8 @@ class NotificationService {
 
     final info = ReminderInfo(
       id: id,
-      title: '${mealTime.label} 기록 시간이에요!',
-      body: '${mealTime.label} 식단을 기록하고 영양 목표를 확인하세요.',
+      title: title,
+      body: body,
       scheduledTime: scheduledTime,
       type: ReminderType.meal,
       isRepeating: true,
@@ -291,8 +306,8 @@ class NotificationService {
         scheduledDate: _toTZ(scheduledTime),
         notificationDetails: _details(
           channelId: _Channels.meal,
-          channelName: '식단 알림',
-          channelDesc: '식단 기록 리마인더',
+          channelName: channelName,
+          channelDesc: channelDesc,
         ),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
@@ -313,15 +328,21 @@ class NotificationService {
   // 휴식 리마인더
   // ---------------------------------------------------------------------------
 
-  Future<void> scheduleRestReminder({required Duration interval}) async {
+  Future<void> scheduleRestReminder({
+    required Duration interval,
+    required String title,
+    required String body,
+    required String channelName,
+    required String channelDesc,
+  }) async {
     const id = 'rest_reminder';
     await cancelReminder(id);
 
     final now = DateTime.now();
     final info = ReminderInfo(
       id: id,
-      title: '잠깐 휴식을 취하세요!',
-      body: '오랫동안 앉아 계셨네요. 잠깐 스트레칭을 해보세요.',
+      title: title,
+      body: body,
       scheduledTime: now.add(interval),
       type: ReminderType.rest,
       isRepeating: true,
@@ -337,8 +358,8 @@ class NotificationService {
         repeatInterval: _durationToRepeatInterval(interval),
         notificationDetails: _details(
           channelId: _Channels.general,
-          channelName: '일반 알림',
-          channelDesc: '휴식 및 일반 리마인더',
+          channelName: channelName,
+          channelDesc: channelDesc,
         ),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       );
@@ -385,8 +406,8 @@ class NotificationService {
         scheduledDate: _toTZ(scheduledTime),
         notificationDetails: _details(
           channelId: _Channels.general,
-          channelName: '일반 알림',
-          channelDesc: '일반 리마인더',
+          channelName: 'General',
+          channelDesc: 'General reminders',
         ),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         matchDateTimeComponents: repeating ? DateTimeComponents.time : null,
@@ -418,6 +439,8 @@ class NotificationService {
   Future<void> showInstantNotification({
     required String title,
     required String body,
+    String channelName = 'General',
+    String channelDesc = 'General notifications',
   }) async {
     if (!_isInitialized) return;
 
@@ -427,8 +450,8 @@ class NotificationService {
       body: body,
       notificationDetails: _details(
         channelId: _Channels.general,
-        channelName: '일반 알림',
-        channelDesc: '일반 알림',
+        channelName: channelName,
+        channelDesc: channelDesc,
       ),
     );
   }

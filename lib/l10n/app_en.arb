@@ -708,5 +708,194 @@
   "@tooltipCalendar": { "description": "Tooltip for calendar icon button" },
 
   "tooltipMoreOptions": "More options",
-  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" }
+  "@tooltipMoreOptions": { "description": "Tooltip for more options icon button" },
+
+  "achievementsRemaining": "Unlock {count} more achievements!",
+  "@achievementsRemaining": {
+    "description": "Remaining achievements motivational text",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "achievementFirstWorkoutTitle": "First Workout",
+  "@achievementFirstWorkoutTitle": { "description": "Achievement: first workout - title" },
+
+  "achievementFirstWorkoutDesc": "Completed your first workout log",
+  "@achievementFirstWorkoutDesc": { "description": "Achievement: first workout - description" },
+
+  "achievementWorkout10Title": "Fitness Enthusiast",
+  "@achievementWorkout10Title": { "description": "Achievement: 10 workouts - title" },
+
+  "achievementWorkout10Desc": "Completed 10 workout sessions",
+  "@achievementWorkout10Desc": { "description": "Achievement: 10 workouts - description" },
+
+  "achievementWorkout50Title": "Gym Addict",
+  "@achievementWorkout50Title": { "description": "Achievement: 50 workouts - title" },
+
+  "achievementWorkout50Desc": "Completed 50 workout sessions",
+  "@achievementWorkout50Desc": { "description": "Achievement: 50 workouts - description" },
+
+  "achievementWorkout100Title": "Workout God",
+  "@achievementWorkout100Title": { "description": "Achievement: 100 workouts - title" },
+
+  "achievementWorkout100Desc": "Completed 100 workout sessions",
+  "@achievementWorkout100Desc": { "description": "Achievement: 100 workouts - description" },
+
+  "achievementVolume1000Title": "1-Ton Club",
+  "@achievementVolume1000Title": { "description": "Achievement: 1000kg volume - title" },
+
+  "achievementVolume1000Desc": "Lifted a total of 1,000 kg in a single session",
+  "@achievementVolume1000Desc": { "description": "Achievement: 1000kg volume - description" },
+
+  "achievementPrFirstTitle": "New Record!",
+  "@achievementPrFirstTitle": { "description": "Achievement: first PR - title" },
+
+  "achievementPrFirstDesc": "Achieved your first personal record (PR)",
+  "@achievementPrFirstDesc": { "description": "Achievement: first PR - description" },
+
+  "achievementMorningWarriorTitle": "Morning Warrior",
+  "@achievementMorningWarriorTitle": { "description": "Achievement: morning warrior - title" },
+
+  "achievementMorningWarriorDesc": "Completed 10 morning workout sessions",
+  "@achievementMorningWarriorDesc": { "description": "Achievement: morning warrior - description" },
+
+  "achievementVariety10Title": "All-Rounder",
+  "@achievementVariety10Title": { "description": "Achievement: 10 exercise variety - title" },
+
+  "achievementVariety10Desc": "Performed 10 or more different exercises",
+  "@achievementVariety10Desc": { "description": "Achievement: 10 exercise variety - description" },
+
+  "achievementStreak3Title": "3-Day Streak",
+  "@achievementStreak3Title": { "description": "Achievement: 3-day streak - title" },
+
+  "achievementStreak3Desc": "Worked out 3 days in a row",
+  "@achievementStreak3Desc": { "description": "Achievement: 3-day streak - description" },
+
+  "achievementStreak7Title": "Week Streak",
+  "@achievementStreak7Title": { "description": "Achievement: 7-day streak - title" },
+
+  "achievementStreak7Desc": "Worked out 7 days in a row",
+  "@achievementStreak7Desc": { "description": "Achievement: 7-day streak - description" },
+
+  "achievementStreak30Title": "Month Streak",
+  "@achievementStreak30Title": { "description": "Achievement: 30-day streak - title" },
+
+  "achievementStreak30Desc": "Worked out 30 days in a row",
+  "@achievementStreak30Desc": { "description": "Achievement: 30-day streak - description" },
+
+  "achievementWaterFirstGoalTitle": "First Water Goal!",
+  "@achievementWaterFirstGoalTitle": { "description": "Achievement: first water goal - title" },
+
+  "achievementWaterFirstGoalDesc": "Achieved your daily hydration goal for the first time",
+  "@achievementWaterFirstGoalDesc": { "description": "Achievement: first water goal - description" },
+
+  "achievementWaterMasterTitle": "Hydration Master",
+  "@achievementWaterMasterTitle": { "description": "Achievement: water master - title" },
+
+  "achievementWaterMasterDesc": "Met your hydration goal 7 days",
+  "@achievementWaterMasterDesc": { "description": "Achievement: water master - description" },
+
+  "achievementWaterStreak30Title": "Hydration King",
+  "@achievementWaterStreak30Title": { "description": "Achievement: 30-day water streak - title" },
+
+  "achievementWaterStreak30Desc": "Met your hydration goal 30 days in a row",
+  "@achievementWaterStreak30Desc": { "description": "Achievement: 30-day water streak - description" },
+
+  "achievementDietFirstLogTitle": "Diet Start",
+  "@achievementDietFirstLogTitle": { "description": "Achievement: first diet log - title" },
+
+  "achievementDietFirstLogDesc": "Logged your first meal",
+  "@achievementDietFirstLogDesc": { "description": "Achievement: first diet log - description" },
+
+  "achievementDietStreak7Title": "Diet Tracker",
+  "@achievementDietStreak7Title": { "description": "Achievement: 7-day diet streak - title" },
+
+  "achievementDietStreak7Desc": "Logged meals 7 days in a row",
+  "@achievementDietStreak7Desc": { "description": "Achievement: 7-day diet streak - description" },
+
+  "achievementTeamJoinTitle": "Team Player",
+  "@achievementTeamJoinTitle": { "description": "Achievement: team join - title" },
+
+  "achievementTeamJoinDesc": "Joined a team",
+  "@achievementTeamJoinDesc": { "description": "Achievement: team join - description" },
+
+  "achievementSocialButterflyTitle": "Social Butterfly",
+  "@achievementSocialButterflyTitle": { "description": "Achievement: social butterfly - title" },
+
+  "achievementSocialButterflyDesc": "Participated in 10+ team activities (posts/comments)",
+  "@achievementSocialButterflyDesc": { "description": "Achievement: social butterfly - description" },
+
+  "achievementBodyTransformationTitle": "Transformation",
+  "@achievementBodyTransformationTitle": { "description": "Achievement: body transformation - title" },
+
+  "achievementBodyTransformationDesc": "Achieved your body weight change goal",
+  "@achievementBodyTransformationDesc": { "description": "Achievement: body transformation - description" },
+
+  "notifHydrationTitle": "Time to Drink Water!",
+  "@notifHydrationTitle": { "description": "Hydration reminder notification title" },
+
+  "notifHydrationBody": "Drink some water now to reach your hydration goal.",
+  "@notifHydrationBody": { "description": "Hydration reminder notification body" },
+
+  "notifHydrationChannelName": "Hydration Reminders",
+  "@notifHydrationChannelName": { "description": "Hydration reminder Android notification channel name" },
+
+  "notifHydrationChannelDesc": "Hydration intake reminders",
+  "@notifHydrationChannelDesc": { "description": "Hydration reminder Android notification channel description" },
+
+  "notifWorkoutTitle": "Time to Work Out!",
+  "@notifWorkoutTitle": { "description": "Workout reminder notification title" },
+
+  "notifWorkoutBody": "It's time to start your {workoutName} workout.",
+  "@notifWorkoutBody": {
+    "description": "Workout reminder notification body",
+    "placeholders": { "workoutName": { "type": "String" } }
+  },
+
+  "notifWorkoutChannelName": "Workout Reminders",
+  "@notifWorkoutChannelName": { "description": "Workout reminder Android notification channel name" },
+
+  "notifWorkoutChannelDesc": "Workout reminders",
+  "@notifWorkoutChannelDesc": { "description": "Workout reminder Android notification channel description" },
+
+  "notifMealTitle": "Time to log {mealLabel}!",
+  "@notifMealTitle": {
+    "description": "Meal reminder notification title",
+    "placeholders": { "mealLabel": { "type": "String" } }
+  },
+
+  "notifMealBody": "Log your {mealLabel} and check your nutrition goals.",
+  "@notifMealBody": {
+    "description": "Meal reminder notification body",
+    "placeholders": { "mealLabel": { "type": "String" } }
+  },
+
+  "notifMealChannelName": "Meal Reminders",
+  "@notifMealChannelName": { "description": "Meal reminder Android notification channel name" },
+
+  "notifMealChannelDesc": "Meal logging reminders",
+  "@notifMealChannelDesc": { "description": "Meal reminder Android notification channel description" },
+
+  "notifRestTitle": "Take a Break!",
+  "@notifRestTitle": { "description": "Rest reminder notification title" },
+
+  "notifRestBody": "You've been sitting for a while. Try a quick stretch.",
+  "@notifRestBody": { "description": "Rest reminder notification body" },
+
+  "notifGeneralChannelName": "General Notifications",
+  "@notifGeneralChannelName": { "description": "General Android notification channel name" },
+
+  "notifGeneralChannelDesc": "Rest and general reminders",
+  "@notifGeneralChannelDesc": { "description": "General Android notification channel description" },
+
+  "mealLabelBreakfast": "Breakfast",
+  "@mealLabelBreakfast": { "description": "Meal label: breakfast" },
+
+  "mealLabelLunch": "Lunch",
+  "@mealLabelLunch": { "description": "Meal label: lunch" },
+
+  "mealLabelDinner": "Dinner",
+  "@mealLabelDinner": { "description": "Meal label: dinner" },
+
+  "mealLabelSnack": "Snack",
+  "@mealLabelSnack": { "description": "Meal label: snack" }
 }

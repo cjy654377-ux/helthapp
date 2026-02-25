@@ -520,3 +520,55 @@ class LocalAchievementRepository implements AchievementRepository {
     } catch (_) {}
   }
 }
+
+// ---------------------------------------------------------------------------
+// LocalBodyProgressRepository - SharedPreferences 기반 바디 프로그레스 저장소
+// ---------------------------------------------------------------------------
+
+class LocalBodyProgressRepository implements BodyProgressRepository {
+  static const String _entriesKey = 'body_progress_entries';
+
+  @override
+  Future<List<Map<String, dynamic>>> loadEntries() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getStringList(_entriesKey) ?? [];
+      final entries = <Map<String, dynamic>>[];
+      for (final s in raw) {
+        try {
+          entries.add(jsonDecode(s) as Map<String, dynamic>);
+        } catch (_) {
+          // corrupt entry 무시
+        }
+      }
+      return entries;
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveEntries(List<Map<String, dynamic>> entries) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = entries.map((e) => jsonEncode(e)).toList();
+      await prefs.setStringList(_entriesKey, raw);
+    } catch (_) {
+      // 저장 실패 무시
+    }
+  }
+
+  @override
+  Future<void> addEntry(Map<String, dynamic> entry) async {
+    final entries = await loadEntries();
+    entries.insert(0, entry);
+    await saveEntries(entries);
+  }
+
+  @override
+  Future<void> deleteEntry(String id) async {
+    final entries = await loadEntries();
+    entries.removeWhere((e) => e['id'] == id);
+    await saveEntries(entries);
+  }
+}

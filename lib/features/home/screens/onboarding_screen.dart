@@ -7,18 +7,18 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/core/router/app_router.dart';
+import 'package:health_app/features/profile/screens/settings_screen.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
 // SharedPreferences 키
+// settingsProvider와 겹치는 프로필 필드(nickname/gender/height/weight)는
+// settingsProvider에 저장하므로 여기선 온보딩 전용 키만 관리
 // ---------------------------------------------------------------------------
 
 abstract final class _OnboardingKeys {
   static const String completed = 'onboarding_completed';
-  static const String nickname = 'user_nickname';
-  static const String gender = 'user_gender';
-  static const String height = 'user_height';
-  static const String weight = 'user_weight';
+  // 온보딩 전용 (settingsProvider에 없는 필드)
   static const String experience = 'user_experience';
   static const String goals = 'user_goals';
   static const String weeklyWorkoutGoal = 'weekly_workout_goal';
@@ -113,13 +113,21 @@ class OnboardingNotifier extends StateNotifier<OnboardingState> {
   void setDailyWaterGoal(int value) =>
       state = state.copyWith(dailyWaterGoal: value);
 
-  Future<void> saveAndComplete() async {
+  /// 온보딩 완료 시 프로필 데이터 저장
+  /// - nickname/gender/height/weight: settingsProvider를 통해 저장
+  /// - experience/goals/weeklyWorkoutGoal/dailyCalorieGoal/dailyWaterGoal:
+  ///   settingsProvider에 해당 필드가 없으므로 SharedPreferences에 직접 저장
+  Future<void> saveAndComplete(WidgetRef ref) async {
+    // 프로필 필드를 settingsProvider로 저장
+    final settingsNotifier = ref.read(settingsProvider.notifier);
+    settingsNotifier.setNickname(state.nickname);
+    settingsNotifier.setGender(state.gender);
+    settingsNotifier.setHeight(state.height);
+    settingsNotifier.setWeight(state.weight);
+
+    // 온보딩 전용 필드 및 완료 플래그는 SharedPreferences에 저장
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_OnboardingKeys.completed, true);
-    await prefs.setString(_OnboardingKeys.nickname, state.nickname);
-    await prefs.setString(_OnboardingKeys.gender, state.gender);
-    await prefs.setString(_OnboardingKeys.height, state.height);
-    await prefs.setString(_OnboardingKeys.weight, state.weight);
     await prefs.setString(_OnboardingKeys.experience, state.experience);
     await prefs.setStringList(
         _OnboardingKeys.goals, state.selectedGoals.toList());
@@ -193,7 +201,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Future<void> _complete() async {
-    await ref.read(onboardingProvider.notifier).saveAndComplete();
+    await ref.read(onboardingProvider.notifier).saveAndComplete(ref);
     if (mounted) {
       context.go(AppRoutes.home);
     }

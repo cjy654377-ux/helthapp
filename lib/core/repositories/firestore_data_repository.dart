@@ -776,3 +776,82 @@ class FirestoreAchievementRepository implements AchievementRepository {
     }
   }
 }
+
+// ---------------------------------------------------------------------------
+// FirestoreBodyProgressRepository
+// ---------------------------------------------------------------------------
+
+/// Firestore 기반 바디 프로그레스 저장소
+/// 각 항목을 users/{uid}/bodyProgress/{id} 문서로 저장
+class FirestoreBodyProgressRepository implements BodyProgressRepository {
+  final FirebaseFirestore _db;
+  final String _uid;
+
+  FirestoreBodyProgressRepository({required String uid, FirebaseFirestore? db})
+      : _uid = uid,
+        _db = db ?? FirebaseFirestore.instance;
+
+  CollectionReference<Map<String, dynamic>> get _ref =>
+      _db.collection('users').doc(_uid).collection('bodyProgress');
+
+  @override
+  Future<List<Map<String, dynamic>>> loadEntries() async {
+    try {
+      final snapshot =
+          await _ref.orderBy('date', descending: true).get();
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      debugPrint('[FirestoreBodyProgressRepository] loadEntries error: $e');
+      return [];
+    }
+  }
+
+  @override
+  Future<void> saveEntries(List<Map<String, dynamic>> entries) async {
+    try {
+      // 기존 전체 삭제 후 재작성
+      final existing = await _ref.get();
+      const batchLimit = 500;
+
+      for (var i = 0; i < existing.docs.length; i += batchLimit) {
+        final chunk = existing.docs.skip(i).take(batchLimit).toList();
+        final batch = _db.batch();
+        for (final doc in chunk) {
+          batch.delete(doc.reference);
+        }
+        await batch.commit();
+      }
+
+      for (var i = 0; i < entries.length; i += batchLimit) {
+        final chunk = entries.skip(i).take(batchLimit).toList();
+        final batch = _db.batch();
+        for (final entry in chunk) {
+          final id = entry['id'] as String;
+          batch.set(_ref.doc(id), entry);
+        }
+        await batch.commit();
+      }
+    } catch (e) {
+      debugPrint('[FirestoreBodyProgressRepository] saveEntries error: $e');
+    }
+  }
+
+  @override
+  Future<void> addEntry(Map<String, dynamic> entry) async {
+    try {
+      final id = entry['id'] as String;
+      await _ref.doc(id).set(entry);
+    } catch (e) {
+      debugPrint('[FirestoreBodyProgressRepository] addEntry error: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteEntry(String id) async {
+    try {
+      await _ref.doc(id).delete();
+    } catch (e) {
+      debugPrint('[FirestoreBodyProgressRepository] deleteEntry error: $e');
+    }
+  }
+}

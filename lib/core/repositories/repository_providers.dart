@@ -69,3 +69,12 @@ final achievementRepositoryProvider = Provider<AchievementRepository>((ref) {
   }
   return LocalAchievementRepository();
 });
+
+/// 바디 프로그레스 Repository Provider
+final bodyProgressRepositoryProvider = Provider<BodyProgressRepository>((ref) {
+  final authState = ref.watch(authProvider);
+  if (authState.isAuthenticated && authState.user != null) {
+    return FirestoreBodyProgressRepository(uid: authState.user!.uid);
+  }
+  return LocalBodyProgressRepository();
+});

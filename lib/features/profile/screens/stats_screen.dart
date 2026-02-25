@@ -320,6 +320,98 @@ IconData _achievementIcon(String emoji) {
   }
 }
 
+/// ARB 키를 업적 제목 번역 문자열로 변환
+String _resolveAchievementTitle(String titleKey, AppLocalizations l10n) {
+  switch (titleKey) {
+    case 'achievementFirstWorkoutTitle':
+      return l10n.achievementFirstWorkoutTitle;
+    case 'achievementWorkout10Title':
+      return l10n.achievementWorkout10Title;
+    case 'achievementWorkout50Title':
+      return l10n.achievementWorkout50Title;
+    case 'achievementWorkout100Title':
+      return l10n.achievementWorkout100Title;
+    case 'achievementVolume1000Title':
+      return l10n.achievementVolume1000Title;
+    case 'achievementPrFirstTitle':
+      return l10n.achievementPrFirstTitle;
+    case 'achievementMorningWarriorTitle':
+      return l10n.achievementMorningWarriorTitle;
+    case 'achievementVariety10Title':
+      return l10n.achievementVariety10Title;
+    case 'achievementStreak3Title':
+      return l10n.achievementStreak3Title;
+    case 'achievementStreak7Title':
+      return l10n.achievementStreak7Title;
+    case 'achievementStreak30Title':
+      return l10n.achievementStreak30Title;
+    case 'achievementWaterFirstGoalTitle':
+      return l10n.achievementWaterFirstGoalTitle;
+    case 'achievementWaterMasterTitle':
+      return l10n.achievementWaterMasterTitle;
+    case 'achievementWaterStreak30Title':
+      return l10n.achievementWaterStreak30Title;
+    case 'achievementDietFirstLogTitle':
+      return l10n.achievementDietFirstLogTitle;
+    case 'achievementDietStreak7Title':
+      return l10n.achievementDietStreak7Title;
+    case 'achievementTeamJoinTitle':
+      return l10n.achievementTeamJoinTitle;
+    case 'achievementSocialButterflyTitle':
+      return l10n.achievementSocialButterflyTitle;
+    case 'achievementBodyTransformationTitle':
+      return l10n.achievementBodyTransformationTitle;
+    default:
+      return titleKey;
+  }
+}
+
+/// ARB 키를 업적 설명 번역 문자열로 변환
+String _resolveAchievementDesc(String descKey, AppLocalizations l10n) {
+  switch (descKey) {
+    case 'achievementFirstWorkoutDesc':
+      return l10n.achievementFirstWorkoutDesc;
+    case 'achievementWorkout10Desc':
+      return l10n.achievementWorkout10Desc;
+    case 'achievementWorkout50Desc':
+      return l10n.achievementWorkout50Desc;
+    case 'achievementWorkout100Desc':
+      return l10n.achievementWorkout100Desc;
+    case 'achievementVolume1000Desc':
+      return l10n.achievementVolume1000Desc;
+    case 'achievementPrFirstDesc':
+      return l10n.achievementPrFirstDesc;
+    case 'achievementMorningWarriorDesc':
+      return l10n.achievementMorningWarriorDesc;
+    case 'achievementVariety10Desc':
+      return l10n.achievementVariety10Desc;
+    case 'achievementStreak3Desc':
+      return l10n.achievementStreak3Desc;
+    case 'achievementStreak7Desc':
+      return l10n.achievementStreak7Desc;
+    case 'achievementStreak30Desc':
+      return l10n.achievementStreak30Desc;
+    case 'achievementWaterFirstGoalDesc':
+      return l10n.achievementWaterFirstGoalDesc;
+    case 'achievementWaterMasterDesc':
+      return l10n.achievementWaterMasterDesc;
+    case 'achievementWaterStreak30Desc':
+      return l10n.achievementWaterStreak30Desc;
+    case 'achievementDietFirstLogDesc':
+      return l10n.achievementDietFirstLogDesc;
+    case 'achievementDietStreak7Desc':
+      return l10n.achievementDietStreak7Desc;
+    case 'achievementTeamJoinDesc':
+      return l10n.achievementTeamJoinDesc;
+    case 'achievementSocialButterflyDesc':
+      return l10n.achievementSocialButterflyDesc;
+    case 'achievementBodyTransformationDesc':
+      return l10n.achievementBodyTransformationDesc;
+    default:
+      return descKey;
+  }
+}
+
 /// Map achievement category to a color.
 Color _achievementColor(AchievementCategory category) {
   switch (category) {
@@ -383,11 +475,12 @@ class StatsScreen extends ConsumerWidget {
     final earnedAchievements = unlockedAchievements.length;
 
     // Convert unlocked achievements to local _Achievement model
+    // titleKey/descriptionKey를 l10n으로 변환하여 현재 언어에 맞는 문자열 사용
     final achievementCards = unlockedAchievements.map((a) {
       return _Achievement(
         icon: _achievementIcon(a.icon),
-        title: a.title,
-        description: a.description,
+        title: _resolveAchievementTitle(a.titleKey, l10n),
+        description: _resolveAchievementDesc(a.descriptionKey, l10n),
         color: _achievementColor(a.category),
         earnedDate: '',
       );
@@ -2113,7 +2206,7 @@ class _AchievementProgressCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '앞으로 ${total - earned}개의 업적을 달성해보세요!',
+              l10n.achievementsRemaining(total - earned),
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],

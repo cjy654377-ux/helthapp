@@ -52,7 +52,21 @@ class BottomNavScaffold extends StatelessWidget {
       ];
 
   void _onTabTapped(BuildContext context, int index) {
-    // 같은 탭을 눌렀을 때는 해당 탭의 루트로 이동
+    if (index == navigationShell.currentIndex) {
+      // 같은 탭을 다시 눌렀을 때: 스크롤 최상단으로 이동 (표준 모바일 UX)
+      // PrimaryScrollController는 각 탭의 주 ListView/CustomScrollView에
+      // Flutter가 자동으로 연결하므로 별도 ScrollController 없이 작동합니다.
+      final scrollController = PrimaryScrollController.maybeOf(context);
+      if (scrollController != null && scrollController.hasClients) {
+        scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+        return;
+      }
+    }
+    // 다른 탭이거나 스크롤 컨트롤러 없을 때: 탭 전환
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,

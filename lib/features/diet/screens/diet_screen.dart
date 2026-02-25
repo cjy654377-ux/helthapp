@@ -70,7 +70,12 @@ class DietScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: RefreshIndicator(
+        // 식단 데이터 새로고침: provider 재생성으로 최신 데이터 로드
+        onRefresh: () async {
+          ref.invalidate(dietProvider);
+        },
+        child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           _CalorieRingCard(dietState: dietState),
@@ -94,6 +99,7 @@ class DietScreen extends ConsumerWidget {
             ),
           const SizedBox(height: 80),
         ],
+        ),
       ),
     );
   }
