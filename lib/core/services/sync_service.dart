@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:health_app/core/constants/app_constants.dart';
 import 'package:health_app/core/repositories/local_data_repository.dart';
 import 'package:health_app/core/repositories/firestore_data_repository.dart';
 
@@ -48,8 +49,7 @@ class SyncService {
     final now = DateTime.now();
     for (int i = 0; i < 7; i++) {
       final date = now.subtract(Duration(days: i));
-      final dateKey =
-          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      final dateKey = AppDefaults.dateKey(date);
       final meals = await localDiet.loadMeals(dateKey);
       if (meals.isNotEmpty) {
         await fsDiet.saveMeals(dateKey, meals);
@@ -67,8 +67,7 @@ class SyncService {
     // 3. 수분 마이그레이션 - 최근 7일치
     for (int i = 0; i < 7; i++) {
       final date = now.subtract(Duration(days: i));
-      final dateKey =
-          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+      final dateKey = AppDefaults.dateKey(date);
       final hydData = await localHydration.loadHydrationData(dateKey);
       if (hydData.isNotEmpty) {
         await fsHydration.saveHydrationData(dateKey, hydData);

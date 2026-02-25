@@ -135,5 +135,7 @@ class ChallengeIntegrationService {
 /// 서비스를 생성하고 활성 상태로 유지합니다.
 final challengeIntegrationProvider =
     Provider<ChallengeIntegrationService>((ref) {
-  return ChallengeIntegrationService(ref);
+  final service = ChallengeIntegrationService(ref);
+  ref.onDispose(() {});
+  return service;
 });

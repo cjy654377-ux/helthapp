@@ -302,6 +302,7 @@ class NotificationService {
     final delay = scheduledTime.difference(now);
     _timers[id] = Timer(delay, () {
       _onReminderTriggered?.call(info);
+      _timers[id]?.cancel();
       _timers[id] = Timer.periodic(const Duration(days: 1), (_) {
         _onReminderTriggered?.call(info);
       });
@@ -396,6 +397,7 @@ class NotificationService {
     if (repeating && interval != null) {
       _timers[id] = Timer(delay, () {
         _onReminderTriggered?.call(info);
+        _timers[id]?.cancel();
         _timers[id] = Timer.periodic(interval, (_) {
           _onReminderTriggered?.call(info);
         });

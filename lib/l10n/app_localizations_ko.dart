@@ -1322,4 +1322,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String dateFormatFull(String year, String month, String day) {
     return '$year년 $month월 $day일';
   }
+
+  @override
+  String get privacyPolicyContent => '개인정보 처리방침 내용은 준비 중입니다.';
+
+  @override
+  String get termsOfServiceContent => '이용약관 내용은 준비 중입니다.';
 }

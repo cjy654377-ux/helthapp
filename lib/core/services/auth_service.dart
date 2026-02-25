@@ -56,22 +56,31 @@ class AuthService {
   // --- Google 로그인 ---
 
   Future<AppUser> signInWithGoogle() async {
-    final googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) {
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        throw FirebaseAuthException(
+          code: 'cancelled',
+          message: 'Google 로그인이 취소되었습니다.',
+        );
+      }
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      return AppUser.fromFirebaseUser(userCredential.user!);
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
       throw FirebaseAuthException(
-        code: 'cancelled',
-        message: 'Google 로그인이 취소되었습니다.',
+        code: 'unknown',
+        message: e.toString(),
       );
     }
-
-    final googleAuth = await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final userCredential = await _auth.signInWithCredential(credential);
-    return AppUser.fromFirebaseUser(userCredential.user!);
   }
 
   // --- Apple 로그인 ---

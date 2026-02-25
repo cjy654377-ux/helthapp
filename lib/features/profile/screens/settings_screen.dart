@@ -147,6 +147,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   }
 
   Timer? _debounce;
+  bool _disposed = false;
 
   Future<void> _load() async {
     try {
@@ -177,6 +178,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   }
 
   Future<void> _save() async {
+    if (_disposed) return;
     try {
       final prefs = await SharedPreferences.getInstance();
       final s = state;
@@ -208,6 +210,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   }
 
   void _update(SettingsState updated) {
+    if (_disposed) return;
     state = updated;
     // 디바운스: 연속 입력 시 500ms 후 1회만 저장
     _debounce?.cancel();
@@ -255,6 +258,7 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
 
   @override
   void dispose() {
+    _disposed = true;
     _debounce?.cancel();
     super.dispose();
   }
@@ -1141,7 +1145,7 @@ class _MiscSection extends StatelessWidget {
                 onTap: () => _showPolicyDialog(
                   context,
                   title: l10n.privacyPolicy,
-                  content: '개인정보 처리방침 내용은 준비 중입니다.',
+                  content: l10n.privacyPolicyContent,
                 ),
               ),
               const Divider(height: 1, indent: 72),
@@ -1162,7 +1166,7 @@ class _MiscSection extends StatelessWidget {
                 onTap: () => _showPolicyDialog(
                   context,
                   title: l10n.termsOfService,
-                  content: '이용약관 내용은 준비 중입니다.',
+                  content: l10n.termsOfServiceContent,
                 ),
               ),
               const Divider(height: 1, indent: 72),

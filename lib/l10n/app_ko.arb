@@ -1278,5 +1278,11 @@
   "@dateFormatFull": {
     "description": "Full date format",
     "placeholders": { "year": { "type": "String" }, "month": { "type": "String" }, "day": { "type": "String" } }
-  }
+  },
+
+  "privacyPolicyContent": "개인정보 처리방침 내용은 준비 중입니다.",
+  "@privacyPolicyContent": { "description": "Privacy policy content placeholder" },
+
+  "termsOfServiceContent": "이용약관 내용은 준비 중입니다.",
+  "@termsOfServiceContent": { "description": "Terms of service content placeholder" }
 }

@@ -2,6 +2,7 @@
 // 5개의 레포지토리 인터페이스를 Firestore로 구현
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:health_app/core/models/community_model.dart';
 import 'package:health_app/core/models/diet_model.dart';
 import 'package:health_app/core/repositories/data_repository.dart';
@@ -38,8 +39,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
         final data = doc.data();
         return WorkoutRecord.fromJson(data);
       }).toList();
-    } catch (_) {
-      // 로드 실패 시 빈 목록 반환
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] loadHistory error: $e');
       return [];
     }
   }
@@ -48,8 +49,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
   Future<void> saveRecord(WorkoutRecord record) async {
     try {
       await _workoutsRef.doc(record.id).set(record.toJson());
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] saveRecord error: $e');
     }
   }
 
@@ -66,8 +67,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] saveAllRecords error: $e');
     }
   }
 
@@ -75,8 +76,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
   Future<void> deleteRecord(String id) async {
     try {
       await _workoutsRef.doc(id).delete();
-    } catch (_) {
-      // 삭제 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] deleteRecord error: $e');
     }
   }
 
@@ -88,7 +89,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
         final data = doc.data();
         return PersonalRecord.fromJson(data);
       }).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] loadPersonalRecords error: $e');
       return [];
     }
   }
@@ -120,8 +122,8 @@ class FirestoreWorkoutRepository implements WorkoutRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreWorkoutRepository] savePersonalRecords error: $e');
     }
   }
 }
@@ -161,7 +163,8 @@ class FirestoreDietRepository implements DietRepository {
       return mealsList
           .map((e) => Meal.fromJson(e as Map<String, dynamic>))
           .toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] loadMeals error: $e');
       return [];
     }
   }
@@ -173,8 +176,8 @@ class FirestoreDietRepository implements DietRepository {
         'meals': meals.map((m) => m.toJson()).toList(),
         'updated_at': FieldValue.serverTimestamp(),
       });
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] saveMeals error: $e');
     }
   }
 
@@ -189,7 +192,8 @@ class FirestoreDietRepository implements DietRepository {
       if (data == null) return NutritionGoal.standard;
 
       return NutritionGoal.fromJson(data);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] loadNutritionGoal error: $e');
       return NutritionGoal.standard;
     }
   }
@@ -201,8 +205,8 @@ class FirestoreDietRepository implements DietRepository {
           .collection('settings')
           .doc('nutritionGoal')
           .set(goal.toJson());
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] saveNutritionGoal error: $e');
     }
   }
 
@@ -220,7 +224,8 @@ class FirestoreDietRepository implements DietRepository {
       if (ids == null) return [];
 
       return ids.map((e) => e as String).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] loadRecentFoodIds error: $e');
       return [];
     }
   }
@@ -232,8 +237,8 @@ class FirestoreDietRepository implements DietRepository {
         'ids': ids,
         'updated_at': FieldValue.serverTimestamp(),
       });
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreDietRepository] saveRecentFoodIds error: $e');
     }
   }
 }
@@ -266,7 +271,8 @@ class FirestoreHydrationRepository implements HydrationRepository {
 
       final data = doc.data();
       return data ?? {};
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreHydrationRepository] loadHydrationData error: $e');
       return {};
     }
   }
@@ -279,8 +285,8 @@ class FirestoreHydrationRepository implements HydrationRepository {
         ...data,
         'updated_at': FieldValue.serverTimestamp(),
       });
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreHydrationRepository] saveHydrationData error: $e');
     }
   }
 
@@ -295,7 +301,8 @@ class FirestoreHydrationRepository implements HydrationRepository {
 
       final data = doc.data();
       return data ?? {};
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreHydrationRepository] loadHydrationSettings error: $e');
       return {};
     }
   }
@@ -310,8 +317,8 @@ class FirestoreHydrationRepository implements HydrationRepository {
         ...settings,
         'updated_at': FieldValue.serverTimestamp(),
       });
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreHydrationRepository] saveHydrationSettings error: $e');
     }
   }
 }
@@ -349,7 +356,8 @@ class FirestoreCalendarRepository implements CalendarRepository {
       }
 
       return result;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreCalendarRepository] loadAllPlans error: $e');
       return {};
     }
   }
@@ -385,8 +393,8 @@ class FirestoreCalendarRepository implements CalendarRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreCalendarRepository] saveAllPlans error: $e');
     }
   }
 }
@@ -426,7 +434,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
       if (data == null) return null;
 
       return UserProfile.fromJson(data);
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] loadCurrentUser error: $e');
       return null;
     }
   }
@@ -438,8 +447,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
           .collection('settings')
           .doc('communityProfile')
           .set(profile.toJson());
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] saveCurrentUser error: $e');
     }
   }
 
@@ -472,13 +481,14 @@ class FirestoreCommunityRepository implements CommunityRepository {
           if (teamData == null) continue;
 
           teams.add(Team.fromJson(teamData));
-        } catch (_) {
-          // 개별 팀 로드 실패 시 건너뜀
+        } catch (e) {
+          debugPrint('[FirestoreCommunityRepository] loadMyTeams team load error: $e');
           continue;
         }
       }
       return teams;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] loadMyTeams error: $e');
       return [];
     }
   }
@@ -503,8 +513,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] saveMyTeams error: $e');
     }
   }
 
@@ -523,7 +533,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
         final data = doc.data();
         return TeamPost.fromJson(data);
       }).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] loadTeamPosts error: $e');
       return [];
     }
   }
@@ -556,8 +567,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] saveTeamPosts error: $e');
     }
   }
 
@@ -576,7 +587,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
         final data = doc.data();
         return WorkoutShare.fromJson(data);
       }).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] loadTeamShares error: $e');
       return [];
     }
   }
@@ -610,8 +622,8 @@ class FirestoreCommunityRepository implements CommunityRepository {
         }
         await batch.commit();
       }
-    } catch (_) {
-      // 저장 실패 무시
+    } catch (e) {
+      debugPrint('[FirestoreCommunityRepository] saveTeamShares error: $e');
     }
   }
 }
@@ -637,7 +649,8 @@ class FirestoreChallengeRepository implements ChallengeRepository {
           .where('is_active', isEqualTo: true)
           .get();
       return snapshot.docs.map((doc) => doc.data()).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreChallengeRepository] loadActiveChallenges error: $e');
       return [];
     }
   }
@@ -657,7 +670,9 @@ class FirestoreChallengeRepository implements ChallengeRepository {
         batch.set(_challengesRef.doc(id), c);
       }
       await batch.commit();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[FirestoreChallengeRepository] saveActiveChallenges error: $e');
+    }
   }
 
   @override
@@ -667,7 +682,8 @@ class FirestoreChallengeRepository implements ChallengeRepository {
           .where('is_active', isEqualTo: false)
           .get();
       return snapshot.docs.map((doc) => doc.data()).toList();
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreChallengeRepository] loadCompletedChallenges error: $e');
       return [];
     }
   }
@@ -687,7 +703,9 @@ class FirestoreChallengeRepository implements ChallengeRepository {
         batch.set(_challengesRef.doc(id), c);
       }
       await batch.commit();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[FirestoreChallengeRepository] saveCompletedChallenges error: $e');
+    }
   }
 }
 
@@ -711,7 +729,8 @@ class FirestoreAchievementRepository implements AchievementRepository {
       final list = data['unlocked_ids'];
       if (list is List) return list.whereType<String>().toList();
       return [];
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreAchievementRepository] loadUnlockedIds error: $e');
       return [];
     }
   }
@@ -723,7 +742,9 @@ class FirestoreAchievementRepository implements AchievementRepository {
         {'unlocked_ids': ids},
         SetOptions(merge: true),
       );
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[FirestoreAchievementRepository] saveUnlockedIds error: $e');
+    }
   }
 
   @override
@@ -737,7 +758,8 @@ class FirestoreAchievementRepository implements AchievementRepository {
         return progress.map((k, v) => MapEntry(k, v is int ? v : 0));
       }
       return {};
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[FirestoreAchievementRepository] loadProgressCounts error: $e');
       return {};
     }
   }
@@ -749,6 +771,8 @@ class FirestoreAchievementRepository implements AchievementRepository {
         {'progress_counts': counts},
         SetOptions(merge: true),
       );
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[FirestoreAchievementRepository] saveProgressCounts error: $e');
+    }
   }
 }

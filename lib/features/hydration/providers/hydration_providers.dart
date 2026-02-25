@@ -87,6 +87,13 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
   }
 
   final HydrationRepository _repo;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
@@ -114,6 +121,7 @@ class HydrationNotifier extends StateNotifier<DailyHydrationState> {
         entries = hydState.entries;
       }
 
+      if (_disposed) return;
       state = DailyHydrationState(
         date: today,
         entries: entries,

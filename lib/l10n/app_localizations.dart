@@ -2629,6 +2629,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{year}년 {month}월 {day}일'**
   String dateFormatFull(String year, String month, String day);
+
+  /// Privacy policy content placeholder
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보 처리방침 내용은 준비 중입니다.'**
+  String get privacyPolicyContent;
+
+  /// Terms of service content placeholder
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관 내용은 준비 중입니다.'**
+  String get termsOfServiceContent;
 }
 
 class _AppLocalizationsDelegate

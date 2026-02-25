@@ -572,5 +572,11 @@
   "@dateFormatFull": {
     "description": "Full date format",
     "placeholders": { "year": { "type": "String" }, "month": { "type": "String" }, "day": { "type": "String" } }
-  }
+  },
+
+  "privacyPolicyContent": "Privacy policy content is being prepared.",
+  "@privacyPolicyContent": { "description": "Privacy policy content placeholder" },
+
+  "termsOfServiceContent": "Terms of service content is being prepared.",
+  "@termsOfServiceContent": { "description": "Terms of service content placeholder" }
 }

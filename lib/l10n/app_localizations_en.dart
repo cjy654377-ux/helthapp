@@ -1332,4 +1332,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String dateFormatFull(String year, String month, String day) {
     return '$month/$day/$year';
   }
+
+  @override
+  String get privacyPolicyContent =>
+      'Privacy policy content is being prepared.';
+
+  @override
+  String get termsOfServiceContent =>
+      'Terms of service content is being prepared.';
 }

@@ -555,6 +555,13 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
   }
 
   final WorkoutRepository _repo;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // 개인 기록 (별도 관리)
   List<PersonalRecord> _personalRecords = [];
@@ -567,11 +574,14 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
     try {
       // 운동 기록 로드
       final history = await _repo.loadHistory();
+      if (_disposed) return;
       state = List<WorkoutRecord>.from(history)
         ..sort((a, b) => b.date.compareTo(a.date)); // 최신순 정렬
 
       // PR 기록 로드
-      _personalRecords = await _repo.loadPersonalRecords();
+      final prs = await _repo.loadPersonalRecords();
+      if (_disposed) return;
+      _personalRecords = prs;
     } catch (_) {
       // 로드 실패 시 빈 상태 유지
     }

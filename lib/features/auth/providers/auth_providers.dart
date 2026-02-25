@@ -1,4 +1,6 @@
 // Firebase 인증 상태 관리 Provider
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -54,6 +56,7 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
+  StreamSubscription<User?>? _authSub;
 
   AuthNotifier(this._authService) : super(const AuthState()) {
     _init();
@@ -61,7 +64,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   void _init() {
     // Firebase Auth 상태 변화 감시
-    _authService.authStateChanges.listen((User? firebaseUser) {
+    _authSub = _authService.authStateChanges.listen((User? firebaseUser) {
       if (firebaseUser != null) {
         state = AuthState(
           status: AuthStatus.authenticated,
@@ -71,6 +74,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = const AuthState(status: AuthStatus.unauthenticated);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
   }
 
   /// 이메일 회원가입
@@ -89,6 +98,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = AuthState(
         status: AuthStatus.error,
         errorMessage: _mapFirebaseError(e.code),
+      );
+    } catch (_) {
+      state = const AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'auth_error_unknown',
       );
     }
   }
@@ -110,6 +124,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: _mapFirebaseError(e.code),
       );
+    } catch (_) {
+      state = const AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'auth_error_unknown',
+      );
     }
   }
 
@@ -128,6 +147,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
         status: AuthStatus.error,
         errorMessage: _mapFirebaseError(e.code),
       );
+    } catch (_) {
+      state = const AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'auth_error_unknown',
+      );
     }
   }
 
@@ -141,6 +165,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = AuthState(
         status: AuthStatus.error,
         errorMessage: _mapFirebaseError(e.code),
+      );
+    } catch (_) {
+      state = const AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'auth_error_unknown',
       );
     }
   }

@@ -574,6 +574,13 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   }
 
   final DietRepository _repo;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
@@ -582,6 +589,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
 
   /// Repository에서 오늘 식단 로드
   Future<void> _load() async {
+    if (_disposed) return;
     state = state.copyWith(isLoading: true);
     try {
       // 영양 목표 로드
@@ -591,6 +599,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
       final today = DateTime.now();
       final meals = await _repo.loadMeals(_dateKey(today));
 
+      if (_disposed) return;
       state = DailyDietState(
         date: today,
         meals: meals,
@@ -598,6 +607,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
         isLoading: false,
       );
     } catch (_) {
+      if (_disposed) return;
       state = state.copyWith(isLoading: false);
     }
   }
@@ -616,6 +626,7 @@ class DietNotifier extends StateNotifier<DailyDietState> {
   Future<void> loadDate(DateTime date) async {
     try {
       final meals = await _repo.loadMeals(_dateKey(date));
+      if (_disposed) return;
       state = DailyDietState(
         date: date,
         meals: meals,

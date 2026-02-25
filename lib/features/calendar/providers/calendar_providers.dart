@@ -231,6 +231,13 @@ class CalendarNotifier
   }
 
   final CalendarRepository _repo;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // ── 영속성 ────────────────────────────────────────────────────────────────
 
@@ -243,6 +250,7 @@ class CalendarNotifier
             .toList();
         return MapEntry(key, entries);
       });
+      if (_disposed) return;
       state = state.copyWith(plans: plans);
     } catch (_) {}
   }

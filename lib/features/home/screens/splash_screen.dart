@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/core/services/sync_service.dart';
+import 'package:health_app/features/auth/providers/auth_providers.dart';
 import 'package:health_app/features/home/screens/onboarding_screen.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
@@ -40,7 +40,7 @@ final splashInitProvider = FutureProvider<SplashResult>((ref) async {
   // 2초 딜레이 (스플래시 애니메이션 재생 시간 확보)
   await Future<void>.delayed(const Duration(seconds: 2));
 
-  final firebaseUser = FirebaseAuth.instance.currentUser;
+  final firebaseUser = ref.read(authServiceProvider).currentUser;
   final isAuthenticated = firebaseUser != null;
 
   // 로그인 사용자: 로컬 → 클라우드 동기화 (실패해도 앱 진입 차단하지 않음)

@@ -189,18 +189,28 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
   }
 
   final CommunityRepository _repo;
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
 
   // ── 초기화 ────────────────────────────────────────────────────────────────
 
   Future<void> _initialize() async {
+    if (_disposed) return;
     state = state.copyWith(isLoading: true);
     try {
       await _load();
+      if (_disposed) return;
       // 샘플 데이터가 없으면 시드 데이터 로드
       if (state.myTeams.isEmpty) {
         await _loadSeedData();
       }
     } catch (_) {
+      if (_disposed) return;
       state = state.copyWith(isLoading: false);
     }
   }
@@ -215,6 +225,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       sampleShares[team.id] = [];
     }
 
+    if (_disposed) return;
     state = state.copyWith(
       myTeams: sampleTeams,
       allPublicTeams: sampleTeams,
@@ -246,6 +257,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         workoutShares[team.id] = await _repo.loadTeamShares(team.id);
       }
 
+      if (_disposed) return;
       if (teams.isNotEmpty) {
         state = CommunityState(
           myTeams: teams,
@@ -260,6 +272,7 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         state = state.copyWith(isLoading: false);
       }
     } catch (_) {
+      if (_disposed) return;
       state = state.copyWith(isLoading: false);
     }
   }

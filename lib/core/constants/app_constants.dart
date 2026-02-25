@@ -21,5 +21,8 @@ class AppDefaults {
   static const double defaultHeight = 170.0;
   static const double defaultWeight = 70.0;
 
+  static String dateKey(DateTime date) =>
+      '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
   AppDefaults._();
 }
