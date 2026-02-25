@@ -1627,4 +1627,55 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get mealLabelSnack => '간식';
+
+  @override
+  String get rpe => 'RPE';
+
+  @override
+  String get rpeLabel => '운동 자각도';
+
+  @override
+  String get setTypeWorking => '작업';
+
+  @override
+  String get setTypeWarmup => '워밍업';
+
+  @override
+  String get setTypeDropSet => '드롭셋';
+
+  @override
+  String get setTypeFailure => '실패';
+
+  @override
+  String get addWarmup => '워밍업 추가';
+
+  @override
+  String get warmupSets => '워밍업 세트';
+
+  @override
+  String get workingWeight => '작업 중량';
+
+  @override
+  String get estimated1RM => '예상 1RM';
+
+  @override
+  String get superset => '슈퍼셋';
+
+  @override
+  String get linkAsSuperset => '슈퍼셋 연결';
+
+  @override
+  String get removeSuperset => '슈퍼셋 해제';
+
+  @override
+  String get swapExercise => '운동 교체';
+
+  @override
+  String get selectAlternative => '대체 운동 선택';
+
+  @override
+  String get strengthLevel => '강도 수준';
+
+  @override
+  String get generateWarmup => '워밍업 생성';
 }

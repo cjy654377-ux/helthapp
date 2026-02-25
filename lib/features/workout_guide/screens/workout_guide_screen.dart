@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_app/core/models/workout_model.dart';
+import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/features/workout_guide/providers/exercise_database_provider.dart';
+import 'package:health_app/features/workout_guide/providers/programs_provider.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
@@ -125,6 +128,11 @@ class WorkoutGuideScreen extends ConsumerWidget {
     final selectedIndex = ref.watch(_selectedBodyPartProvider);
     final selectedGroup = _bodyPartGroups[selectedIndex];
 
+    // 활성 프로그램 상태 감시
+    final activeProgram = ref.watch(activeProgramProvider);
+    final activeProgramDetail = ref.watch(activeProgramDetailProvider);
+    final currentDay = ref.watch(currentProgramDayProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -135,6 +143,40 @@ class WorkoutGuideScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
+          // Programs 버튼 (상단 액션 바)
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.push(AppRoutes.programs),
+                    icon: const Icon(Icons.view_list, size: 18),
+                    label: const Text(
+                      'Programs', // TODO: l10n
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // 활성 프로그램 배너 (있을 경우 표시)
+          if (activeProgram != null && activeProgramDetail != null)
+            _ActiveProgramBanner(
+              active: activeProgram,
+              program: activeProgramDetail,
+              currentDay: currentDay,
+              onTap: () => context.push(AppRoutes.programs),
+            ),
+
           _BodyPartSelector(
             selectedIndex: selectedIndex,
             onSelect: (i) =>
@@ -465,6 +507,84 @@ class _DetailRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Active Program Banner (workout guide 상단 표시용)
+// ---------------------------------------------------------------------------
+
+class _ActiveProgramBanner extends StatelessWidget {
+  final ActiveProgram active;
+  final WorkoutProgram program;
+  final ProgramDay? currentDay;
+  final VoidCallback onTap;
+
+  const _ActiveProgramBanner({
+    required this.active,
+    required this.program,
+    required this.currentDay,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final dayText = currentDay != null && !currentDay!.restDay
+        ? 'Week ${active.currentWeek} Day ${active.currentDay}: ${currentDay!.name}' // TODO: l10n
+        : 'Week ${active.currentWeek} - Rest Day'; // TODO: l10n
+
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: colorScheme.primary.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.play_circle_filled,
+              color: colorScheme.primary,
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    program.name,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  Text(
+                    dayText,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              color: colorScheme.primary,
+              size: 20,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

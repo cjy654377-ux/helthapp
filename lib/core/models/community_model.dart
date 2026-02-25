@@ -1,5 +1,21 @@
 // 커뮤니티 관련 데이터 모델
-// Team, TeamPost, WorkoutShare 등의 불변 클래스 정의
+// Team, TeamPost, WorkoutShare, ActivityFeedItem, LeaderboardEntry 등의 불변 클래스 정의
+
+/// 소셜 피드 아이템 타입 열거형
+enum FeedItemType {
+  workout, // 운동 기록 공유
+  achievement, // 운동 달성 (PR 등)
+  challenge, // 챌린지 참여
+  photo, // 사진 공유
+}
+
+/// 리더보드 집계 기준 열거형
+enum LeaderboardType {
+  weeklyVolume, // 이번 주 총 볼륨 (kg)
+  monthlyWorkouts, // 이번 달 운동 횟수
+  streak, // 연속 운동 일수
+  totalPRs, // 누적 PR 수
+}
 
 /// 팀 멤버 역할 열거형
 enum TeamRole {
@@ -627,4 +643,164 @@ class WorkoutShare {
   @override
   String toString() =>
       'WorkoutShare(id: $id, author: ${author.username}, title: $workoutTitle)';
+}
+
+// ---------------------------------------------------------------------------
+// ActivityFeedItem - 소셜 피드 아이템 (인스타그램 스타일 글로벌/팔로잉 피드)
+// ---------------------------------------------------------------------------
+
+/// 소셜 활동 피드에 표시되는 항목
+class ActivityFeedItem {
+  final String id;
+  final UserProfile author; // 게시자 프로필
+  final FeedItemType type; // 피드 아이템 타입
+  final String content; // 게시글 텍스트
+  final List<String> imageUrls; // 첨부 이미지 URLs
+  final Map<String, dynamic> stats; // 운동 통계 (볼륨, 시간, 세트 수 등)
+  final List<String> likedByIds; // 좋아요 누른 사용자 ID 목록
+  final List<PostComment> comments; // 댓글 목록
+  final DateTime createdAt; // 게시 일시
+
+  const ActivityFeedItem({
+    required this.id,
+    required this.author,
+    required this.type,
+    required this.content,
+    this.imageUrls = const [],
+    this.stats = const {},
+    this.likedByIds = const [],
+    this.comments = const [],
+    required this.createdAt,
+  });
+
+  int get likeCount => likedByIds.length;
+  int get commentCount => comments.length;
+
+  bool isLikedBy(String userId) => likedByIds.contains(userId);
+
+  ActivityFeedItem copyWith({
+    String? id,
+    UserProfile? author,
+    FeedItemType? type,
+    String? content,
+    List<String>? imageUrls,
+    Map<String, dynamic>? stats,
+    List<String>? likedByIds,
+    List<PostComment>? comments,
+    DateTime? createdAt,
+  }) {
+    return ActivityFeedItem(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      type: type ?? this.type,
+      content: content ?? this.content,
+      imageUrls: imageUrls ?? this.imageUrls,
+      stats: stats ?? this.stats,
+      likedByIds: likedByIds ?? this.likedByIds,
+      comments: comments ?? this.comments,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  factory ActivityFeedItem.fromJson(Map<String, dynamic> json) {
+    return ActivityFeedItem(
+      id: json['id'] as String,
+      author: UserProfile.fromJson(json['author'] as Map<String, dynamic>),
+      type: FeedItemType.values.firstWhere(
+        (e) => e.name == json['type'],
+        orElse: () => FeedItemType.workout,
+      ),
+      content: json['content'] as String,
+      imageUrls: List<String>.from(json['image_urls'] as List? ?? []),
+      stats: Map<String, dynamic>.from(json['stats'] as Map? ?? {}),
+      likedByIds: List<String>.from(json['liked_by_ids'] as List? ?? []),
+      comments: (json['comments'] as List<dynamic>? ?? [])
+          .map((e) => PostComment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      createdAt: DateTime.parse(json['created_at'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'author': author.toJson(),
+      'type': type.name,
+      'content': content,
+      'image_urls': imageUrls,
+      'stats': stats,
+      'liked_by_ids': likedByIds,
+      'comments': comments.map((e) => e.toJson()).toList(),
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ActivityFeedItem &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() =>
+      'ActivityFeedItem(id: $id, author: ${author.username}, type: $type)';
+}
+
+// ---------------------------------------------------------------------------
+// LeaderboardEntry - 리더보드 순위 항목
+// ---------------------------------------------------------------------------
+
+/// 리더보드의 개별 순위 항목
+class LeaderboardEntry {
+  final String userId;
+  final String userName; // 표시 이름
+  final String? avatarUrl; // 프로필 이미지 URL
+  final double score; // 점수 (볼륨/횟수/일수 등 기준에 따라 다름)
+  final int rank; // 현재 순위
+  final bool isCurrentUser; // 현재 사용자 여부 (하이라이트용)
+
+  const LeaderboardEntry({
+    required this.userId,
+    required this.userName,
+    this.avatarUrl,
+    required this.score,
+    required this.rank,
+    this.isCurrentUser = false,
+  });
+
+  LeaderboardEntry copyWith({
+    String? userId,
+    String? userName,
+    String? avatarUrl,
+    double? score,
+    int? rank,
+    bool? isCurrentUser,
+  }) {
+    return LeaderboardEntry(
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      score: score ?? this.score,
+      rank: rank ?? this.rank,
+      isCurrentUser: isCurrentUser ?? this.isCurrentUser,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LeaderboardEntry &&
+          runtimeType == other.runtimeType &&
+          userId == other.userId;
+
+  @override
+  int get hashCode => userId.hashCode;
+
+  @override
+  String toString() =>
+      'LeaderboardEntry(rank: $rank, userId: $userId, score: $score)';
 }

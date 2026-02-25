@@ -3199,6 +3199,108 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'간식'**
   String get mealLabelSnack;
+
+  /// Rate of Perceived Exertion abbreviation
+  ///
+  /// In ko, this message translates to:
+  /// **'RPE'**
+  String get rpe;
+
+  /// Rate of Perceived Exertion full label
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 자각도'**
+  String get rpeLabel;
+
+  /// Set type: working set
+  ///
+  /// In ko, this message translates to:
+  /// **'작업'**
+  String get setTypeWorking;
+
+  /// Set type: warm-up set
+  ///
+  /// In ko, this message translates to:
+  /// **'워밍업'**
+  String get setTypeWarmup;
+
+  /// Set type: drop set
+  ///
+  /// In ko, this message translates to:
+  /// **'드롭셋'**
+  String get setTypeDropSet;
+
+  /// Set type: failure set
+  ///
+  /// In ko, this message translates to:
+  /// **'실패'**
+  String get setTypeFailure;
+
+  /// Add warm-up sets button
+  ///
+  /// In ko, this message translates to:
+  /// **'워밍업 추가'**
+  String get addWarmup;
+
+  /// Warm-up sets label
+  ///
+  /// In ko, this message translates to:
+  /// **'워밍업 세트'**
+  String get warmupSets;
+
+  /// Working weight input label
+  ///
+  /// In ko, this message translates to:
+  /// **'작업 중량'**
+  String get workingWeight;
+
+  /// Estimated one rep max label
+  ///
+  /// In ko, this message translates to:
+  /// **'예상 1RM'**
+  String get estimated1RM;
+
+  /// Superset label
+  ///
+  /// In ko, this message translates to:
+  /// **'슈퍼셋'**
+  String get superset;
+
+  /// Link exercises as superset
+  ///
+  /// In ko, this message translates to:
+  /// **'슈퍼셋 연결'**
+  String get linkAsSuperset;
+
+  /// Remove superset grouping
+  ///
+  /// In ko, this message translates to:
+  /// **'슈퍼셋 해제'**
+  String get removeSuperset;
+
+  /// Swap exercise button
+  ///
+  /// In ko, this message translates to:
+  /// **'운동 교체'**
+  String get swapExercise;
+
+  /// Select alternative exercise sheet title
+  ///
+  /// In ko, this message translates to:
+  /// **'대체 운동 선택'**
+  String get selectAlternative;
+
+  /// Strength level label
+  ///
+  /// In ko, this message translates to:
+  /// **'강도 수준'**
+  String get strengthLevel;
+
+  /// Generate warm-up sets dialog title
+  ///
+  /// In ko, this message translates to:
+  /// **'워밍업 생성'**
+  String get generateWarmup;
 }
 
 class _AppLocalizationsDelegate

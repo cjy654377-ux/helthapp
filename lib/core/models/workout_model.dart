@@ -177,6 +177,18 @@ class Exercise {
 }
 
 // ---------------------------------------------------------------------------
+// SetType 열거형 - 세트 유형 분류
+// ---------------------------------------------------------------------------
+
+/// 운동 세트 유형
+enum SetType {
+  working,  // 작업 세트 (기본)
+  warmup,   // 워밍업 세트
+  dropSet,  // 드롭셋
+  failure,  // 올 아웃 (실패 지점까지)
+}
+
+// ---------------------------------------------------------------------------
 // WorkoutSet 모델 - 하나의 운동 세트 기록
 // ---------------------------------------------------------------------------
 
@@ -186,8 +198,10 @@ class WorkoutSet {
   final int reps; // 반복 횟수
   final double weight; // 무게 (kg)
   final int? restSeconds; // 휴식 시간 (초)
-  final bool isWarmUp; // 워밍업 세트 여부
+  final bool isWarmUp; // 워밍업 세트 여부 (deprecated: setType 사용 권장)
   final String? note; // 메모
+  final int? rpe; // RPE 1-10 (Rate of Perceived Exertion), nullable
+  final SetType setType; // 세트 유형
 
   const WorkoutSet({
     required this.setNumber,
@@ -196,6 +210,8 @@ class WorkoutSet {
     this.restSeconds,
     this.isWarmUp = false,
     this.note,
+    this.rpe,
+    this.setType = SetType.working,
   });
 
   /// 볼륨 (무게 × 횟수)
@@ -208,6 +224,8 @@ class WorkoutSet {
     int? restSeconds,
     bool? isWarmUp,
     String? note,
+    int? rpe,
+    SetType? setType,
   }) {
     return WorkoutSet(
       setNumber: setNumber ?? this.setNumber,
@@ -216,6 +234,8 @@ class WorkoutSet {
       restSeconds: restSeconds ?? this.restSeconds,
       isWarmUp: isWarmUp ?? this.isWarmUp,
       note: note ?? this.note,
+      rpe: rpe ?? this.rpe,
+      setType: setType ?? this.setType,
     );
   }
 
@@ -227,6 +247,11 @@ class WorkoutSet {
       restSeconds: json['rest_seconds'] as int?,
       isWarmUp: json['is_warm_up'] as bool? ?? false,
       note: json['note'] as String?,
+      rpe: json['rpe'] as int?,
+      setType: SetType.values.firstWhere(
+        (e) => e.name == json['set_type'],
+        orElse: () => SetType.working,
+      ),
     );
   }
 
@@ -238,6 +263,8 @@ class WorkoutSet {
       'rest_seconds': restSeconds,
       'is_warm_up': isWarmUp,
       'note': note,
+      'rpe': rpe,
+      'set_type': setType.name,
     };
   }
 
@@ -268,7 +295,7 @@ class WorkoutExerciseEntry {
 
   /// 유효 세트 수 (워밍업 제외)
   int get effectiveSetCount =>
-      sets.where((s) => !s.isWarmUp).length;
+      sets.where((s) => s.setType != SetType.warmup && !s.isWarmUp).length;
 
   WorkoutExerciseEntry copyWith({
     Exercise? exercise,

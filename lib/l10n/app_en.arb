@@ -897,5 +897,56 @@
   "@mealLabelDinner": { "description": "Meal label: dinner" },
 
   "mealLabelSnack": "Snack",
-  "@mealLabelSnack": { "description": "Meal label: snack" }
+  "@mealLabelSnack": { "description": "Meal label: snack" },
+
+  "rpe": "RPE",
+  "@rpe": { "description": "Rate of Perceived Exertion abbreviation" },
+
+  "rpeLabel": "Rate of Perceived Exertion",
+  "@rpeLabel": { "description": "Rate of Perceived Exertion full label" },
+
+  "setTypeWorking": "Working",
+  "@setTypeWorking": { "description": "Set type: working set" },
+
+  "setTypeWarmup": "Warm-up",
+  "@setTypeWarmup": { "description": "Set type: warm-up set" },
+
+  "setTypeDropSet": "Drop Set",
+  "@setTypeDropSet": { "description": "Set type: drop set" },
+
+  "setTypeFailure": "Failure",
+  "@setTypeFailure": { "description": "Set type: failure set" },
+
+  "addWarmup": "Add Warm-up",
+  "@addWarmup": { "description": "Add warm-up sets button" },
+
+  "warmupSets": "Warm-up Sets",
+  "@warmupSets": { "description": "Warm-up sets label" },
+
+  "workingWeight": "Working Weight",
+  "@workingWeight": { "description": "Working weight input label" },
+
+  "estimated1RM": "Est. 1RM",
+  "@estimated1RM": { "description": "Estimated one rep max label" },
+
+  "superset": "Superset",
+  "@superset": { "description": "Superset label" },
+
+  "linkAsSuperset": "Link as Superset",
+  "@linkAsSuperset": { "description": "Link exercises as superset" },
+
+  "removeSuperset": "Remove Superset",
+  "@removeSuperset": { "description": "Remove superset grouping" },
+
+  "swapExercise": "Swap Exercise",
+  "@swapExercise": { "description": "Swap exercise button" },
+
+  "selectAlternative": "Select Alternative",
+  "@selectAlternative": { "description": "Select alternative exercise sheet title" },
+
+  "strengthLevel": "Strength Level",
+  "@strengthLevel": { "description": "Strength level label" },
+
+  "generateWarmup": "Generate Warm-up",
+  "@generateWarmup": { "description": "Generate warm-up sets dialog title" }
 }

@@ -10,6 +10,7 @@ import 'package:health_app/features/hydration/providers/hydration_providers.dart
 import 'package:health_app/features/diet/providers/diet_providers.dart';
 import 'package:health_app/features/calendar/providers/calendar_providers.dart';
 import 'package:health_app/features/profile/screens/settings_screen.dart';
+import 'package:health_app/features/profile/screens/recovery_heatmap_screen.dart';
 
 // ---------------------------------------------------------------------------
 // HomeScreen
@@ -44,6 +45,8 @@ class HomeScreen extends ConsumerWidget {
                 const _CalorieCard(),
                 const SizedBox(height: 16),
                 const _UpcomingWorkoutCard(),
+                const SizedBox(height: 16),
+                const _RecoverySummaryCard(),
                 const SizedBox(height: 16),
                 const _QuickActions(),
                 const SizedBox(height: 80),
@@ -658,6 +661,138 @@ class _QuickActionButton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Recovery Summary Card (홈 화면 회복 요약 카드)
+// ---------------------------------------------------------------------------
+
+class _RecoverySummaryCard extends ConsumerWidget {
+  const _RecoverySummaryCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final top3 = ref.watch(top3FatiguedMusclesProvider);
+
+    // 표시할 근육이 없으면 카드를 표시하지 않음
+    if (top3.isEmpty) return const SizedBox.shrink();
+
+    // 가장 피로한 상태 확인
+    final hasFatigued = top3.any(
+      (m) => m.status == RecoveryStatus.fatigued,
+    );
+    final color = hasFatigued ? Colors.red : Colors.orange;
+
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 헤더
+            Row(
+              children: [
+                Icon(Icons.monitor_heart, size: 18, color: color),
+                const SizedBox(width: 6),
+                Text(
+                  'Muscle Recovery', // TODO: l10n
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: color,
+                  ),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const RecoveryHeatmapScreen(),
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: color,
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(0, 32),
+                  ),
+                  child: const Text(
+                    'View Map', // TODO: l10n
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+
+            // 상위 3개 피로 근육
+            ...top3.map((muscle) => _RecoveryMuscleRow(data: muscle)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RecoveryMuscleRow extends StatelessWidget {
+  final MuscleRecoveryData data;
+
+  const _RecoveryMuscleRow({required this.data});
+
+  String _timeAgo(Duration? duration) {
+    if (duration == null) return '-';
+    if (duration.inDays >= 1) return '${duration.inDays}일 전'; // TODO: l10n
+    if (duration.inHours >= 1) return '${duration.inHours}시간 전'; // TODO: l10n
+    return '${duration.inMinutes}분 전'; // TODO: l10n
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = data.status.color;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              data.bodyPart.label,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              data.status.label,
+              style: TextStyle(
+                fontSize: 11,
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            _timeAgo(data.timeSinceWorkout),
+            style: const TextStyle(fontSize: 11, color: Colors.grey),
+          ),
+        ],
       ),
     );
   }

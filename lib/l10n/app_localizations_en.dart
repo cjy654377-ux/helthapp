@@ -1650,4 +1650,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mealLabelSnack => 'Snack';
+
+  @override
+  String get rpe => 'RPE';
+
+  @override
+  String get rpeLabel => 'Rate of Perceived Exertion';
+
+  @override
+  String get setTypeWorking => 'Working';
+
+  @override
+  String get setTypeWarmup => 'Warm-up';
+
+  @override
+  String get setTypeDropSet => 'Drop Set';
+
+  @override
+  String get setTypeFailure => 'Failure';
+
+  @override
+  String get addWarmup => 'Add Warm-up';
+
+  @override
+  String get warmupSets => 'Warm-up Sets';
+
+  @override
+  String get workingWeight => 'Working Weight';
+
+  @override
+  String get estimated1RM => 'Est. 1RM';
+
+  @override
+  String get superset => 'Superset';
+
+  @override
+  String get linkAsSuperset => 'Link as Superset';
+
+  @override
+  String get removeSuperset => 'Remove Superset';
+
+  @override
+  String get swapExercise => 'Swap Exercise';
+
+  @override
+  String get selectAlternative => 'Select Alternative';
+
+  @override
+  String get strengthLevel => 'Strength Level';
+
+  @override
+  String get generateWarmup => 'Generate Warm-up';
 }

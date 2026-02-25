@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:health_app/core/models/community_model.dart';
 import 'package:health_app/features/community/providers/community_providers.dart';
 import 'package:health_app/core/widgets/common_states.dart';
 import 'package:health_app/l10n/app_localizations.dart';
+import 'package:health_app/core/router/app_router.dart';
 
 // ---------------------------------------------------------------------------
 // Local UI-only provider
@@ -122,6 +124,9 @@ class CommunityScreen extends ConsumerWidget {
               },
               child: ListView(
               children: [
+                // ── 소셜 기능 퀵 액세스 칩 (소셜 피드 / 리더보드) ──────────────
+                _CommunityNavChips(),
+                const Divider(height: 1),
                 // Team list header
                 _TeamListSection(
                   teams: teams,
@@ -406,6 +411,113 @@ class _TeamListSection extends StatelessWidget {
 // Feed Post Card
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Community Nav Chips - 소셜 피드 / 리더보드 빠른 접근 칩
+// ---------------------------------------------------------------------------
+
+class _CommunityNavChips extends StatelessWidget {
+  const _CommunityNavChips();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Discover', // TODO: l10n
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              // 소셜 피드 칩
+              Expanded(
+                child: _NavChip(
+                  icon: Icons.dynamic_feed,
+                  label: 'Social Feed', // TODO: l10n
+                  subtitle: 'See everyone\'s workouts', // TODO: l10n
+                  color: Colors.blue,
+                  onTap: () => context.push(AppRoutes.socialFeed),
+                ),
+              ),
+              const SizedBox(width: 10),
+              // 리더보드 칩
+              Expanded(
+                child: _NavChip(
+                  icon: Icons.leaderboard,
+                  label: 'Leaderboard', // TODO: l10n
+                  subtitle: 'Weekly rankings', // TODO: l10n
+                  color: Colors.amber.shade700,
+                  onTap: () => context.push(AppRoutes.leaderboard),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NavChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String subtitle;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _NavChip({
+    required this.icon,
+    required this.label,
+    required this.subtitle,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: color.withValues(alpha: 0.08),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: color, size: 26),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: color,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Feed Post Card
+// ---------------------------------------------------------------------------
+
 class _FeedPostCard extends StatelessWidget {
   final TeamPost post;
   final String teamName;
@@ -586,11 +698,102 @@ class _FeedPostCard extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.share_outlined,
                       size: 20, color: Colors.grey),
-                  onPressed: () {},
+                  onPressed: () => _showShareSheet(context, post),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 운동 공유 옵션 바텀시트 표시
+  void _showShareSheet(BuildContext context, TeamPost post) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => _PostShareSheet(post: post),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// _PostShareSheet - 팀 포스트 공유 바텀시트
+// ---------------------------------------------------------------------------
+
+class _PostShareSheet extends StatelessWidget {
+  final TeamPost post;
+
+  const _PostShareSheet({required this.post});
+
+  String _buildTextSummary() {
+    final buf = StringBuffer();
+    buf.writeln('${post.author.displayName}\'s post:'); // TODO: l10n
+    buf.writeln(post.content);
+    buf.writeln('\nShared via HealthApp'); // TODO: l10n
+    return buf.toString();
+  }
+
+  void _copyToClipboard(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Copied to clipboard!'), // TODO: l10n
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Share Post', // TODO: l10n
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            // 텍스트로 공유
+            ListTile(
+              leading: const Icon(Icons.text_snippet_outlined),
+              title: const Text('Share as Text'), // TODO: l10n
+              contentPadding: EdgeInsets.zero,
+              onTap: () {
+                Navigator.pop(context);
+                _copyToClipboard(context, _buildTextSummary());
+              },
+            ),
+            // 링크 공유
+            ListTile(
+              leading: const Icon(Icons.link),
+              title: const Text('Copy Link'), // TODO: l10n
+              contentPadding: EdgeInsets.zero,
+              onTap: () {
+                Navigator.pop(context);
+                _copyToClipboard(
+                  context,
+                  'https://healthapp.example.com/community/post/${post.id}',
+                );
+              },
+            ),
+            // 클립보드 복사
+            ListTile(
+              leading: const Icon(Icons.copy),
+              title: const Text('Copy to Clipboard'), // TODO: l10n
+              contentPadding: EdgeInsets.zero,
+              onTap: () {
+                Navigator.pop(context);
+                _copyToClipboard(context, _buildTextSummary());
+              },
             ),
           ],
         ),

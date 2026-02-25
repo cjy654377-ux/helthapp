@@ -21,7 +21,9 @@ class SetEntry {
   final double weight; // 무게 (kg)
   final int reps; // 반복 횟수
   final bool isCompleted; // 완료 여부
-  final bool isWarmup; // 워밍업 세트 여부
+  final bool isWarmup; // 워밍업 세트 여부 (deprecated: setType 사용 권장)
+  final int? rpe; // RPE 1-10, nullable
+  final SetType setType; // 세트 유형
 
   const SetEntry({
     required this.setNumber,
@@ -29,6 +31,8 @@ class SetEntry {
     required this.reps,
     this.isCompleted = false,
     this.isWarmup = false,
+    this.rpe,
+    this.setType = SetType.working,
   });
 
   /// 볼륨 계산 (완료된 세트만)
@@ -40,6 +44,8 @@ class SetEntry {
     int? reps,
     bool? isCompleted,
     bool? isWarmup,
+    int? rpe,
+    SetType? setType,
   }) {
     return SetEntry(
       setNumber: setNumber ?? this.setNumber,
@@ -47,6 +53,8 @@ class SetEntry {
       reps: reps ?? this.reps,
       isCompleted: isCompleted ?? this.isCompleted,
       isWarmup: isWarmup ?? this.isWarmup,
+      rpe: rpe ?? this.rpe,
+      setType: setType ?? this.setType,
     );
   }
 
@@ -56,6 +64,8 @@ class SetEntry {
         'reps': reps,
         'is_completed': isCompleted,
         'is_warmup': isWarmup,
+        'rpe': rpe,
+        'set_type': setType.name,
       };
 
   factory SetEntry.fromJson(Map<String, dynamic> json) => SetEntry(
@@ -64,6 +74,11 @@ class SetEntry {
         reps: json['reps'] as int,
         isCompleted: json['is_completed'] as bool? ?? false,
         isWarmup: json['is_warmup'] as bool? ?? false,
+        rpe: json['rpe'] as int?,
+        setType: SetType.values.firstWhere(
+          (e) => e.name == json['set_type'],
+          orElse: () => SetType.working,
+        ),
       );
 }
 
@@ -251,6 +266,8 @@ class WorkoutSessionState {
   final bool isRestTimerRunning; // 휴식 타이머 작동 중 여부
   final int elapsedSeconds; // 경과 시간 (초)
   final List<String> newPrExerciseIds; // 이번 세션에서 PR 달성한 운동 ID
+  // 슈퍼셋 그룹: groupId -> 운동 인덱스 목록
+  final Map<int, List<int>> supersetGroups;
 
   const WorkoutSessionState({
     required this.sessionId,
@@ -261,6 +278,7 @@ class WorkoutSessionState {
     this.isRestTimerRunning = false,
     this.elapsedSeconds = 0,
     this.newPrExerciseIds = const [],
+    this.supersetGroups = const {},
   });
 
   /// 총 볼륨 계산
@@ -283,6 +301,7 @@ class WorkoutSessionState {
     bool? isRestTimerRunning,
     int? elapsedSeconds,
     List<String>? newPrExerciseIds,
+    Map<int, List<int>>? supersetGroups,
   }) {
     return WorkoutSessionState(
       sessionId: sessionId ?? this.sessionId,
@@ -293,6 +312,7 @@ class WorkoutSessionState {
       isRestTimerRunning: isRestTimerRunning ?? this.isRestTimerRunning,
       elapsedSeconds: elapsedSeconds ?? this.elapsedSeconds,
       newPrExerciseIds: newPrExerciseIds ?? this.newPrExerciseIds,
+      supersetGroups: supersetGroups ?? this.supersetGroups,
     );
   }
 }
@@ -409,13 +429,15 @@ class WorkoutSessionNotifier extends StateNotifier<WorkoutSessionState> {
     state = state.copyWith(exercises: exercises);
   }
 
-  /// 세트 수정 (무게/반복수)
+  /// 세트 수정 (무게/반복수/RPE/세트타입)
   void updateSet(
     String exerciseId,
     int setIndex, {
     double? weight,
     int? reps,
     bool? isWarmup,
+    int? rpe,
+    SetType? setType,
   }) {
     final exercises = state.exercises.map((entry) {
       if (entry.exerciseId != exerciseId) return entry;
@@ -426,6 +448,8 @@ class WorkoutSessionNotifier extends StateNotifier<WorkoutSessionState> {
           weight: weight,
           reps: reps,
           isWarmup: isWarmup,
+          rpe: rpe,
+          setType: setType,
         );
       }).toList();
 
@@ -485,13 +509,137 @@ class WorkoutSessionNotifier extends StateNotifier<WorkoutSessionState> {
     );
   }
 
+  // ── 워밍업 세트 생성기 ─────────────────────────────────────────────────────
+
+  /// 작업 중량을 기반으로 워밍업 피라미드 세트 자동 생성
+  List<SetEntry> generateWarmupSets(double workingWeight) {
+    if (workingWeight > 40) {
+      // 바벨 운동: 바(20kg) x10 → 40% x8 → 60% x5 → 80% x3
+      return [
+        SetEntry(
+          setNumber: 1,
+          weight: 20,
+          reps: 10,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+        SetEntry(
+          setNumber: 2,
+          weight: (workingWeight * 0.4).roundToDouble(),
+          reps: 8,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+        SetEntry(
+          setNumber: 3,
+          weight: (workingWeight * 0.6).roundToDouble(),
+          reps: 5,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+        SetEntry(
+          setNumber: 4,
+          weight: (workingWeight * 0.8).roundToDouble(),
+          reps: 3,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+      ];
+    } else {
+      // 가벼운 중량: 50% x10 → 75% x5
+      return [
+        SetEntry(
+          setNumber: 1,
+          weight: (workingWeight * 0.5).roundToDouble(),
+          reps: 10,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+        SetEntry(
+          setNumber: 2,
+          weight: (workingWeight * 0.75).roundToDouble(),
+          reps: 5,
+          setType: SetType.warmup,
+          isWarmup: true,
+        ),
+      ];
+    }
+  }
+
+  /// 운동에 워밍업 세트 삽입 (기존 작업 세트 앞에 추가)
+  void insertWarmupSets(String exerciseId, double workingWeight) {
+    final warmupSets = generateWarmupSets(workingWeight);
+    final exercises = state.exercises.map((entry) {
+      if (entry.exerciseId != exerciseId) return entry;
+
+      // 기존 워밍업이 아닌 세트들 앞에 삽입
+      final workingSets = entry.sets
+          .where((s) => s.setType != SetType.warmup && !s.isWarmup)
+          .toList();
+      final allSets = [...warmupSets, ...workingSets];
+      // 세트 번호 재정렬
+      final reindexed = allSets
+          .asMap()
+          .entries
+          .map((e) => e.value.copyWith(setNumber: e.key + 1))
+          .toList();
+      return entry.copyWith(sets: reindexed);
+    }).toList();
+
+    state = state.copyWith(exercises: exercises);
+  }
+
+  // ── 슈퍼셋 관리 ───────────────────────────────────────────────────────────
+
+  /// 슈퍼셋 그룹 생성
+  void createSuperset(List<int> exerciseIndices) {
+    if (exerciseIndices.length < 2) return;
+    final groups = Map<int, List<int>>.from(state.supersetGroups);
+    final newGroupId = groups.isEmpty ? 0 : groups.keys.reduce((a, b) => a > b ? a : b) + 1;
+    groups[newGroupId] = exerciseIndices;
+    state = state.copyWith(supersetGroups: groups);
+  }
+
+  /// 슈퍼셋 그룹 해제
+  void removeSupersetGroup(int groupId) {
+    final groups = Map<int, List<int>>.from(state.supersetGroups);
+    groups.remove(groupId);
+    state = state.copyWith(supersetGroups: groups);
+  }
+
+  /// 특정 운동 인덱스가 속한 슈퍼셋 그룹 ID 반환 (없으면 null)
+  int? isSupersetted(int exerciseIndex) {
+    for (final entry in state.supersetGroups.entries) {
+      if (entry.value.contains(exerciseIndex)) return entry.key;
+    }
+    return null;
+  }
+
+  /// 운동 교체 (슈퍼셋 그룹 인덱스 업데이트 포함)
+  void replaceExercise(String oldExerciseId, Exercise newExercise) {
+    final oldIndex = state.exercises.indexWhere((e) => e.exerciseId == oldExerciseId);
+    if (oldIndex == -1) return;
+
+    final oldEntry = state.exercises[oldIndex];
+    final newEntry = ExerciseEntry(
+      exerciseId: newExercise.id,
+      name: newExercise.name,
+      bodyPart: newExercise.bodyPart,
+      sets: oldEntry.sets, // 기존 세트 유지
+    );
+
+    final newExercises = List<ExerciseEntry>.from(state.exercises);
+    newExercises[oldIndex] = newEntry;
+    state = state.copyWith(exercises: newExercises);
+  }
+
   /// PR 감지 (이전 기록과 비교)
   List<String> detectPRs(List<PersonalRecord> existingPRs) {
     final newPRs = <String>[];
 
     for (final exercise in state.exercises) {
       for (final set in exercise.sets) {
-        if (!set.isCompleted || set.isWarmup) continue;
+        if (!set.isCompleted || set.isWarmup || set.setType == SetType.warmup) continue;
 
         final existingPR = existingPRs
             .where((pr) => pr.exerciseId == exercise.exerciseId)
@@ -622,7 +770,7 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
   void _updatePersonalRecords(WorkoutRecord record) {
     for (final exercise in record.exercises) {
       for (final set in exercise.sets) {
-        if (!set.isCompleted || set.isWarmup) continue;
+        if (!set.isCompleted || set.isWarmup || set.setType == SetType.warmup) continue;
 
         final existingIndex = _personalRecords
             .indexWhere((pr) => pr.exerciseId == exercise.exerciseId);
@@ -687,6 +835,23 @@ class WorkoutHistoryNotifier extends StateNotifier<List<WorkoutRecord>> {
     } catch (_) {
       return null;
     }
+  }
+
+  /// 예상 1RM 계산 (Brzycki 공식): weight * (36 / (37 - reps)), reps <= 12
+  double? getEstimated1RM(String exerciseId) {
+    double? best;
+    for (final record in state) {
+      for (final exercise in record.exercises) {
+        if (exercise.exerciseId != exerciseId) continue;
+        for (final set in exercise.sets) {
+          if (!set.isCompleted || set.isWarmup || set.setType == SetType.warmup) continue;
+          if (set.reps < 1 || set.reps > 12) continue;
+          final e1rm = calculate1RM(set.weight, set.reps);
+          if (best == null || e1rm > best) best = e1rm;
+        }
+      }
+    }
+    return best;
   }
 
   // ── 통계 ─────────────────────────────────────────────────────────────────
@@ -794,4 +959,23 @@ final weeklyVolumeProvider = Provider<double>((ref) {
 final currentStreakProvider = Provider<int>((ref) {
   ref.watch(workoutHistoryProvider);
   return ref.read(workoutHistoryProvider.notifier).currentStreak;
+});
+
+// ---------------------------------------------------------------------------
+// 유틸리티 함수
+// ---------------------------------------------------------------------------
+
+/// Brzycki 공식으로 e1RM 계산: weight * (36 / (37 - reps))
+/// reps는 1~12 사이여야 의미 있음
+double calculate1RM(double weight, int reps) {
+  if (reps <= 0) return weight;
+  if (reps > 12) reps = 12;
+  if (reps == 1) return weight;
+  return weight * (36 / (37 - reps));
+}
+
+/// 특정 운동의 예상 1RM Provider
+final estimated1RMProvider = Provider.family<double?, String>((ref, exerciseId) {
+  ref.watch(workoutHistoryProvider);
+  return ref.read(workoutHistoryProvider.notifier).getEstimated1RM(exerciseId);
 });

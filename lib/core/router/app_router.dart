@@ -10,9 +10,13 @@ import 'package:health_app/features/home/screens/home_screen.dart';
 import 'package:health_app/features/home/screens/onboarding_screen.dart';
 import 'package:health_app/features/home/screens/splash_screen.dart';
 import 'package:health_app/features/workout_guide/screens/workout_guide_screen.dart';
+import 'package:health_app/features/workout_guide/screens/programs_screen.dart';
 import 'package:health_app/features/workout_log/screens/workout_log_screen.dart';
+import 'package:health_app/features/profile/screens/recovery_heatmap_screen.dart';
 import 'package:health_app/features/community/screens/community_screen.dart';
 import 'package:health_app/features/community/screens/challenge_screen.dart';
+import 'package:health_app/features/community/screens/social_feed_screen.dart';
+import 'package:health_app/features/community/screens/leaderboard_screen.dart';
 import 'package:health_app/features/diet/screens/diet_screen.dart';
 import 'package:health_app/features/hydration/screens/hydration_screen.dart';
 import 'package:health_app/features/calendar/screens/calendar_screen.dart';
@@ -40,6 +44,14 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String stats = '/stats';
   static const String login = '/login';
+
+  // 커뮤니티 서브 라우트
+  static const String socialFeed = '/community/feed';
+  static const String leaderboard = '/community/leaderboard';
+
+  // 운동 프로그램 / 회복 히트맵
+  static const String programs = '/workout-guide/programs';
+  static const String recoveryHeatmap = '/recovery-heatmap';
 
   // 프라이빗 생성자 - 인스턴스화 방지
   AppRoutes._();
@@ -142,12 +154,18 @@ class AppRouter {
                     name: 'workout-log',
                     builder: (context, state) => const WorkoutLogScreen(),
                   ),
+                  // 사전 제작 프로그램
+                  GoRoute(
+                    path: 'programs',
+                    name: 'programs',
+                    builder: (context, state) => const ProgramsScreen(),
+                  ),
                 ],
               ),
             ],
           ),
 
-          // 탭 2: 커뮤니티
+          // 탭 2: 커뮤니티 (소셜 피드 / 리더보드를 서브 라우트로 포함)
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -156,6 +174,20 @@ class AppRouter {
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: CommunityScreen(),
                 ),
+                routes: [
+                  // 소셜 활동 피드
+                  GoRoute(
+                    path: 'feed',
+                    name: 'social-feed',
+                    builder: (context, state) => const SocialFeedScreen(),
+                  ),
+                  // 리더보드
+                  GoRoute(
+                    path: 'leaderboard',
+                    name: 'leaderboard',
+                    builder: (context, state) => const LeaderboardScreen(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -227,6 +259,13 @@ class AppRouter {
         path: AppRoutes.challenges,
         name: 'challenges',
         builder: (context, state) => const ChallengeScreen(),
+      ),
+
+      // 회복 히트맵
+      GoRoute(
+        path: AppRoutes.recoveryHeatmap,
+        name: 'recovery-heatmap',
+        builder: (context, state) => const RecoveryHeatmapScreen(),
       ),
     ],
 

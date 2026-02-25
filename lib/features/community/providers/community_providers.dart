@@ -1,5 +1,7 @@
 // 팀 커뮤니티 상태 관리
 // CommunityNotifier: 팀 생성/참가, 포스트 작성, 좋아요/댓글 관리
+// FeedNotifier: 소셜 피드 로드/좋아요/댓글
+// leaderboardProvider: 리더보드 순위 (family provider)
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -654,4 +656,465 @@ final teamMembersProvider =
 /// 커뮤니티 로딩 상태 Provider
 final communityLoadingProvider = Provider<bool>((ref) {
   return ref.watch(communityProvider).isLoading;
+});
+
+// ---------------------------------------------------------------------------
+// FeedState - 소셜 피드 상태
+// ---------------------------------------------------------------------------
+
+/// 소셜 활동 피드 상태
+class FeedState {
+  final List<ActivityFeedItem> items; // 피드 아이템 목록
+  final bool isLoading;
+  final bool hasMore; // 더 불러올 데이터 존재 여부
+  final String? errorMessage;
+
+  const FeedState({
+    this.items = const [],
+    this.isLoading = false,
+    this.hasMore = true,
+    this.errorMessage,
+  });
+
+  FeedState copyWith({
+    List<ActivityFeedItem>? items,
+    bool? isLoading,
+    bool? hasMore,
+    String? errorMessage,
+    bool clearError = false,
+  }) {
+    return FeedState(
+      items: items ?? this.items,
+      isLoading: isLoading ?? this.isLoading,
+      hasMore: hasMore ?? this.hasMore,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 소셜 피드 목 데이터 생성
+// ---------------------------------------------------------------------------
+
+/// 목 피드 데이터 빌더 - 실제 서비스 연동 전 테스트용
+List<ActivityFeedItem> _buildMockFeedItems() {
+  final now = DateTime.now();
+
+  // 목 사용자 프로필 목록
+  const users = [
+    UserProfile(
+      id: 'user_local',
+      username: 'fitness_user',
+      displayName: '헬스 유저',
+    ),
+    UserProfile(
+      id: 'user_002',
+      username: 'gym_king',
+      displayName: '운동왕',
+    ),
+    UserProfile(
+      id: 'user_003',
+      username: 'iron_lady',
+      displayName: '아이언 레이디',
+    ),
+    UserProfile(
+      id: 'user_004',
+      username: 'cardio_hero',
+      displayName: '유산소 영웅',
+    ),
+    UserProfile(
+      id: 'user_005',
+      username: 'powerlifter99',
+      displayName: '파워리프터',
+    ),
+  ];
+
+  return [
+    ActivityFeedItem(
+      id: 'feed_001',
+      author: users[1],
+      type: FeedItemType.workout,
+      content: '오늘 가슴/삼두 루틴 완료! 벤치프레스 신기록 달성했어요 🔥',
+      stats: {
+        'duration': 75,
+        'volume': 8450.0,
+        'exercises': ['벤치프레스', '인클라인 덤벨', '케이블 크로스오버', '트라이셉 푸시다운'],
+        'sets': 20,
+      },
+      likedByIds: const ['user_local', 'user_003', 'user_005'],
+      comments: [
+        PostComment(
+          id: 'c_001',
+          author: users[0],
+          content: '대박이에요! 몇 kg 치셨어요?',
+          createdAt: now.subtract(const Duration(hours: 1, minutes: 30)),
+        ),
+        PostComment(
+          id: 'c_002',
+          author: users[2],
+          content: '저도 오늘 가슴 했는데 같이 성장해요!',
+          createdAt: now.subtract(const Duration(hours: 1)),
+        ),
+      ],
+      createdAt: now.subtract(const Duration(hours: 2)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_002',
+      author: users[2],
+      type: FeedItemType.achievement,
+      content: '스쿼트 100kg 첫 성공! 6개월 동안 목표했던 무게 드디어 달성!! 💪',
+      stats: {
+        'exercise': '스쿼트',
+        'weight': 100.0,
+        'previous_pr': 90.0,
+        'improvement': 10.0,
+      },
+      likedByIds: const ['user_local', 'user_002', 'user_004', 'user_005'],
+      comments: [
+        PostComment(
+          id: 'c_003',
+          author: users[4],
+          content: '축하해요!! 다음 목표는 120kg!!',
+          createdAt: now.subtract(const Duration(hours: 3, minutes: 20)),
+        ),
+      ],
+      createdAt: now.subtract(const Duration(hours: 4)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_003',
+      author: users[0], // 현재 사용자
+      type: FeedItemType.workout,
+      content: '등 운동 세션 완료. 데드리프트 위주로 했더니 허리가 살짝 뻐근하네요. 폼 체크 필요!',
+      stats: {
+        'duration': 60,
+        'volume': 6200.0,
+        'exercises': ['데드리프트', '바벨 로우', '풀업', '시티드 케이블 로우'],
+        'sets': 16,
+      },
+      likedByIds: const ['user_002', 'user_003'],
+      comments: [],
+      createdAt: now.subtract(const Duration(hours: 6)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_004',
+      author: users[3],
+      type: FeedItemType.challenge,
+      content: '30일 플랭크 챌린지 Day 15 완료! 오늘 3분 버텼어요. 허리 코어 강화 중!',
+      stats: {
+        'challenge': '30일 플랭크',
+        'day': 15,
+        'duration_seconds': 180,
+      },
+      likedByIds: const ['user_local', 'user_002', 'user_005'],
+      comments: [
+        PostComment(
+          id: 'c_004',
+          author: users[0],
+          content: '파이팅! 절반 넘었네요!',
+          createdAt: now.subtract(const Duration(hours: 8, minutes: 10)),
+        ),
+      ],
+      createdAt: now.subtract(const Duration(hours: 9)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_005',
+      author: users[4],
+      type: FeedItemType.workout,
+      content: '오늘 하체 데이. 스쿼트+레그프레스+런지 삼종세트로 다리가 후들후들',
+      stats: {
+        'duration': 90,
+        'volume': 12800.0,
+        'exercises': ['바벨 스쿼트', '레그 프레스', '불가리안 스플릿 스쿼트', '레그 컬'],
+        'sets': 24,
+      },
+      likedByIds: const ['user_002', 'user_003', 'user_004'],
+      comments: [],
+      createdAt: now.subtract(const Duration(days: 1, hours: 2)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_006',
+      author: users[1],
+      type: FeedItemType.photo,
+      content: '3개월 비포 & 애프터! 꾸준함이 답입니다. 아직 갈 길이 멀지만 조금씩 변화가 보여요.',
+      imageUrls: const [],
+      stats: {
+        'duration_weeks': 12,
+        'workouts_completed': 68,
+      },
+      likedByIds: const [
+        'user_local',
+        'user_003',
+        'user_004',
+        'user_005',
+      ],
+      comments: [
+        PostComment(
+          id: 'c_005',
+          author: users[2],
+          content: '와 진짜 달라졌다! 대단해요!!',
+          createdAt: now.subtract(const Duration(days: 1, hours: 5)),
+        ),
+        PostComment(
+          id: 'c_006',
+          author: users[0],
+          content: '동기부여 받고 갑니다 🙌',
+          createdAt: now.subtract(const Duration(days: 1, hours: 4)),
+        ),
+      ],
+      createdAt: now.subtract(const Duration(days: 1, hours: 8)),
+    ),
+    ActivityFeedItem(
+      id: 'feed_007',
+      author: users[2],
+      type: FeedItemType.workout,
+      content: '어깨 운동 집중 루틴! 숄더프레스 무게 올렸어요',
+      stats: {
+        'duration': 55,
+        'volume': 4300.0,
+        'exercises': ['바벨 숄더프레스', '사이드 레터럴 레이즈', '페이스풀', '리버스 플라이'],
+        'sets': 18,
+      },
+      likedByIds: const ['user_local', 'user_004'],
+      comments: [],
+      createdAt: now.subtract(const Duration(days: 2)),
+    ),
+  ];
+}
+
+// ---------------------------------------------------------------------------
+// FeedNotifier - 소셜 피드 상태 관리
+// ---------------------------------------------------------------------------
+
+class FeedNotifier extends StateNotifier<FeedState> {
+  FeedNotifier() : super(const FeedState()) {
+    loadFeed();
+  }
+
+  static const int _pageSize = 10;
+  int _currentPage = 0;
+  List<ActivityFeedItem> _allItems = [];
+
+  /// 피드 초기 로드 (목 데이터)
+  Future<void> loadFeed() async {
+    if (state.isLoading) return;
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    try {
+      // 목 데이터 로드 (나중에 Firestore 연동으로 교체)
+      await Future.delayed(const Duration(milliseconds: 400));
+      _allItems = _buildMockFeedItems();
+      _currentPage = 0;
+
+      final pageItems = _allItems.take(_pageSize).toList();
+      state = state.copyWith(
+        items: pageItems,
+        isLoading: false,
+        hasMore: _allItems.length > _pageSize,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: '피드를 불러오는데 실패했습니다.',
+      );
+    }
+  }
+
+  /// 피드 더 불러오기 (페이지네이션)
+  Future<void> loadMore() async {
+    if (state.isLoading || !state.hasMore) return;
+    state = state.copyWith(isLoading: true);
+
+    try {
+      await Future.delayed(const Duration(milliseconds: 300));
+      _currentPage++;
+      final start = _currentPage * _pageSize;
+      final newItems = _allItems.skip(start).take(_pageSize).toList();
+
+      state = state.copyWith(
+        items: [...state.items, ...newItems],
+        isLoading: false,
+        hasMore: start + _pageSize < _allItems.length,
+      );
+    } catch (_) {
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  /// 피드 아이템 좋아요 토글
+  void likeFeedItem(String itemId, String currentUserId) {
+    final updatedItems = state.items.map((item) {
+      if (item.id != itemId) return item;
+      final likedBy = List<String>.from(item.likedByIds);
+      if (likedBy.contains(currentUserId)) {
+        likedBy.remove(currentUserId);
+      } else {
+        likedBy.add(currentUserId);
+      }
+      return item.copyWith(likedByIds: likedBy);
+    }).toList();
+
+    // _allItems 도 함께 업데이트하여 loadMore 시 유지
+    _allItems = _allItems.map((item) {
+      if (item.id != itemId) return item;
+      return updatedItems.firstWhere((i) => i.id == itemId, orElse: () => item);
+    }).toList();
+
+    state = state.copyWith(items: updatedItems);
+  }
+
+  /// 피드 아이템에 댓글 추가
+  void commentOnFeedItem(
+    String itemId,
+    String text,
+    UserProfile currentUser,
+  ) {
+    if (text.trim().isEmpty) return;
+    final comment = PostComment(
+      id: const Uuid().v4(),
+      author: currentUser,
+      content: text.trim(),
+      createdAt: DateTime.now(),
+    );
+
+    final updatedItems = state.items.map((item) {
+      if (item.id != itemId) return item;
+      return item.copyWith(comments: [...item.comments, comment]);
+    }).toList();
+
+    _allItems = _allItems.map((item) {
+      if (item.id != itemId) return item;
+      return updatedItems.firstWhere((i) => i.id == itemId, orElse: () => item);
+    }).toList();
+
+    state = state.copyWith(items: updatedItems);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 리더보드 목 데이터 생성
+// ---------------------------------------------------------------------------
+
+/// 리더보드 목 데이터 빌더 (타입별)
+List<LeaderboardEntry> _buildMockLeaderboard(LeaderboardType type) {
+  // 현재 사용자 포함 목 경쟁자 목록
+  final entries = <Map<String, dynamic>>[
+    {
+      'userId': 'user_005',
+      'name': '파워리프터',
+      'weeklyVolume': 54320.0,
+      'monthlyWorkouts': 24,
+      'streak': 42,
+      'totalPRs': 18,
+    },
+    {
+      'userId': 'user_002',
+      'name': '운동왕',
+      'weeklyVolume': 48100.0,
+      'monthlyWorkouts': 22,
+      'streak': 35,
+      'totalPRs': 15,
+    },
+    {
+      'userId': 'user_003',
+      'name': '아이언 레이디',
+      'weeklyVolume': 41200.0,
+      'monthlyWorkouts': 20,
+      'streak': 28,
+      'totalPRs': 12,
+    },
+    {
+      'userId': 'user_local', // 현재 사용자
+      'name': '헬스 유저',
+      'weeklyVolume': 36800.0,
+      'monthlyWorkouts': 18,
+      'streak': 21,
+      'totalPRs': 9,
+    },
+    {
+      'userId': 'user_004',
+      'name': '유산소 영웅',
+      'weeklyVolume': 28500.0,
+      'monthlyWorkouts': 25,
+      'streak': 60,
+      'totalPRs': 6,
+    },
+    {
+      'userId': 'user_006',
+      'name': '주말전사',
+      'weeklyVolume': 22000.0,
+      'monthlyWorkouts': 10,
+      'streak': 8,
+      'totalPRs': 4,
+    },
+    {
+      'userId': 'user_007',
+      'name': '바디빌더지망생',
+      'weeklyVolume': 18900.0,
+      'monthlyWorkouts': 17,
+      'streak': 15,
+      'totalPRs': 7,
+    },
+    {
+      'userId': 'user_008',
+      'name': '꾸준한 사람',
+      'weeklyVolume': 15600.0,
+      'monthlyWorkouts': 15,
+      'streak': 12,
+      'totalPRs': 3,
+    },
+  ];
+
+  // 타입별 정렬 기준 선택
+  String scoreKey;
+  switch (type) {
+    case LeaderboardType.weeklyVolume:
+      scoreKey = 'weeklyVolume';
+    case LeaderboardType.monthlyWorkouts:
+      scoreKey = 'monthlyWorkouts';
+    case LeaderboardType.streak:
+      scoreKey = 'streak';
+    case LeaderboardType.totalPRs:
+      scoreKey = 'totalPRs';
+  }
+
+  // 점수 기준 내림차순 정렬
+  entries.sort((a, b) => (b[scoreKey] as num).compareTo(a[scoreKey] as num));
+
+  return entries.asMap().entries.map((entry) {
+    final index = entry.key;
+    final data = entry.value;
+    return LeaderboardEntry(
+      userId: data['userId'] as String,
+      userName: data['name'] as String,
+      score: (data[scoreKey] as num).toDouble(),
+      rank: index + 1,
+      isCurrentUser: data['userId'] == 'user_local',
+    );
+  }).toList();
+}
+
+// ---------------------------------------------------------------------------
+// 소셜 피드 Providers
+// ---------------------------------------------------------------------------
+
+/// 소셜 활동 피드 Provider
+final feedProvider =
+    StateNotifierProvider<FeedNotifier, FeedState>((ref) {
+  return FeedNotifier();
+});
+
+/// 팔로잉 사용자 ID 목록 Provider (현재 사용자가 팔로우하는 사람들)
+/// 나중에 Firestore 연동으로 교체 예정
+final followingProvider = StateProvider<List<String>>((ref) {
+  return const ['user_002', 'user_003', 'user_004'];
+});
+
+// ---------------------------------------------------------------------------
+// 리더보드 Providers
+// ---------------------------------------------------------------------------
+
+/// 리더보드 Provider - LeaderboardType별 family provider
+final leaderboardProvider =
+    Provider.family<List<LeaderboardEntry>, LeaderboardType>((ref, type) {
+  return _buildMockLeaderboard(type);
 });
