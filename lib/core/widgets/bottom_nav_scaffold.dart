@@ -1,11 +1,13 @@
 // 바텀 네비게이션 스캐폴드 - 앱 셸 레이아웃
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:health_app/core/services/connectivity_service.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 /// 앱 전체의 셸 스캐폴드 위젯
 /// StatefulShellRoute.indexedStack과 함께 사용되어 탭 상태를 유지합니다.
-class BottomNavScaffold extends StatelessWidget {
+class BottomNavScaffold extends ConsumerWidget {
   /// go_router가 제공하는 현재 선택된 탭 인덱스
   final int currentIndex;
 
@@ -74,13 +76,27 @@ class BottomNavScaffold extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context);
     final labels = _labels(l10n);
 
+    // 연결 상태 구독 (AsyncValue: loading/error 시 온라인으로 간주)
+    final isOnline = ref.watch(connectivityProvider).maybeWhen(
+          data: (v) => v,
+          orElse: () => true,
+        );
+    final pendingCount = ref.watch(pendingOperationsCountProvider);
+
     return Scaffold(
-      body: navigationShell,
+      body: Column(
+        children: [
+          // 오프라인 배너 (오프라인일 때만 표시)
+          _OfflineBanner(isOnline: isOnline, pendingCount: pendingCount),
+          // 메인 콘텐츠 (탭별 화면)
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -124,4 +140,63 @@ class _NavItem {
     required this.icon,
     required this.activeIcon,
   });
+}
+
+// ---------------------------------------------------------------------------
+// 오프라인 배너 위젯
+// ---------------------------------------------------------------------------
+
+/// 오프라인 상태일 때 화면 상단에 슬라이드 인/아웃 되는 배너
+class _OfflineBanner extends StatelessWidget {
+  final bool isOnline;
+  final int pendingCount;
+
+  const _OfflineBanner({
+    required this.isOnline,
+    required this.pendingCount,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      height: isOnline ? 0 : (pendingCount > 0 ? 44 : 36),
+      // 오버플로우 클리핑 — 슬라이드 애니메이션 중 내용이 삐져나오지 않도록
+      child: ClipRect(
+        child: Container(
+          width: double.infinity,
+          color: pendingCount > 0
+              ? Colors.deepOrange.shade700
+              : Colors.red.shade600,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.wifi_off,
+                color: Colors.white,
+                size: 14,
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  pendingCount > 0
+                      ? '오프라인 모드 — 대기 중인 변경사항 $pendingCount건'
+                      : '오프라인 모드 — 변경사항은 연결 시 동기화됩니다',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

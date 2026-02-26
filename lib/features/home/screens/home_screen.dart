@@ -11,6 +11,8 @@ import 'package:health_app/features/diet/providers/diet_providers.dart';
 import 'package:health_app/features/calendar/providers/calendar_providers.dart';
 import 'package:health_app/features/profile/screens/settings_screen.dart';
 import 'package:health_app/features/profile/screens/recovery_heatmap_screen.dart';
+import 'package:health_app/features/profile/screens/meditation_screen.dart';
+import 'package:health_app/features/workout_guide/providers/exercise_database_provider.dart';
 
 // ---------------------------------------------------------------------------
 // HomeScreen
@@ -45,6 +47,8 @@ class HomeScreen extends ConsumerWidget {
                 const _CalorieCard(),
                 const SizedBox(height: 16),
                 const _UpcomingWorkoutCard(),
+                const SizedBox(height: 16),
+                const _TrainingTipsCard(),
                 const SizedBox(height: 16),
                 const _RecoverySummaryCard(),
                 const SizedBox(height: 16),
@@ -609,6 +613,19 @@ class _QuickActions extends StatelessWidget {
                 onTap: () => context.push(AppRoutes.hydration),
               ),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: _QuickActionButton(
+                icon: Icons.self_improvement,
+                label: '명상',
+                color: const Color(0xFF7E57C2),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const MeditationScreen(),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ],
@@ -661,6 +678,163 @@ class _QuickActionButton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Training Tips Card (점진적 과부하 추천 카드)
+// ---------------------------------------------------------------------------
+
+class _TrainingTipsCard extends ConsumerWidget {
+  const _TrainingTipsCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final history = ref.watch(workoutHistoryProvider);
+    final suggestions = ref.watch(sessionSuggestionsProvider);
+
+    // 운동 기록이 없으면 카드 미표시
+    if (history.isEmpty || suggestions.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    // 상위 3개 제안만 표시
+    final topSuggestions = suggestions.take(3).toList();
+    // 운동 이름 조회용 맵
+    final allExercises = ref.watch(exerciseDatabaseProvider).allExercises;
+    final exerciseMap = {for (final e in allExercises) e.id: e.name};
+
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 헤더
+            Row(
+              children: [
+                const Icon(
+                  Icons.trending_up,
+                  size: 18,
+                  color: Colors.deepPurple,
+                ),
+                const SizedBox(width: 6),
+                const Text(
+                  '오늘의 트레이닝 팁',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.deepPurple,
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Colors.deepPurple.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    '점진적 과부하',
+                    style: TextStyle(fontSize: 10, color: Colors.deepPurple),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // 제안 목록
+            ...topSuggestions.map((suggestion) {
+              final exerciseName =
+                  exerciseMap[suggestion.exerciseId] ?? suggestion.exerciseId;
+              return _TrainingTipRow(
+                exerciseName: exerciseName,
+                suggestion: suggestion,
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TrainingTipRow extends StatelessWidget {
+  final String exerciseName;
+  final ProgressiveOverloadSuggestion suggestion;
+
+  const _TrainingTipRow({
+    required this.exerciseName,
+    required this.suggestion,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // 진행 유형별 아이콘과 색상
+    final (icon, color) = switch (suggestion.progressionType) {
+      ProgressionType.weightIncrease => (Icons.arrow_upward, Colors.green),
+      ProgressionType.repIncrease => (Icons.add_circle_outline, Colors.blue),
+      ProgressionType.deload => (Icons.arrow_downward, Colors.orange),
+      ProgressionType.maintain => (Icons.horizontal_rule, Colors.grey),
+    };
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 14, color: color),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  exerciseName,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  suggestion.reason,
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          // 추천 수치
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${suggestion.suggestedWeight.toStringAsFixed(suggestion.suggestedWeight % 1 == 0 ? 0 : 1)}kg',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+              Text(
+                '× ${suggestion.suggestedReps}회',
+                style: const TextStyle(fontSize: 11, color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

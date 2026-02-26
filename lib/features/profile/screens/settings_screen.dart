@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:health_app/core/services/health_sync_service.dart';
 import 'package:health_app/l10n/app_localizations.dart';
 
 // ---------------------------------------------------------------------------
@@ -978,6 +980,10 @@ class _AppSettingsSection extends ConsumerWidget {
               ),
               const Divider(height: 1, indent: 72),
 
+              // Apple Health / Google Fit 연동
+              _HealthSyncTile(),
+              const Divider(height: 1, indent: 72),
+
               // 데이터 백업
               ListTile(
                 leading: Container(
@@ -1309,6 +1315,60 @@ class _TimePickerRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Apple Health / Google Fit 연동 타일
+// ---------------------------------------------------------------------------
+
+/// 설정 화면의 앱 섹션에 표시되는 Health 연동 ListTile
+class _HealthSyncTile extends ConsumerWidget {
+  const _HealthSyncTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 플랫폼 이름
+    final platformName = Platform.isIOS ? 'Apple Health' : 'Google Fit';
+
+    // 권한 상태를 비동기로 조회
+    final permissionAsync = ref.watch(healthPermissionGrantedProvider);
+
+    final isConnected = permissionAsync.maybeWhen(
+      data: (v) => v,
+      orElse: () => false,
+    );
+
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.pink.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Icon(Icons.favorite_outline,
+            color: Colors.pink, size: 20),
+      ),
+      title: Text('$platformName 연동'),
+      subtitle: Text(isConnected ? '연동됨' : '연동되지 않음'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 연결 상태 인디케이터 점
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isConnected ? Colors.green : Colors.grey,
+            ),
+          ),
+          const SizedBox(width: 8),
+          const Icon(Icons.chevron_right),
+        ],
+      ),
+      onTap: () => context.push('/health-sync'),
     );
   }
 }

@@ -1179,10 +1179,187 @@ class WorkoutRecommender {
         .toList();
   }
 
-  /// 진행적 과부하 추천 (+2.5kg 또는 +1rep)
+  /// 진행적 과부하 추천 (스마트 로직)
+  ///
+  /// 분석 우선순위:
+  /// 1. RPE > 9 → 디로드 (-10% 중량)
+  /// 2. 최근 3세션 모두 목표 랩 달성 → 중량 증가 (상체 +2.5kg, 하체 +5kg)
+  /// 3. 최근 세션 목표 랩 미달 → 동일 중량, 랩수 +1
+  /// 4. RPE < 7 → 중량 증가 (상체 +2.5kg, 하체 +5kg)
+  /// 5. PR 기반 기본 추천
   ProgressiveOverloadSuggestion? getProgressiveOverloadSuggestion(
     String exerciseId,
+    List<PersonalRecord> personalRecords, {
+    List<WorkoutRecord>? sessionHistory,
+  }) {
+    // 해당 운동의 최근 세션 기록 수집 (최근 3개)
+    final recentSessions = (sessionHistory ?? history)
+        .where((r) => r.exercises.any((e) => e.exerciseId == exerciseId))
+        .take(3)
+        .toList();
+
+    final exercise = allExercises.firstWhere(
+      (e) => e.id == exerciseId,
+      orElse: () => const Exercise(
+        id: '',
+        name: '',
+        nameEn: '',
+        bodyPart: BodyPart.fullBody,
+        equipment: Equipment.none,
+        difficulty: DifficultyLevel.beginner,
+        instructions: [],
+      ),
+    );
+
+    // 상체/하체 여부에 따른 중량 증가량
+    final isLower = {
+      BodyPart.quadriceps,
+      BodyPart.hamstrings,
+      BodyPart.glutes,
+      BodyPart.calves,
+    }.contains(exercise.bodyPart);
+    final weightIncrement = isLower ? 5.0 : 2.5;
+
+    // ── 세션 히스토리 기반 분석 ──────────────────────────────────────────
+    if (recentSessions.isNotEmpty) {
+      // 각 세션에서 해당 운동의 작업 세트 데이터 추출
+      final sessionData = recentSessions.map((record) {
+        final entry = record.exercises.firstWhere(
+          (e) => e.exerciseId == exerciseId,
+        );
+        final workingSets = entry.sets
+            .where((s) => !s.isWarmup && s.setType != SetType.warmup && s.isCompleted)
+            .toList();
+        return workingSets;
+      }).toList();
+
+      // 최근 세션의 평균 RPE 계산
+      final allRpes = <int>[];
+      for (final sets in sessionData) {
+        for (final set in sets) {
+          if (set.rpe != null) allRpes.add(set.rpe!);
+        }
+      }
+
+      final latestSets = sessionData.first;
+      if (latestSets.isEmpty) {
+        // 세션이 있지만 완료 세트가 없는 경우 PR 기반으로 폴백
+        return _prBasedSuggestion(exerciseId, personalRecords, weightIncrement);
+      }
+
+      final latestWeight = latestSets
+          .map((s) => s.weight)
+          .reduce((a, b) => a > b ? a : b);
+      final latestReps = latestSets.first.reps;
+
+      // 1. RPE 일관적으로 >9 → 디로드
+      if (allRpes.isNotEmpty) {
+        final avgRpe = allRpes.reduce((a, b) => a + b) / allRpes.length;
+        if (avgRpe > 9.0) {
+          final deloadWeight = (latestWeight * 0.9).roundToDouble();
+          return ProgressiveOverloadSuggestion(
+            exerciseId: exerciseId,
+            suggestedWeight: deloadWeight,
+            suggestedReps: latestReps,
+            reason: '최근 RPE ${avgRpe.toStringAsFixed(1)} → 디로드 ${latestWeight}kg → ${deloadWeight}kg',
+            progressionType: ProgressionType.deload,
+            previousWeight: latestWeight,
+            previousReps: latestReps,
+          );
+        }
+      }
+
+      // 2. 최근 3세션 모두 목표 랩 달성 → 중량 증가
+      final targetReps = latestReps; // 마지막 세션의 랩수를 목표로 간주
+      if (recentSessions.length >= 3) {
+        final allHitTarget = sessionData.every((sets) =>
+            sets.isNotEmpty &&
+            sets.every((s) => s.reps >= targetReps));
+
+        if (allHitTarget) {
+          final newWeight = latestWeight + weightIncrement;
+          return ProgressiveOverloadSuggestion(
+            exerciseId: exerciseId,
+            suggestedWeight: newWeight,
+            suggestedReps: latestReps - 2, // 무게 올리면 랩수 약간 감소
+            reason: '3세션 연속 ${latestWeight}kg×$latestReps회 달성 → ${newWeight}kg 추천',
+            progressionType: ProgressionType.weightIncrease,
+            previousWeight: latestWeight,
+            previousReps: latestReps,
+          );
+        }
+      }
+
+      // 3. 최근 세션 목표 랩 미달 → 동일 중량, +1 rep
+      if (sessionData.length >= 2) {
+        final previousSets = sessionData[1];
+        final prevTargetReps = previousSets.isNotEmpty ? previousSets.first.reps : latestReps;
+        final latestHitTarget = latestSets.every((s) => s.reps >= prevTargetReps);
+
+        if (!latestHitTarget) {
+          return ProgressiveOverloadSuggestion(
+            exerciseId: exerciseId,
+            suggestedWeight: latestWeight,
+            suggestedReps: latestReps + 1,
+            reason: '목표 랩 미달 → ${latestWeight}kg 유지, 랩수 +1회',
+            progressionType: ProgressionType.repIncrease,
+            previousWeight: latestWeight,
+            previousReps: latestReps,
+          );
+        }
+      }
+
+      // 4. RPE < 7 → 중량 증가
+      if (allRpes.isNotEmpty) {
+        final avgRpe = allRpes.reduce((a, b) => a + b) / allRpes.length;
+        if (avgRpe < 7.0) {
+          final newWeight = latestWeight + weightIncrement;
+          return ProgressiveOverloadSuggestion(
+            exerciseId: exerciseId,
+            suggestedWeight: newWeight,
+            suggestedReps: latestReps,
+            reason: '평균 RPE ${avgRpe.toStringAsFixed(1)} (낮음) → ${newWeight}kg 도전 추천',
+            progressionType: ProgressionType.weightIncrease,
+            previousWeight: latestWeight,
+            previousReps: latestReps,
+          );
+        }
+      }
+
+      // 5. 일반: 마지막 세션 기반 +2.5kg 또는 +1rep
+      if (latestReps >= 10) {
+        final newWeight = latestWeight + weightIncrement;
+        return ProgressiveOverloadSuggestion(
+          exerciseId: exerciseId,
+          suggestedWeight: newWeight,
+          suggestedReps: latestReps - 2,
+          reason: '이전 ${latestWeight}kg×$latestReps회 → ${newWeight}kg 추천',
+          progressionType: ProgressionType.weightIncrease,
+          previousWeight: latestWeight,
+          previousReps: latestReps,
+        );
+      } else {
+        return ProgressiveOverloadSuggestion(
+          exerciseId: exerciseId,
+          suggestedWeight: latestWeight,
+          suggestedReps: latestReps + 1,
+          reason: '이전 ${latestWeight}kg×$latestReps회 → 랩수 +1회',
+          progressionType: ProgressionType.repIncrease,
+          previousWeight: latestWeight,
+          previousReps: latestReps,
+        );
+      }
+    }
+
+    // PR 기반 폴백
+    return _prBasedSuggestion(exerciseId, personalRecords, weightIncrement);
+  }
+
+  /// PR 기반 기본 추천 (세션 히스토리 없을 때 폴백)
+  ProgressiveOverloadSuggestion? _prBasedSuggestion(
+    String exerciseId,
     List<PersonalRecord> personalRecords,
+    double weightIncrement,
   ) {
     final pr = personalRecords
         .where((p) => p.exerciseId == exerciseId)
@@ -1192,22 +1369,48 @@ class WorkoutRecommender {
 
     final latest = pr.first;
 
-    // 10회 이상이면 무게 증가, 미만이면 반복수 증가
     if (latest.reps >= 10) {
       return ProgressiveOverloadSuggestion(
         exerciseId: exerciseId,
-        suggestedWeight: latest.weight + 2.5,
+        suggestedWeight: latest.weight + weightIncrement,
         suggestedReps: latest.reps - 2,
-        reason: '이전 기록 ${latest.weight}kg×${latest.reps}회 → 무게 +2.5kg',
+        reason: 'PR ${latest.weight}kg×${latest.reps}회 → 무게 +${weightIncrement}kg',
+        progressionType: ProgressionType.weightIncrease,
+        previousWeight: latest.weight,
+        previousReps: latest.reps,
       );
     } else {
       return ProgressiveOverloadSuggestion(
         exerciseId: exerciseId,
         suggestedWeight: latest.weight,
         suggestedReps: latest.reps + 1,
-        reason: '이전 기록 ${latest.weight}kg×${latest.reps}회 → 반복수 +1회',
+        reason: 'PR ${latest.weight}kg×${latest.reps}회 → 반복수 +1회',
+        progressionType: ProgressionType.repIncrease,
+        previousWeight: latest.weight,
+        previousReps: latest.reps,
       );
     }
+  }
+
+  /// 플래닝된 세션의 모든 운동에 대한 과부하 추천 목록 반환
+  List<ProgressiveOverloadSuggestion> getSessionSuggestions(
+    List<ExerciseEntry> exercises,
+    List<WorkoutRecord> sessionHistory,
+  ) {
+    final suggestions = <ProgressiveOverloadSuggestion>[];
+
+    for (final entry in exercises) {
+      final suggestion = getProgressiveOverloadSuggestion(
+        entry.exerciseId,
+        [], // PR 없이 세션 히스토리만 사용
+        sessionHistory: sessionHistory,
+      );
+      if (suggestion != null) {
+        suggestions.add(suggestion);
+      }
+    }
+
+    return suggestions;
   }
 
   /// 스플릿 타입별 추천
@@ -1248,19 +1451,47 @@ class WorkoutRecommender {
   }
 }
 
+/// 점진적 과부하 유형
+enum ProgressionType {
+  weightIncrease, // 무게 증가
+  repIncrease,    // 랩수 증가
+  deload,         // 디로드 (중량 감소)
+  maintain,       // 현상 유지
+}
+
 /// 진행적 과부하 추천 결과
 class ProgressiveOverloadSuggestion {
   final String exerciseId;
   final double suggestedWeight;
   final int suggestedReps;
   final String reason;
+  final ProgressionType progressionType;
+  final double? previousWeight;  // 이전 세션 중량 (비교용)
+  final int? previousReps;       // 이전 세션 랩수 (비교용)
 
   const ProgressiveOverloadSuggestion({
     required this.exerciseId,
     required this.suggestedWeight,
     required this.suggestedReps,
     required this.reason,
+    this.progressionType = ProgressionType.maintain,
+    this.previousWeight,
+    this.previousReps,
   });
+
+  /// 운동 이름 (exerciseId로 찾아야 하므로 별도 조회 필요)
+  String get progressionLabel {
+    switch (progressionType) {
+      case ProgressionType.weightIncrease:
+        return '중량 증가';
+      case ProgressionType.repIncrease:
+        return '반복수 증가';
+      case ProgressionType.deload:
+        return '디로드';
+      case ProgressionType.maintain:
+        return '유지';
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1316,4 +1547,22 @@ final splitBasedRecommendationsProvider = Provider<List<Exercise>>((ref) {
   final recommender = ref.watch(workoutRecommenderProvider);
   final split = ref.watch(selectedSplitProvider);
   return recommender.getRecommendationBySplit(split);
+});
+
+/// 오늘 세션 추천 운동에 대한 점진적 과부하 제안 Provider
+/// - 오늘 추천된 운동들에 대해 히스토리 기반 과부하 제안 반환
+final sessionSuggestionsProvider = Provider<List<ProgressiveOverloadSuggestion>>((ref) {
+  final recommender = ref.watch(workoutRecommenderProvider);
+  final todayExercises = ref.watch(todayRecommendedExercisesProvider);
+  final history = ref.watch(workoutHistoryProvider);
+
+  // 추천 운동을 ExerciseEntry 형태로 변환하여 제안 생성
+  final fakeEntries = todayExercises.map((e) => ExerciseEntry(
+    exerciseId: e.id,
+    name: e.name,
+    bodyPart: e.bodyPart,
+    sets: const [],
+  )).toList();
+
+  return recommender.getSessionSuggestions(fakeEntries, history);
 });

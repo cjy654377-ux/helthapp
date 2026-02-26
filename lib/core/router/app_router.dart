@@ -23,7 +23,11 @@ import 'package:health_app/features/calendar/screens/calendar_screen.dart';
 import 'package:health_app/features/profile/screens/profile_screen.dart';
 import 'package:health_app/features/profile/screens/settings_screen.dart';
 import 'package:health_app/features/profile/screens/stats_screen.dart';
+import 'package:health_app/features/profile/screens/habit_tracker_screen.dart';
+import 'package:health_app/features/profile/screens/body_measurements_screen.dart';
+import 'package:health_app/features/profile/screens/data_export_screen.dart';
 import 'package:health_app/features/auth/screens/login_screen.dart';
+import 'package:health_app/features/profile/screens/health_sync_screen.dart';
 
 // ---------------------------------------------------------------------------
 // 라우트 경로 상수
@@ -52,6 +56,13 @@ class AppRoutes {
   // 운동 프로그램 / 회복 히트맵
   static const String programs = '/workout-guide/programs';
   static const String recoveryHeatmap = '/recovery-heatmap';
+
+  // 프로필 서브 화면
+  static const String habitTracker = '/profile/habits';
+  static const String bodyMeasurements = '/profile/measurements';
+  static const String dataExport = '/profile/export';
+
+  static const String healthSync = '/health-sync';
 
   // 프라이빗 생성자 - 인스턴스화 방지
   AppRoutes._();
@@ -266,6 +277,34 @@ class AppRouter {
         path: AppRoutes.recoveryHeatmap,
         name: 'recovery-heatmap',
         builder: (context, state) => const RecoveryHeatmapScreen(),
+      ),
+
+      // 습관 추적기
+      GoRoute(
+        path: AppRoutes.habitTracker,
+        name: 'habit-tracker',
+        builder: (context, state) => const HabitTrackerScreen(),
+      ),
+
+      // 신체 측정
+      GoRoute(
+        path: AppRoutes.bodyMeasurements,
+        name: 'body-measurements',
+        builder: (context, state) => const BodyMeasurementsScreen(),
+      ),
+
+      // 데이터 내보내기
+      GoRoute(
+        path: AppRoutes.dataExport,
+        name: 'data-export',
+        builder: (context, state) => const DataExportScreen(),
+      ),
+
+      // Apple Health / Google Fit 동기화 화면
+      GoRoute(
+        path: AppRoutes.healthSync,
+        name: 'health-sync',
+        builder: (context, state) => const HealthSyncScreen(),
       ),
     ],
 
