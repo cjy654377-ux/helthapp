@@ -327,18 +327,53 @@ challenges/{id}/ → participants/
 - _QuickActionButton static const 필드 추출 (성능)
 - flutter analyze: 0 issues, flutter test: 269 passed
 
-**다음 작업:**
-- 자가 리뷰 6차 (notification_service i18n, achievement_service i18n 등)
+**자가 리뷰 6차 완료 (2026-02-26) - i18n + Repository + UX:**
+- notification_service i18n 완료 (알림 제목/본문 파라미터화)
+- achievement_service i18n 완료 (19업적 39키)
+- BodyProgressRepository 추출 완료 (Local + Firestore)
+- onboarding → settingsProvider 마이그레이션 완료
+- 캘린더 landscape 대응 완료 (OrientationBuilder)
+- pull-to-refresh 4개 화면 완료
+- 스크롤-투-탑 바텀 네비 재탭 완료 (PrimaryScrollController)
 
-**기타 대기:**
-- notification_service.dart 푸시 알림 텍스트 i18n
-- achievement_service.dart 업적 제목/설명 i18n
-- body_progress_screen BodyProgressRepository 추출
-- onboarding_screen SharedPreferences → settingsProvider 통합
-- iOS GoogleService-Info.plist CLIENT_ID 추가 (Firebase Console에서 Google Sign-In 활성화 필요)
-- Info.plist REVERSED_CLIENT_ID 실제 값 교체
-- 홈화면 위젯 (iOS/Android)
-- 앱 아이콘 + Fastlane 빌드
-- 캘린더 landscape 대응
-- pull-to-refresh 패턴 추가
-- 스크롤-투-탑 (바텀 네비 탭 재탭)
+## D-008: 경쟁 앱 분석 기반 기능 확장
+- **결정**: 25개 미구현 기능 식별, 전체 구현 진행
+- **참고 앱**: Strong, Hevy, Fitbod, MyFitnessPal, JEFIT, Gymshark, SWEAT, Nike Training Club
+- **이유**: 사용자 리텐션/수익화/차별화 극대화
+
+**Wave 1 완료 (2026-02-26) - 운동 핵심 확장 + 소셜 + 프로그램:**
+- RPE/RIR 추적 (세트별 6-10)
+- 세트 타입 태그 (워밍업/드롭셋/실패)
+- 워밍업 세트 자동 계산 (Brzycki 피라미드)
+- 예상 1RM 실시간 추적
+- 슈퍼셋 모드 (운동 그룹화)
+- 운동 교체 추천 (같은 부위)
+- 소셜 활동 피드 (좋아요/댓글/공유)
+- 리더보드 4탭
+- 운동 기록 공유
+- 기성 프로그램 5개 (PPL/상하체/전신/5-3-1/분할)
+- 근육 회복 히트맵 (전면/후면 바디맵)
+
+**Wave 2 완료 (2026-02-26) - 라이프스타일 + 지능 + 연동:**
+- 습관 트래커 (주간 뷰, 스트릭, 커스텀)
+- 신체 부위별 치수 기록 (11부위, 차트)
+- 데이터 CSV 내보내기
+- Progressive Overload 자동 추천 (RPE 기반)
+- 명상/호흡 운동 (3패턴, 애니메이션)
+- 오프라인 모드 표시 + 동기화 대기열
+- Apple Health/Google Fit 연동 (양방향)
+- flutter analyze: 0 issues, flutter test: 269 passed
+
+**남은 미구현 기능 (콘텐츠/하드웨어 의존):**
+- AI 식단 사진 인식 (ML API 필요)
+- 음성 식단 기록 (STT + NLP 필요)
+- 스마트워치 앱 (네이티브 개발 필요)
+- 트레이너 영상 (콘텐츠 제작 필요)
+- 식단 플래너/레시피 (레시피 DB 필요)
+- 임산부/시니어 프로그램 (전문 콘텐츠)
+- 음악/Spotify 연동 (라이선스)
+
+**사용자 액션 대기:**
+- iOS GoogleService-Info.plist CLIENT_ID (Firebase Console)
+- Info.plist REVERSED_CLIENT_ID 실제 값
+- 앱 아이콘 디자인
