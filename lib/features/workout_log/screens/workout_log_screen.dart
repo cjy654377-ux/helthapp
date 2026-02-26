@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:health_app/core/models/workout_model.dart';
 import 'package:health_app/features/workout_log/providers/workout_providers.dart';
+import 'package:health_app/features/workout_log/widgets/music_mini_player.dart';
 import 'package:health_app/features/workout_guide/providers/exercise_database_provider.dart';
 import 'package:health_app/core/widgets/common_states.dart';
 import 'package:health_app/l10n/app_localizations.dart';
@@ -60,6 +61,9 @@ class _WorkoutLogScreenState extends ConsumerState<WorkoutLogScreen> {
             elapsedSeconds: session.elapsedSeconds,
             isActive: session.isActive,
           ),
+
+          // 음악 미니 플레이어 (세션 활성 시에만 표시)
+          if (session.isActive) const MusicMiniPlayer(),
 
           // 휴식 타이머 배너
           if (session.isRestTimerRunning && session.restTimerSeconds > 0)

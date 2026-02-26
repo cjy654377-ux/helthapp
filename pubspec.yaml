@@ -47,6 +47,9 @@ dependencies:
   flutter_local_notifications: ^21.0.0-dev.2
   timezone: ^0.11.0
   health: ^13.3.1
+  speech_to_text: ^7.3.0
+  google_mlkit_image_labeling: ^0.14.2
+  video_player: ^2.11.0
 
 dev_dependencies:
   flutter_test:

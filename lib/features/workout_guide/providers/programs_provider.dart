@@ -1,6 +1,6 @@
 // 사전 제작 운동 프로그램 상태 관리
 // WorkoutProgram, ProgramWeek, ProgramDay, ProgramExercise, ActiveProgram 모델
-// 5개 내장 프로그램 + SharedPreferences 기반 활성 프로그램 영속성
+// 5개 일반 프로그램 + 특수 프로그램(임산부/시니어/재활) + SharedPreferences 기반 영속성
 
 import 'dart:convert';
 
@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:health_app/core/models/workout_model.dart';
+import 'package:health_app/features/workout_guide/providers/special_programs_provider.dart';
 
 // ---------------------------------------------------------------------------
 // SharedPreferences 키
@@ -714,12 +715,47 @@ class ActiveProgramNotifier extends StateNotifier<ActiveProgram?> {
 }
 
 // ---------------------------------------------------------------------------
+// 전체 프로그램 병합 (일반 + 특수)
+// ---------------------------------------------------------------------------
+
+/// 일반 + 특수 프로그램 전체 목록
+final List<WorkoutProgram> kAllPrograms = [
+  ...kBuiltInPrograms,
+  ...kSpecialPrograms,
+];
+
+// ---------------------------------------------------------------------------
 // Providers
 // ---------------------------------------------------------------------------
 
-/// 전체 프로그램 목록 Provider
+/// 전체 프로그램 목록 Provider (일반 + 특수 포함)
 final programsProvider = Provider<List<WorkoutProgram>>((ref) {
+  return kAllPrograms;
+});
+
+/// 일반 프로그램만 Provider (category: general)
+final generalProgramsProvider = Provider<List<WorkoutProgram>>((ref) {
   return kBuiltInPrograms;
+});
+
+/// 특수 프로그램만 Provider (임산부/시니어/재활)
+final specialProgramsProvider = Provider<List<WorkoutProgram>>((ref) {
+  return kSpecialPrograms;
+});
+
+/// 임산부 프로그램 Provider
+final pregnancyProgramsProvider = Provider<List<WorkoutProgram>>((ref) {
+  return kSpecialPrograms.where((p) => p.tags.contains('임산부')).toList();
+});
+
+/// 시니어 프로그램 Provider
+final seniorProgramsProvider = Provider<List<WorkoutProgram>>((ref) {
+  return kSpecialPrograms.where((p) => p.tags.contains('시니어')).toList();
+});
+
+/// 재활 프로그램 Provider
+final rehabilitationProgramsProvider = Provider<List<WorkoutProgram>>((ref) {
+  return kSpecialPrograms.where((p) => p.tags.contains('재활')).toList();
 });
 
 /// 활성 프로그램 Provider
@@ -728,12 +764,12 @@ final activeProgramProvider =
   (ref) => ActiveProgramNotifier(),
 );
 
-/// 현재 활성 프로그램의 WorkoutProgram 객체 Provider
+/// 현재 활성 프로그램의 WorkoutProgram 객체 Provider (일반 + 특수 모두 검색)
 final activeProgramDetailProvider = Provider<WorkoutProgram?>((ref) {
   final active = ref.watch(activeProgramProvider);
   if (active == null) return null;
   try {
-    return kBuiltInPrograms.firstWhere((p) => p.id == active.programId);
+    return kAllPrograms.firstWhere((p) => p.id == active.programId);
   } catch (_) {
     return null;
   }

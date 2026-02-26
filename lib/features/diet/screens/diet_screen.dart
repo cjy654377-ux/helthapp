@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:health_app/core/models/diet_model.dart';
+import 'package:health_app/core/router/app_router.dart';
 import 'package:health_app/features/diet/providers/diet_providers.dart';
 import 'package:health_app/core/widgets/common_states.dart';
 import 'package:health_app/l10n/app_localizations.dart';
@@ -63,6 +65,24 @@ class DietScreen extends ConsumerWidget {
         ),
         centerTitle: false,
         actions: [
+          // AI 음식 사진 인식 // TODO: l10n tooltip
+          IconButton(
+            icon: const Icon(Icons.camera_alt_outlined),
+            tooltip: 'AI 음식 인식',
+            onPressed: () => context.push(AppRoutes.mealPhoto),
+          ),
+          // 음성 식단 기록 // TODO: l10n tooltip
+          IconButton(
+            icon: const Icon(Icons.mic_outlined),
+            tooltip: '음성으로 기록',
+            onPressed: () => context.push(AppRoutes.voiceLogging),
+          ),
+          // 레시피 & 식단 플래너
+          IconButton(
+            icon: const Icon(Icons.menu_book_outlined),
+            tooltip: '레시피 & 식단 플래너',
+            onPressed: () => context.push(AppRoutes.recipes),
+          ),
           IconButton(
             icon: const Icon(Icons.calendar_today_outlined),
             tooltip: l10n.tooltipCalendar,

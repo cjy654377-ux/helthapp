@@ -143,11 +143,12 @@ class WorkoutGuideScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // Programs 버튼 (상단 액션 바)
+          // Programs + Video Workouts 버튼 (상단 액션 바)
           Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
             child: Row(
               children: [
+                // Programs 버튼
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () => context.push(AppRoutes.programs),
@@ -161,6 +162,25 @@ class WorkoutGuideScreen extends ConsumerWidget {
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.5),
                       ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                // Video Workouts 버튼
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => context.push(AppRoutes.videoWorkouts),
+                    icon: const Icon(Icons.play_circle_outline, size: 18),
+                    label: const Text(
+                      '영상 운동', // TODO: l10n
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
+                      ),
+                      foregroundColor: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),

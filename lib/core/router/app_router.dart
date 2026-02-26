@@ -11,6 +11,7 @@ import 'package:health_app/features/home/screens/onboarding_screen.dart';
 import 'package:health_app/features/home/screens/splash_screen.dart';
 import 'package:health_app/features/workout_guide/screens/workout_guide_screen.dart';
 import 'package:health_app/features/workout_guide/screens/programs_screen.dart';
+import 'package:health_app/features/workout_guide/screens/video_workout_screen.dart';
 import 'package:health_app/features/workout_log/screens/workout_log_screen.dart';
 import 'package:health_app/features/profile/screens/recovery_heatmap_screen.dart';
 import 'package:health_app/features/community/screens/community_screen.dart';
@@ -18,6 +19,9 @@ import 'package:health_app/features/community/screens/challenge_screen.dart';
 import 'package:health_app/features/community/screens/social_feed_screen.dart';
 import 'package:health_app/features/community/screens/leaderboard_screen.dart';
 import 'package:health_app/features/diet/screens/diet_screen.dart';
+import 'package:health_app/features/diet/screens/recipe_screen.dart';
+import 'package:health_app/features/diet/screens/meal_photo_screen.dart';
+import 'package:health_app/features/diet/screens/voice_logging_screen.dart';
 import 'package:health_app/features/hydration/screens/hydration_screen.dart';
 import 'package:health_app/features/calendar/screens/calendar_screen.dart';
 import 'package:health_app/features/profile/screens/profile_screen.dart';
@@ -43,6 +47,9 @@ class AppRoutes {
   static const String challenges = '/challenges';
   static const String diet = '/diet';
   static const String hydration = '/diet/hydration';
+  static const String mealPhoto = '/diet/photo';
+  static const String voiceLogging = '/diet/voice';
+  static const String recipes = '/diet/recipes';
   static const String calendar = '/calendar';
   static const String profile = '/profile';
   static const String settings = '/settings';
@@ -55,6 +62,7 @@ class AppRoutes {
 
   // 운동 프로그램 / 회복 히트맵
   static const String programs = '/workout-guide/programs';
+  static const String videoWorkouts = '/workout-guide/videos';
   static const String recoveryHeatmap = '/recovery-heatmap';
 
   // 프로필 서브 화면
@@ -171,6 +179,12 @@ class AppRouter {
                     name: 'programs',
                     builder: (context, state) => const ProgramsScreen(),
                   ),
+                  // 트레이너 주도 영상 운동 라이브러리
+                  GoRoute(
+                    path: 'videos',
+                    name: 'video-workouts',
+                    builder: (context, state) => const VideoWorkoutScreen(),
+                  ),
                 ],
               ),
             ],
@@ -218,6 +232,24 @@ class AppRouter {
                     path: 'hydration',
                     name: 'hydration',
                     builder: (context, state) => const HydrationScreen(),
+                  ),
+                  // AI 음식 사진 인식
+                  GoRoute(
+                    path: 'photo',
+                    name: 'meal-photo',
+                    builder: (context, state) => const MealPhotoScreen(),
+                  ),
+                  // 음성 식단 기록
+                  GoRoute(
+                    path: 'voice',
+                    name: 'voice-logging',
+                    builder: (context, state) => const VoiceLoggingScreen(),
+                  ),
+                  // 레시피 & 식단 플래너
+                  GoRoute(
+                    path: 'recipes',
+                    name: 'recipes',
+                    builder: (context, state) => const RecipeScreen(),
                   ),
                 ],
               ),
